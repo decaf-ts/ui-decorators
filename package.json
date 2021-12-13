@@ -1,7 +1,7 @@
 {
-  "name": "ts-workspace",
-  "version": "1.1.1-no-ci",
-  "description": "template for ts projects",
+  "name": "@tvenceslau/ui-decorators",
+  "version": "0.0.1",
+  "description": "Extension of decorator validation to ui elements to allow for web integration",
   "main": "./dist/index.min.js",
   "module": "./dist/esm/index.min.esm.js",
   "scripts": {
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TiagoVenceslau/ts-workspace.git"
+    "url": "git+https://github.com/TiagoVenceslau/ui-decorators.git"
   },
   "engines": {
     "node": ">=14.0.0",
@@ -32,10 +32,11 @@
   "author": "TiagoVenceslau",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TiagoVenceslau/ts-workspace/issues"
+    "url": "https://github.com/TiagoVenceslau/ui-decorators/issues"
   },
-  "homepage": "https://github.com/TiagoVenceslau/ts-workspace#readme",
+  "homepage": "https://github.com/TiagoVenceslau/ui-decorators#readme",
   "devDependencies": {
+    "@tvenceslau/decorator-validation": "1.7.3",
     "@babel/preset-env": "^7.16.4",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.1",
