@@ -1,6 +1,5 @@
 import {getValidatorRegistry, maxlength, minlength, required} from "@tvenceslau/decorator-validation/lib/validation";
-import {uielement, uimodel} from "../lib";
-import {UIModel} from "../src";
+import {uielement, uimodel, UIModel} from "../src";
 import {
     constructFromObject,
     getClassDecorators,
