@@ -139,7 +139,7 @@ export type RenderStrategy = &lt;T extends Model>(model: T, mode?: string, ...ar
  * @memberOf ui-decorators.ui.render
  */
 function renderStrategy&lt;T extends Model>(model: T, ...args: any[]): any {
-    console.log(`Render method called on ${model} with ${args.join(' | ')} without any Rendering Strategy. Doing nothing...`);
+    throw new Error(`Render method called on ${model} with ${args.join(' | ')} without any Rendering Strategy.`);
 }
 
 let activeRenderStrategy: RenderStrategy = renderStrategy;

@@ -12,5 +12,5 @@ export interface UIModel extends Validatable {
      *
      * @param args
      */
-    render(...args: any[]): any;
+    render?(...args: any[]): any;
 }

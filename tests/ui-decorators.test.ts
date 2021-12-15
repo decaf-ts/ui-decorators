@@ -26,23 +26,31 @@ class TestClass extends Model implements UIModel {
     }
 
     render(...args: any): any {
-
+        console.log(`this method will be replaced by the uimodel decorator`);
     }
 
 }
 
 describe(`UI decorators Test`, function(){
 
-    it('Decorates Properly', function() {
-        const testModel = new TestClass({
+    let testModel: TestClass;
+
+    beforeEach(() => {
+        testModel = new TestClass({
             name: "test"
         });
+    })
+
+    it('Decorates The class properly', function() {
 
         const decorators: any[] = getClassDecorators(ModelKeys.REFLECT, testModel);
 
         expect(decorators).toBeDefined();
         expect(decorators.length).toBe(1);
         expect(decorators[0].key).toEqual(ModelKeys.MODEL);
+    })
+
+    it('Decorates the properties properly', function() {
 
         const propertyDecorators: {[indexer: string]: any} = getPropertyDecorators(UIKeys.REFLECT, testModel, "name", false);
 
@@ -55,11 +63,12 @@ describe(`UI decorators Test`, function(){
         expect(tag).toEqual("input-element");
         expect(props).toBeDefined();
         expect(props.subtype).toEqual("OtherTest");
-
     })
 
-    it(`Loads the registry`, function(){
-        getValidatorRegistry()
-        expect(getValidatorRegistry()).toBeDefined()
-    });
+    it('Adds the render method properly', function() {
+        expect (testModel.render).toBeDefined();
+        expect(() => {
+            testModel.render();
+        }).toThrowError()
+    })
 });
