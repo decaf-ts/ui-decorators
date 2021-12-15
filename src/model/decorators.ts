@@ -7,10 +7,19 @@
  *
  * @category Decorators
  */
-import {model} from "@tvenceslau/decorator-validation/lib";
+import {Model, model} from "@tvenceslau/decorator-validation/lib";
+import {getRenderStrategy} from "../ui/render";
 
 export const uimodel = () => (original: Function) => {
     return model(undefined, instance => {
+        function render(this: Model, ...args: any){
+            getRenderStrategy()(this, ...args);
+        }
 
-    })
+        Object.defineProperty(instance, render.name, {
+            enumerable: false,
+            writable: false,
+            value: render.bind(instance)
+        });
+    })(original)
 }

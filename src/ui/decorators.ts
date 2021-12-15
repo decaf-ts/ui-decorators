@@ -1,28 +1,95 @@
 import "reflect-metadata";
-import {UIKeys, RenderModes} from "./constants";
+import {UIKeys} from "./constants";
 
+/**
+ * @namespace ui-decorators.ui.decorators
+ * @memberOf ui-decorators.ui
+ */
+
+/**
+ *
+ * @param {string} key
+ *
+ * @function getUIKey
+ *
+ * @memberOf ui-decorators.ui.decorators
+ */
 const getUIKey = (key: string) => UIKeys.REFLECT + key;
+
+/**
+ * @typedef UIPropertyDecoratorDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIPropertyDecoratorDefinition = {
+    /**
+     *
+     */
+    prop: string | symbol,
+    /**
+     *
+     */
+    decorators: UIDecoratorDefinition[]
+}
+/**
+ * @typedef UIDecoratorDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIDecoratorDefinition = {
+    /**
+     *
+     */
+    key: string,
+    /**
+     *
+     */
+    props: UIElementDefinition
+}
+/**
+ * @typedef UIElementDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIElementDefinition = {
+    /**
+     *
+     */
+    tag: string,
+    /**
+     *
+     */
+    props: {[indexer: string]: string},
+    /**
+     *
+     */
+    valueAttribute?: string
+    ,
+}
+
+export type UIElementMetadata = {
+    tag: string,
+    args?: any[],
+    props?: {[indexer: string]: any}
+}
 
 /**
  *
  * @param {string} tag The component/HTML element tag name
  * @param {{[indexer]: string}} [props] The properties to pass to that component/HTML Element
- * @param {string} [valueAttribute] The property name that holds the input value. defaults to 'value'
- * @param {string[] | string} [renderModes] When an array of {@link RenderModes}, the render modes on with the UI element is applied {@link RenderModes}, When a string, the property the 'isEdit' boolean will be injected in the component.
+ * @param {any[]} [args] optional arguments that will be passed to the rendering strategy.
  *
  * @decorator uielement
  *
  * @category Decorators
  */
-export const uielement = (tag: string, props?: {}, valueAttribute: string = 'value', renderModes: string[] = [RenderModes.VIEW, RenderModes.CREATE]) => (target: any, propertyKey: string) => {
+export const uielement = (tag: string, props?: {[indexer: string]: any}, ...args: any[]) => (target: any, propertyKey: string) => {
+    const metadata: UIElementMetadata = {
+        tag: tag,
+        props: props,
+        args: args
+    };
+
     Reflect.defineMetadata(
         getUIKey(UIKeys.ELEMENT),
-        {
-            tag: tag,
-            renderModes: renderModes,
-            valueAttribute: valueAttribute,
-            props: props
-        },
+        metadata,
         target,
         propertyKey
     );

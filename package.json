@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/TiagoVenceslau/ui-decorators#readme",
   "devDependencies": {
-    "@tvenceslau/decorator-validation": "1.7.4",
+    "@tvenceslau/decorator-validation": "1.7.5",
     "@babel/preset-env": "^7.16.4",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.1",

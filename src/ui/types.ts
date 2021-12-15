@@ -1,3 +1,8 @@
+/**
+ * @interface UIInputProps
+ *
+ * @memberOf ui-decorators.ui
+ */
 export interface UIInputProps {
     id?: string;
 
@@ -30,20 +35,50 @@ export interface UIInputProps {
 export interface ValidityState {
 
 }
-
+/**
+ * @interface UIInputElement
+ *
+ * @memberOf ui-decorators.ui
+ */
 export interface UIInputElement extends UIInputProps {
     [indexer: string]: any
 
     /**
-     * HTML5 input events
+     * HTML5 mapped onchange event
+     *
+     * @event onInputChange
      */
-    onchange?: any;
-    oninput?: any;
-    oninvalid?: any;
-
-    // oncut;
-    // oncopy;
-    // onpaste;
+    onInputChange?: any;
+    /**
+     * HTML5 mapped onchange event
+     *
+     * @event onInputInput
+     */
+    onInputInput?: any;
+    /**
+     * HTML5 mapped oninvalid event
+     *
+     * @event onInputInvalid
+     */
+    onInputInvalid?: any;
+    /**
+     * HTML5 mapped oncut event
+     *
+     * @event onInputCut
+     */
+    onInputCut?: any;
+    /**
+     * HTML5 mapped oncopy event
+     *
+     * @event onInputCopy
+     */
+    onInputCopy?: any;
+    /**
+     * HTML5 mapped onpaste event
+     *
+     * @event onInputPaste
+     */
+    onInputPaste?: any;
 
 
     /**
@@ -59,7 +94,10 @@ export interface UIInputElement extends UIInputProps {
     reportValidity(): any;
     setCustomValidity(errors: string): void;
 }
-
+/**
+ * @typedef InputDefinition
+ * @memberOf ui-decorators.ui
+ */
 export type InputDefinition = {
     element?: string,
     label?: string,
@@ -68,30 +106,20 @@ export type InputDefinition = {
         [indexer: string]: ValidatorDefinition,
     }
 }
-
+/**
+ * @typedef ValidatorDefinition
+ * @memberOf ui-decorators.ui
+ */
 export type ValidatorDefinition = {
     args?: [],
     message: string
 }
 
+/**
+ * @typedef FormDefinition
+ * @memberOf ui-decorators.ui
+ */
 export type FormDefinition = {
     prefix?: string,
     fields: InputDefinition[]
-}
-
-export type UIPropertyDecoratorDefinition = {
-    prop: string | symbol,
-    decorators: UIDecoratorDefinition[]
-}
-
-export type UIDecoratorDefinition = {
-    key: string,
-    props: UIElementDefinition
-}
-
-export type UIElementDefinition = {
-    tag: string,
-    props: {[indexer: string]: string,}
-    valueAttribute?: string
-    ,
 }

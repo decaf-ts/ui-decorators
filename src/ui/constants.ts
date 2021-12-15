@@ -11,17 +11,19 @@ import Validator from "@tvenceslau/decorator-validation/lib/validation/Validator
 import StepValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/StepValidator';
 import DateValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/DateValidator';
 
+
 /**
- * @namespace ui.constants
- * @memberOf ui
+ * @typedef ValidityStateMatcherType
+ * @memberOf ui-decorators.ui
  */
-
-
 export type ValidityStateMatcherType = {"tooShort": string, "typeMismatch": string, "stepMismatch": string, "rangeOverflow": string, /*badInput: undefined, customError: undefined,*/ "tooLong": string, "patternMismatch": string, "rangeUnderflow": string, "valueMissing": string}
 
 /**
  * Does the match between the HTML5's ValidityState and the validators and input element type
- * @subcategory UI
+ * 
+ * @enum UIKeys
+ *
+ * @memberOf ui-decorators.ui
  */
 export const ValidityStateMatcher: ValidityStateMatcherType = {
     "patternMismatch": "pattern",
@@ -34,6 +36,11 @@ export const ValidityStateMatcher: ValidityStateMatcherType = {
     "valueMissing": "required"
 }
 
+/**
+ * @enum CSS_SELECTORS
+ *
+ * @memberOf ui-decorators.ui
+ */
 export const CSS_SELECTORS: {[indexer: string]: string} = {
     NAMED_SLOT: 'div[slot={0}], slot-fb[name="{0}"]',
     NAMED_DIV: 'div[name={0}]',
@@ -41,8 +48,9 @@ export const CSS_SELECTORS: {[indexer: string]: string} = {
 }
 
 /**
- * @enum
- * @subcategory UI
+ * @enum UIKeys
+ *
+ * @memberOf ui-decorators.ui
  */
 export const UIKeys = {
     REFLECT: 'model.ui.',
@@ -65,6 +73,11 @@ export const UIKeys = {
     EMAIL: ValidationKeys.EMAIL
 }
 
+/**
+ * @constant ValidatableByType
+ *
+ * @memberOf ui-decorators.ui
+ */
 export const ValidatableByType: {[indexer: string] : {new(): Validator}} = [
     {validationKey: UIKeys.EMAIL, validator: EmailValidator},
     {validationKey: UIKeys.URL, validator: URLValidator},
@@ -75,6 +88,11 @@ export const ValidatableByType: {[indexer: string] : {new(): Validator}} = [
     return accum;
 }, {});
 
+/**
+ * @constant ValidatableByAttribute
+ *
+ * @memberOf ui-decorators.ui
+ */
 export const ValidatableByAttribute: {[indexer: string] : {new(): Validator}} = [
     {validationKey: UIKeys.REQUIRED, validator: RequiredValidator},
     {validationKey: UIKeys.MIN, validator: MinValidator},
@@ -89,22 +107,22 @@ export const ValidatableByAttribute: {[indexer: string] : {new(): Validator}} = 
     return accum;
 }, {});
 
+/**
+ * @constant HTML5DateFormat
+ *
+ * @memberOf ui-decorators.ui
+ */
 export const HTML5DateFormat = 'yyyy-MM-dd';
 
+/**
+ * @constant HTML5InputTypes
+ *
+ * @memberOf ui-decorators.ui
+ */
 export const HTML5InputTypes = {
     TEXT: 'text',
     NUMBER: 'number',
     DATE: ValidationKeys.DATE,
     EMAIL: ValidationKeys.EMAIL,
     URL: ValidationKeys.URL
-}
-
-
-/**
- * @enum RenderModes
- * @subcategory UI
- */
-export const RenderModes = {
-    CREATE: 'create',
-    VIEW: 'view'
 }
