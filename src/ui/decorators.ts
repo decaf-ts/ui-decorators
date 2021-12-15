@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {UIKeys} from "../../lib";
+import {UIKeys} from "./constants";
 
 /**
  * @namespace ui-decorators.ui.decorators
