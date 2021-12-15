@@ -73,7 +73,7 @@ export type UIElementMetadata = {
 /**
  *
  * @param {string} tag The component/HTML element tag name
- * @param {{[indexer]: string}} [props] The properties to pass to that component/HTML Element
+ * @param {{}} [props] The properties to pass to that component/HTML Element
  * @param {any[]} [args] optional arguments that will be passed to the rendering strategy.
  *
  * @decorator uielement

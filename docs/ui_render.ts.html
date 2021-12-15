@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Decorator Validation Engine Hello</title>
+  <title>UI decorators for graphical engine integration ui/render.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -42,7 +44,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">Decorator Validation Engine</h1>
+                    <h1 class="navbar-item">UI Decorators</h1>
                 </a>
             
         </div>
@@ -60,7 +62,7 @@
                     
                         <a
                             class="link user-link "
-                            href="https://github.com/TiagoVenceslau/decorator-validation#readme"
+                            href="https://github.com/TiagoVenceslau/ui-decorators#readme"
                         >
                             Github Repository
                         </a>
@@ -90,106 +92,77 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ts-workspace.html">ts-workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="ts-workspace.Hello.html">Hello</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
                 
             </nav>
         </div>
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Namespace</p>
-                    <h1>Hello</h1>
+                    <p>Source</p>
+                    <h1>ui/render.ts</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        <h2>Hello</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * @namespace ui-decorators.ui.render
+ * @memberOf ui-decorators.ui
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
+import {Model} from "@tvenceslau/decorator-validation/lib";
 
-        
+/**
+ * Method used to render Models
+ *
+ * @typedef RenderStrategy
+ *
+ * @memberOf ui-decorators.ui.render
+ */
+export type RenderStrategy = &lt;T extends Model>(model: T, mode?: string, ...args: any[]) => any;
 
+/**
+ * Mock implementation for a rendering strategy.
+ *
+ * Each 'medium' would have it's own rendering strategy
+ *
+ * 'ui-decorators-web' has an HTML5 rendering strategy
+ *
+ * @param {T} model
+ * @param {any[]} args
+ *
+ * @memberOf ui-decorators.ui.render
+ */
+function renderStrategy&lt;T extends Model>(model: T, ...args: any[]): any {
+    console.log(`Render method called on ${model} with ${args.join(' | ')} without the 'ui-decorators-web' dependency. Doing nothing...`);
+}
 
-<dl class="details">
+let activeRenderStrategy: RenderStrategy = renderStrategy;
 
-    
+/**
+ * @function getRenderingStrategy
+ *
+ * @memberOf ui-decorators.ui.render
+ */
+export function getRenderStrategy(): RenderStrategy{
+    return activeRenderStrategy;
+}
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="hello.ts.html" class="button">View Source</a>
-            <span>
-                <a href="hello.ts.html">hello.ts</a>, <a href="hello.ts.html#line2">line 2</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+/**
+ * @function setRenderingStrategy
+ *
+ * @memberOf ui-decorators.ui.render
+ */
+export function setRenderStrategy(strategy: RenderStrategy): void {
+    activeRenderStrategy = strategy;
+}</code></pre>
+        </article>
+    </section>
 
 
 

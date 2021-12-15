@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Decorator Validation Engine hello.ts</title>
+  <title>UI decorators for graphical engine integration ui/index.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -44,7 +44,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">Decorator Validation Engine</h1>
+                    <h1 class="navbar-item">UI Decorators</h1>
                 </a>
             
         </div>
@@ -62,7 +62,7 @@
                     
                         <a
                             class="link user-link "
-                            href="https://github.com/TiagoVenceslau/decorator-validation#readme"
+                            href="https://github.com/TiagoVenceslau/ui-decorators#readme"
                         >
                             Github Repository
                         </a>
@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ts-workspace.html">ts-workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="ts-workspace.Hello.html">Hello</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
                 
             </nav>
         </div>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>hello.ts</h1>
+                    <h1>ui/index.ts</h1>
                 </header>
                 
 
@@ -110,12 +110,13 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @namespace Hello
- * @memberOf ts-workspace
+ * @namespace ui
+ * @memberOf ui-decorators
  */
-export function helloWorld(){
-    return `Hello World`;
-}</code></pre>
+
+export * from './constants';
+export * from  './decorators';
+export * from './types';</code></pre>
         </article>
     </section>
 

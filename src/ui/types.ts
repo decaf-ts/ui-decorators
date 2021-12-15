@@ -111,7 +111,7 @@ export type InputDefinition = {
  * @memberOf ui-decorators.ui
  */
 export type ValidatorDefinition = {
-    args?: [],
+    args?: any[],
     message: string
 }
 

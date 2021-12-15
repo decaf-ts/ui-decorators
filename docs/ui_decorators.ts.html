@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UI decorators for graphical engine integration index.ts</title>
+  <title>UI decorators for graphical engine integration ui/decorators.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>index.ts</h1>
+                    <h1>ui/decorators.ts</h1>
                 </header>
                 
 
@@ -109,13 +109,103 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module ui-decorators
+            <pre class="prettyprint source linenums"><code>import "reflect-metadata";
+import {UIKeys} from "./constants";
+
+/**
+ * @namespace ui-decorators.ui.decorators
+ * @memberOf ui-decorators.ui
  */
 
-export * from './model';
-export * from './ui';
-export * from './utils';</code></pre>
+/**
+ *
+ * @param {string} key
+ *
+ * @function getUIKey
+ *
+ * @memberOf ui-decorators.ui.decorators
+ */
+const getUIKey = (key: string) => UIKeys.REFLECT + key;
+
+/**
+ * @typedef UIPropertyDecoratorDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIPropertyDecoratorDefinition = {
+    /**
+     *
+     */
+    prop: string | symbol,
+    /**
+     *
+     */
+    decorators: UIDecoratorDefinition[]
+}
+/**
+ * @typedef UIDecoratorDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIDecoratorDefinition = {
+    /**
+     *
+     */
+    key: string,
+    /**
+     *
+     */
+    props: UIElementDefinition
+}
+/**
+ * @typedef UIElementDefinition
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIElementDefinition = {
+    /**
+     *
+     */
+    tag: string,
+    /**
+     *
+     */
+    props: {[indexer: string]: string},
+    /**
+     *
+     */
+    valueAttribute?: string
+    ,
+}
+
+export type UIElementMetadata = {
+    tag: string,
+    args?: any[],
+    props?: {[indexer: string]: any}
+}
+
+/**
+ *
+ * @param {string} tag The component/HTML element tag name
+ * @param {{}} [props] The properties to pass to that component/HTML Element
+ * @param {any[]} [args] optional arguments that will be passed to the rendering strategy.
+ *
+ * @decorator uielement
+ *
+ * @category Decorators
+ */
+export const uielement = (tag: string, props?: {[indexer: string]: any}, ...args: any[]) => (target: any, propertyKey: string) => {
+    const metadata: UIElementMetadata = {
+        tag: tag,
+        props: props,
+        args: args
+    };
+
+    Reflect.defineMetadata(
+        getUIKey(UIKeys.ELEMENT),
+        metadata,
+        target,
+        propertyKey
+    );
+}
+</code></pre>
         </article>
     </section>
 

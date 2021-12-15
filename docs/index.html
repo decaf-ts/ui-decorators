@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Decorator Validation Engine Home</title>
+  <title>UI decorators for graphical engine integration Home</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -42,7 +42,7 @@
             
              
                 <a href="index.html">
-                    <h1 class="navbar-item">Decorator Validation Engine</h1>
+                    <h1 class="navbar-item">UI Decorators</h1>
                 </a>
             
         </div>
@@ -60,7 +60,7 @@
                     
                         <a
                             class="link user-link "
-                            href="https://github.com/TiagoVenceslau/decorator-validation#readme"
+                            href="https://github.com/TiagoVenceslau/ui-decorators#readme"
                         >
                             Github Repository
                         </a>
@@ -90,7 +90,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ts-workspace.html">ts-workspace</a></li></ul><h3>Namespaces</h3><ul><li><a href="ts-workspace.Hello.html">Hello</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
                 
             </nav>
         </div>
@@ -124,29 +124,40 @@
 
 
     <section>
-        <article><p><a href="http://www.pdmfc.com"><img src="https://github.com/TiagoVenceslau/ts-workspace/actions/workflows/nodejs-build.yaml/badge.svg" alt="Build"></a>
-<a href="http://www.pdmfc.com"><img src="https://github.com/TiagoVenceslau/ts-workspace/actions/workflows/jest-test.yaml/badge.svg" alt="Tests"></a>
-<img src="https://raw.github.com/TiagoVenceslau/ts-workspace/master/workdocs/badges/badge-lines.svg?sanitize=true" alt="Alt text">
-<img src="https://img.shields.io/snyk/vulnerabilities/github/TiagoVenceslau/ts-workspace?style=plastic" alt="Snyk Vulnerabilities for GitHub Repo"></p>
-<p><img src="https://img.shields.io/github/license/TiagoVenceslau/ts-workspace.svg" alt="Licence">
-<img src="https://img.shields.io/github/languages/count/TiagoVenceslau/ts-workspace?style=plastic" alt="GitHub language count">
-<img src="https://img.shields.io/github/languages/top/TiagoVenceslau/ts-workspace?style=plastic" alt="GitHub top language">
-<a href="https://github.com/TiagoVenceslau/ts-workspace/actions?query=workflow%3ACodeQL"><img src="https://github.com/starnowski/posmulten/workflows/CodeQL/badge.svg" alt="CodeQL"></a></p>
+        <article><p><a href="https://github.com/TiagoVenceslau/ui-decorators"><img src="https://github.com/TiagoVenceslau/ui-decorators/actions/workflows/nodejs-build.yaml/badge.svg" alt="Build"></a>
+<a href="https://github.com/TiagoVenceslau/ui-decorators"><img src="https://github.com/TiagoVenceslau/ui-decorators/actions/workflows/jest-test.yaml/badge.svg" alt="Tests"></a>
+<img src="https://raw.github.com/TiagoVenceslau/ui-decorators/master/workdocs/badges/badge-lines.svg?sanitize=true" alt="Alt text">
+<img src="https://img.shields.io/snyk/vulnerabilities/github/TiagoVenceslau/ui-decorators?style=plastic" alt="Snyk Vulnerabilities for GitHub Repo"></p>
+<p><img src="https://img.shields.io/github/license/TiagoVenceslau/ui-decorators.svg" alt="Licence">
+<img src="https://img.shields.io/github/languages/count/TiagoVenceslau/ui-decorators?style=plastic" alt="GitHub language count">
+<img src="https://img.shields.io/github/languages/top/TiagoVenceslau/ui-decorators?style=plastic" alt="GitHub top language">
+<a href="https://github.com/TiagoVenceslau/ui-decorators/actions?query=workflow%3ACodeQL"><img src="https://github.com/starnowski/posmulten/workflows/CodeQL/badge.svg" alt="CodeQL"></a></p>
 <p><img src="https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbadges%2Fshields%2Fmaster%2Fpackage.json&amp;label=Node&amp;query=$.engines.node&amp;colorB=blue" alt="Node Version">
 <img src="https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbadges%2Fshields%2Fmaster%2Fpackage.json&amp;label=NPM&amp;query=$.engines.npm&amp;colorB=purple" alt="NPM Version"></p>
-<h2>Typescript Project Workspace Template</h2>
-<p>With documentation, release mechanism and github workflows to match</p>
-<p><img src="https://img.shields.io/github/forks/TiagoVenceslau/ts-workspace.svg" alt="Forks">
-<img src="https://img.shields.io/github/stars/TiagoVenceslau/ts-workspace.svg" alt="Stars">
-<img src="https://img.shields.io/github/watchers/TiagoVenceslau/ts-workspace.svg" alt="Watchers"></p>
-<p><img src="https://img.shields.io/github/issues/TiagoVenceslau/ts-workspace.svg" alt="Open Issues">
-<img src="https://img.shields.io/github/issues-closed/TiagoVenceslau/ts-workspace.svg" alt="Closed Issues">
-<img src="https://img.shields.io/github/issues-pr-closed/TiagoVenceslau/ts-workspace.svg" alt="Pull Requests">
+<h2>User Interface Decorators</h2>
+<p>Adds a new Decorator <code>uielement</code> to add UI metadata to the model, that can be later interpreted by different rendering strategies</p>
+<p>This package will:</p>
+<ul>
+<li>expose the basic api to enable each Model to be rendered according to a 'Rendering Strategy';</li>
+</ul>
+<p>Extending this with the <code>ui-decorators-web</code> package.</p>
+<ul>
+<li>Use an HTML5 rendering strategy</li>
+<li>perform automatic From-end form validation, using native HTML5 APIs, extensible with custom validators and custom errors messages;</li>
+</ul>
+<p><img src="https://img.shields.io/github/forks/TiagoVenceslau/ui-decorators.svg" alt="Forks">
+<img src="https://img.shields.io/github/stars/TiagoVenceslau/ui-decorators.svg" alt="Stars">
+<img src="https://img.shields.io/github/watchers/TiagoVenceslau/ui-decorators.svg" alt="Watchers"></p>
+<p><img src="https://img.shields.io/github/issues/TiagoVenceslau/ui-decorators.svg" alt="Open Issues">
+<img src="https://img.shields.io/github/issues-closed/TiagoVenceslau/ui-decorators.svg" alt="Closed Issues">
+<img src="https://img.shields.io/github/issues-pr-closed/TiagoVenceslau/ui-decorators.svg" alt="Pull Requests">
 <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Maintained"></p>
-<p><a href="https://github.com/TiagoVenceslau/ts-workspace"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=ts-workspace" alt="Readme Card"></a></p>
+<p><a href="https://github.com/TiagoVenceslau/ui-decorators"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=ui-decorators" alt="Readme Card"></a></p>
 <h3>Related</h3>
-<p><a href="https://github.com/TiagoVenceslau/html5-validation"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=html5-validation" alt="HTML5 Validation"></a></p>
-<p><a href="https://github.com/TiagoVenceslau/decorator-validation"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=decorator-validation" alt="Decorator Validation"></a></p>
+<p><a href="https://github.com/TiagoVenceslau/ui-decorators-web"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=ui-decorators-web" alt="UI Decorators Web"></a></p>
+<p><a href="https://github.com/TiagoVenceslau/decorator-validation"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=decorator-validation" alt="Decorator Validation"></a>
+<a href="https://github.com/TiagoVenceslau/db-decorators"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=db-decorators" alt="Database Decorators"></a>
+<a href="https://github.com/TiagoVenceslau/dsu-blueprint"><img src="https://github-readme-stats.vercel.app/api/pin/?username=TiagoVenceslau&amp;repo=dsu-blueprint" alt="DSU Blueprint"></a></p>
 <h3>Social</h3>
 <p><a href="https://www.linkedin.com/in/tiagovenceslau/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&amp;logo=linkedin&amp;logoColor=white" alt="LinkedIn"></a></p>
 <h4>Disclaimer:</h4>

@@ -1,7 +1,8 @@
-import {helloWorld} from '../src';
+import {getValidatorRegistry} from "@tvenceslau/decorator-validation/lib/validation";
 
 describe(`Type Script Workspace test`, function(){
     it(`runs hello world`, function(){
-        expect(helloWorld()).toBe('Hello World');
+        getValidatorRegistry()
+        expect(getValidatorRegistry()).toBeDefined()
     });
 });

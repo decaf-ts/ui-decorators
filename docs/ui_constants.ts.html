@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UI decorators for graphical engine integration index.ts</title>
+  <title>UI decorators for graphical engine integration ui/constants.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>index.ts</h1>
+                    <h1>ui/constants.ts</h1>
                 </header>
                 
 
@@ -109,13 +109,134 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module ui-decorators
- */
+            <pre class="prettyprint source linenums"><code>import {ValidationKeys} from '@tvenceslau/decorator-validation/lib';
+import RequiredValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/RequiredValidator';
+import EmailValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/EmailValidator';
+import MaxValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MaxValidator';
+import MaxLengthValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MaxLengthValidator';
+import MinValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MinValidator';
+import MinLengthValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MinLengthValidator';
+import URLValidator from "@tvenceslau/decorator-validation/lib/validation/Validators/URLValidator";
+import PatternValidator from "@tvenceslau/decorator-validation/lib/validation/Validators/PatternValidator";
+import Validator from "@tvenceslau/decorator-validation/lib/validation/Validators/Validator";
+import StepValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/StepValidator';
+import DateValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/DateValidator';
 
-export * from './model';
-export * from './ui';
-export * from './utils';</code></pre>
+
+/**
+ * @typedef ValidityStateMatcherType
+ * @memberOf ui-decorators.ui
+ */
+export type ValidityStateMatcherType = {"tooShort": string, "typeMismatch": string, "stepMismatch": string, "rangeOverflow": string, /*badInput: undefined, customError: undefined,*/ "tooLong": string, "patternMismatch": string, "rangeUnderflow": string, "valueMissing": string}
+
+/**
+ * Does the match between the HTML5's ValidityState and the validators and input element type
+ * 
+ * @enum UIKeys
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const ValidityStateMatcher: ValidityStateMatcherType = {
+    "patternMismatch": "pattern",
+    "rangeOverflow": "max",
+    "rangeUnderflow": "min",
+    "stepMismatch": "step",
+    "tooLong": "maxLength",
+    "tooShort": "minLength",
+    "typeMismatch": "email|URL",
+    "valueMissing": "required"
+}
+
+/**
+ * @enum CSS_SELECTORS
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const CSS_SELECTORS: {[indexer: string]: string} = {
+    NAMED_SLOT: 'div[slot={0}], slot-fb[name="{0}"]',
+    NAMED_DIV: 'div[name={0}]',
+    NAMED_ANY: '*[name={0}]'
+}
+
+/**
+ * @enum UIKeys
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const UIKeys = {
+    REFLECT: 'model.ui.',
+    ELEMENT: 'element',
+    NAME: 'name',
+    NAME_PREFIX: 'input-',
+
+    TYPE: 'type',
+    SUB_TYPE: 'subtype',
+
+    REQUIRED: ValidationKeys.REQUIRED,
+    MIN: ValidationKeys.MIN,
+    MIN_LENGTH: ValidationKeys.MIN_LENGTH,
+    MAX: ValidationKeys.MAX,
+    MAX_LENGTH: ValidationKeys.MAX_LENGTH,
+    PATTERN: ValidationKeys.PATTERN,
+    URL: ValidationKeys.URL,
+    STEP: ValidationKeys.STEP,
+    DATE: ValidationKeys.DATE,
+    EMAIL: ValidationKeys.EMAIL
+}
+
+/**
+ * @constant ValidatableByType
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const ValidatableByType: {[indexer: string] : {new(): Validator}} = [
+    {validationKey: UIKeys.EMAIL, validator: EmailValidator},
+    {validationKey: UIKeys.URL, validator: URLValidator},
+    {validationKey: UIKeys.DATE, validator: DateValidator}
+].reduce((accum, vd) => {
+    // @ts-ignore
+    accum[vd.validationKey] = vd.validator
+    return accum;
+}, {});
+
+/**
+ * @constant ValidatableByAttribute
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const ValidatableByAttribute: {[indexer: string] : {new(): Validator}} = [
+    {validationKey: UIKeys.REQUIRED, validator: RequiredValidator},
+    {validationKey: UIKeys.MIN, validator: MinValidator},
+    {validationKey: UIKeys.MAX, validator: MaxValidator},
+    {validationKey: UIKeys.STEP, validator: StepValidator},
+    {validationKey: ValidityStateMatcher.tooShort.toLowerCase(), validator: MinLengthValidator},
+    {validationKey: ValidityStateMatcher.tooLong.toLowerCase(), validator: MaxLengthValidator},
+    {validationKey: UIKeys.PATTERN, validator: PatternValidator},
+].reduce((accum, vd) => {
+    // @ts-ignore
+    accum[vd.validationKey] = vd.validator
+    return accum;
+}, {});
+
+/**
+ * @constant HTML5DateFormat
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const HTML5DateFormat = 'yyyy-MM-dd';
+
+/**
+ * @constant HTML5InputTypes
+ *
+ * @memberOf ui-decorators.ui
+ */
+export const HTML5InputTypes = {
+    TEXT: 'text',
+    NUMBER: 'number',
+    DATE: ValidationKeys.DATE,
+    EMAIL: ValidationKeys.EMAIL,
+    URL: ValidationKeys.URL
+}</code></pre>
         </article>
     </section>
 
