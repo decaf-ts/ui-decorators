@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li></ul><h3>Interfaces</h3><ul><li><a href="UIModel.html">UIModel</a></li></ul></div><div class="category"><h2>Constants</h2><h3>Global</h3><ul><li><a href="global.html#ModelKeys">ModelKeys</a></li><li><a href="global.html#UIKeys">UIKeys</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uimodel">uimodel</a></li></ul></div>
                 
             </nav>
         </div>
@@ -109,59 +109,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {ValidationKeys} from '@tvenceslau/decorator-validation/lib';
-import RequiredValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/RequiredValidator';
-import EmailValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/EmailValidator';
-import MaxValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MaxValidator';
-import MaxLengthValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MaxLengthValidator';
-import MinValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MinValidator';
-import MinLengthValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/MinLengthValidator';
-import URLValidator from "@tvenceslau/decorator-validation/lib/validation/Validators/URLValidator";
-import PatternValidator from "@tvenceslau/decorator-validation/lib/validation/Validators/PatternValidator";
-import Validator from "@tvenceslau/decorator-validation/lib/validation/Validators/Validator";
-import StepValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/StepValidator';
-import DateValidator from '@tvenceslau/decorator-validation/lib/validation/Validators/DateValidator';
-
-
-/**
- * @typedef ValidityStateMatcherType
- * @memberOf ui-decorators.ui
- */
-export type ValidityStateMatcherType = {"tooShort": string, "typeMismatch": string, "stepMismatch": string, "rangeOverflow": string, /*badInput: undefined, customError: undefined,*/ "tooLong": string, "patternMismatch": string, "rangeUnderflow": string, "valueMissing": string}
-
-/**
- * Does the match between the HTML5's ValidityState and the validators and input element type
- * 
- * @enum UIKeys
- *
- * @memberOf ui-decorators.ui
- */
-export const ValidityStateMatcher: ValidityStateMatcherType = {
-    "patternMismatch": "pattern",
-    "rangeOverflow": "max",
-    "rangeUnderflow": "min",
-    "stepMismatch": "step",
-    "tooLong": "maxLength",
-    "tooShort": "minLength",
-    "typeMismatch": "email|URL",
-    "valueMissing": "required"
-}
-
-/**
- * @enum CSS_SELECTORS
- *
- * @memberOf ui-decorators.ui
- */
-export const CSS_SELECTORS: {[indexer: string]: string} = {
-    NAMED_SLOT: 'div[slot={0}], slot-fb[name="{0}"]',
-    NAMED_DIV: 'div[name={0}]',
-    NAMED_ANY: '*[name={0}]'
-}
+            <pre class="prettyprint source linenums"><code>import {ValidationKeys} from "@tvenceslau/decorator-validation/lib";
 
 /**
  * @enum UIKeys
- *
- * @memberOf ui-decorators.ui
+ * @category Constants
  */
 export const UIKeys = {
     REFLECT: 'model.ui.',
@@ -182,60 +134,6 @@ export const UIKeys = {
     STEP: ValidationKeys.STEP,
     DATE: ValidationKeys.DATE,
     EMAIL: ValidationKeys.EMAIL
-}
-
-/**
- * @constant ValidatableByType
- *
- * @memberOf ui-decorators.ui
- */
-export const ValidatableByType: {[indexer: string] : {new(): Validator}} = [
-    {validationKey: UIKeys.EMAIL, validator: EmailValidator},
-    {validationKey: UIKeys.URL, validator: URLValidator},
-    {validationKey: UIKeys.DATE, validator: DateValidator}
-].reduce((accum, vd) => {
-    // @ts-ignore
-    accum[vd.validationKey] = vd.validator
-    return accum;
-}, {});
-
-/**
- * @constant ValidatableByAttribute
- *
- * @memberOf ui-decorators.ui
- */
-export const ValidatableByAttribute: {[indexer: string] : {new(): Validator}} = [
-    {validationKey: UIKeys.REQUIRED, validator: RequiredValidator},
-    {validationKey: UIKeys.MIN, validator: MinValidator},
-    {validationKey: UIKeys.MAX, validator: MaxValidator},
-    {validationKey: UIKeys.STEP, validator: StepValidator},
-    {validationKey: ValidityStateMatcher.tooShort.toLowerCase(), validator: MinLengthValidator},
-    {validationKey: ValidityStateMatcher.tooLong.toLowerCase(), validator: MaxLengthValidator},
-    {validationKey: UIKeys.PATTERN, validator: PatternValidator},
-].reduce((accum, vd) => {
-    // @ts-ignore
-    accum[vd.validationKey] = vd.validator
-    return accum;
-}, {});
-
-/**
- * @constant HTML5DateFormat
- *
- * @memberOf ui-decorators.ui
- */
-export const HTML5DateFormat = 'yyyy-MM-dd';
-
-/**
- * @constant HTML5InputTypes
- *
- * @memberOf ui-decorators.ui
- */
-export const HTML5InputTypes = {
-    TEXT: 'text',
-    NUMBER: 'number',
-    DATE: ValidationKeys.DATE,
-    EMAIL: ValidationKeys.EMAIL,
-    URL: ValidationKeys.URL
 }</code></pre>
         </article>
     </section>

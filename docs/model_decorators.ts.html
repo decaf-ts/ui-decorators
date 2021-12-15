@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UI decorators for graphical engine integration utils/index.ts</title>
+  <title>UI decorators for graphical engine integration model/decorators.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li></ul><h3>Interfaces</h3><ul><li><a href="UIModel.html">UIModel</a></li></ul></div><div class="category"><h2>Constants</h2><h3>Global</h3><ul><li><a href="global.html#ModelKeys">ModelKeys</a></li><li><a href="global.html#UIKeys">UIKeys</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uimodel">uimodel</a></li></ul></div>
                 
             </nav>
         </div>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>utils/index.ts</h1>
+                    <h1>model/decorators.ts</h1>
                 </header>
                 
 
@@ -109,12 +109,47 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @namespace utils
- * @memberOf ui-decorators
+            <pre class="prettyprint source linenums"><code>import {Model, model} from "@tvenceslau/decorator-validation/lib";
+import {getRenderStrategy} from "../ui";
+/**
+ * Tags the model as a uimodel, giving it the 'render' method
+ *
+ * @prop {function(any): void} [instanceCallback] optioncal callback returning the instance after creation for additional logic
+ *
+ * @decorator uimodel
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant System
+ *   participant uimodel
+ *   participant constructor
+ *   participant instance
+ *   System->>uimodel:do(constructor)
+ *   uimodel->>constructor: Executes the constructor
+ *   constructor->>uimodel: returns instance
+ *   uimodel->>instance: adds the render method
+ *   uimodel->>System: returns UIModel instance
+ *
+ * @category Decorators
+ * @subcategory ui-decorators
  */
 
-export * from './utils';
+export const uimodel = (instanceCallback?: (instance: any) => void) => (original: Function) => {
+    return model(undefined, instance => {
+        function render(this: Model, ...args: any){
+            getRenderStrategy()(this, ...args);
+        }
+
+        Object.defineProperty(instance, render.name, {
+            enumerable: false,
+            writable: false,
+            value: render.bind(instance)
+        });
+
+        if (instanceCallback)
+            instanceCallback(instance);
+    })(original)
+}
 </code></pre>
         </article>
     </section>

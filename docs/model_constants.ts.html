@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UI decorators for graphical engine integration ui/types.ts</title>
+  <title>UI decorators for graphical engine integration model/constants.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li></ul><h3>Interfaces</h3><ul><li><a href="UIModel.html">UIModel</a></li></ul></div><div class="category"><h2>Constants</h2><h3>Global</h3><ul><li><a href="global.html#ModelKeys">ModelKeys</a></li><li><a href="global.html#UIKeys">UIKeys</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uimodel">uimodel</a></li></ul></div>
                 
             </nav>
         </div>
@@ -100,7 +100,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>ui/types.ts</h1>
+                    <h1>model/constants.ts</h1>
                 </header>
                 
 
@@ -110,130 +110,22 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @interface UIInputProps
+ * @enum ModelKeys
  *
- * @memberOf ui-decorators.ui
+ * @category Constants
+ * @subcategory ui-decorators
  */
-export interface UIInputProps {
-    id?: string;
-
-    name: string;
-    value?: string;
-
-    type?: string;
-
-    /**
-     * To enable custom validators
-     */
-    subtype?: string;
-
-
-    placeholder?: string;
-    disabled?: boolean;
-
-    /**
-     * HTML5 validation Attributes
-     */
-    required?: boolean | "true" | "false";
-    minlength?: string | number;
-    maxlength?: string | number;
-    min?: string | number;
-    max?: string | number;
-    step?: string | number;
-    pattern?: string;
+export const ModelKeys = {
+  /**
+   * Specific Metadata Key prefix
+   */
+  REFLECT: 'model.definition.',
+  /**
+   * Model metadata Key
+   */
+  MODEL: 'model'
 }
 
-export interface ValidityState {
-
-}
-/**
- * @interface UIInputElement
- *
- * @memberOf ui-decorators.ui
- */
-export interface UIInputElement extends UIInputProps {
-    [indexer: string]: any
-
-    /**
-     * HTML5 mapped onchange event
-     *
-     * @event onInputChange
-     */
-    onInputChange?: any;
-    /**
-     * HTML5 mapped onchange event
-     *
-     * @event onInputInput
-     */
-    onInputInput?: any;
-    /**
-     * HTML5 mapped oninvalid event
-     *
-     * @event onInputInvalid
-     */
-    onInputInvalid?: any;
-    /**
-     * HTML5 mapped oncut event
-     *
-     * @event onInputCut
-     */
-    onInputCut?: any;
-    /**
-     * HTML5 mapped oncopy event
-     *
-     * @event onInputCopy
-     */
-    onInputCopy?: any;
-    /**
-     * HTML5 mapped onpaste event
-     *
-     * @event onInputPaste
-     */
-    onInputPaste?: any;
-
-
-    /**
-     * HTML5 validation props
-     */
-    readonly validity?: ValidityState;
-    readonly validationMessage?: string;
-
-    /**
-     * HTML5 validation methods
-     */
-    checkValidity(): any;
-    reportValidity(): any;
-    setCustomValidity(errors: string): void;
-}
-/**
- * @typedef InputDefinition
- * @memberOf ui-decorators.ui
- */
-export type InputDefinition = {
-    element?: string,
-    label?: string,
-    props: UIInputProps,
-    validation?: {
-        [indexer: string]: ValidatorDefinition,
-    }
-}
-/**
- * @typedef ValidatorDefinition
- * @memberOf ui-decorators.ui
- */
-export type ValidatorDefinition = {
-    args?: any[],
-    message: string
-}
-
-/**
- * @typedef FormDefinition
- * @memberOf ui-decorators.ui
- */
-export type FormDefinition = {
-    prefix?: string,
-    fields: InputDefinition[]
-}
 </code></pre>
         </article>
     </section>

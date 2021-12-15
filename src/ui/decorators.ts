@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {UIKeys} from "./constants";
+import {UIKeys} from "../../lib";
 
 /**
  * @namespace ui-decorators.ui.decorators
@@ -17,53 +17,9 @@ import {UIKeys} from "./constants";
 const getUIKey = (key: string) => UIKeys.REFLECT + key;
 
 /**
- * @typedef UIPropertyDecoratorDefinition
+ * @typedef UIElementMetadata
  * @memberOf ui-decorators.ui.decorators
  */
-export type UIPropertyDecoratorDefinition = {
-    /**
-     *
-     */
-    prop: string | symbol,
-    /**
-     *
-     */
-    decorators: UIDecoratorDefinition[]
-}
-/**
- * @typedef UIDecoratorDefinition
- * @memberOf ui-decorators.ui.decorators
- */
-export type UIDecoratorDefinition = {
-    /**
-     *
-     */
-    key: string,
-    /**
-     *
-     */
-    props: UIElementDefinition
-}
-/**
- * @typedef UIElementDefinition
- * @memberOf ui-decorators.ui.decorators
- */
-export type UIElementDefinition = {
-    /**
-     *
-     */
-    tag: string,
-    /**
-     *
-     */
-    props: {[indexer: string]: string},
-    /**
-     *
-     */
-    valueAttribute?: string
-    ,
-}
-
 export type UIElementMetadata = {
     tag: string,
     args?: any[],
@@ -71,6 +27,7 @@ export type UIElementMetadata = {
 }
 
 /**
+ * Adds the UIElement definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
  *
  * @param {string} tag The component/HTML element tag name
  * @param {{}} [props] The properties to pass to that component/HTML Element
@@ -79,6 +36,7 @@ export type UIElementMetadata = {
  * @decorator uielement
  *
  * @category Decorators
+ * @subcategory ui-decorators
  */
 export const uielement = (tag: string, props?: {[indexer: string]: any}, ...args: any[]) => (target: any, propertyKey: string) => {
     const metadata: UIElementMetadata = {

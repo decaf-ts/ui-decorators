@@ -92,7 +92,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li></ul><h3>Interfaces</h3><ul><li><a href="UIModel.html">UIModel</a></li></ul></div><div class="category"><h2>Constants</h2><h3>Global</h3><ul><li><a href="global.html#ModelKeys">ModelKeys</a></li><li><a href="global.html#UIKeys">UIKeys</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uimodel">uimodel</a></li></ul></div>
                 
             </nav>
         </div>
@@ -110,7 +110,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import "reflect-metadata";
-import {UIKeys} from "./constants";
+import {UIKeys} from "../../lib";
 
 /**
  * @namespace ui-decorators.ui.decorators
@@ -128,53 +128,9 @@ import {UIKeys} from "./constants";
 const getUIKey = (key: string) => UIKeys.REFLECT + key;
 
 /**
- * @typedef UIPropertyDecoratorDefinition
+ * @typedef UIElementMetadata
  * @memberOf ui-decorators.ui.decorators
  */
-export type UIPropertyDecoratorDefinition = {
-    /**
-     *
-     */
-    prop: string | symbol,
-    /**
-     *
-     */
-    decorators: UIDecoratorDefinition[]
-}
-/**
- * @typedef UIDecoratorDefinition
- * @memberOf ui-decorators.ui.decorators
- */
-export type UIDecoratorDefinition = {
-    /**
-     *
-     */
-    key: string,
-    /**
-     *
-     */
-    props: UIElementDefinition
-}
-/**
- * @typedef UIElementDefinition
- * @memberOf ui-decorators.ui.decorators
- */
-export type UIElementDefinition = {
-    /**
-     *
-     */
-    tag: string,
-    /**
-     *
-     */
-    props: {[indexer: string]: string},
-    /**
-     *
-     */
-    valueAttribute?: string
-    ,
-}
-
 export type UIElementMetadata = {
     tag: string,
     args?: any[],
@@ -182,6 +138,7 @@ export type UIElementMetadata = {
 }
 
 /**
+ * Adds the UIElement definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
  *
  * @param {string} tag The component/HTML element tag name
  * @param {{}} [props] The properties to pass to that component/HTML Element
@@ -190,6 +147,7 @@ export type UIElementMetadata = {
  * @decorator uielement
  *
  * @category Decorators
+ * @subcategory ui-decorators
  */
 export const uielement = (tag: string, props?: {[indexer: string]: any}, ...args: any[]) => (target: any, propertyKey: string) => {
     const metadata: UIElementMetadata = {

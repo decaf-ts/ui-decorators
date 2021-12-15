@@ -90,7 +90,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li><li><a href="ui-decorators.utils.html">utils</a></li></ul><h3>Interfaces</h3><ul><li><a href="ui-decorators.model.UIModel.html">UIModel</a></li><li><a href="ui-decorators.ui.UIInputElement.html">UIInputElement</a></li><li><a href="ui-decorators.ui.UIInputProps.html">UIInputProps</a></li></ul><h3>Events</h3><ul><li><a href="UIInputElement.html#event:onInputChange">onInputChange</a></li><li><a href="UIInputElement.html#event:onInputCopy">onInputCopy</a></li><li><a href="UIInputElement.html#event:onInputCut">onInputCut</a></li><li><a href="UIInputElement.html#event:onInputInput">onInputInput</a></li><li><a href="UIInputElement.html#event:onInputInvalid">onInputInvalid</a></li><li><a href="UIInputElement.html#event:onInputPaste">onInputPaste</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getValidatorDefinition">getValidatorDefinition</a></li><li><a href="global.html#registerInputValidators">registerInputValidators</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li></ul><h3>Namespaces</h3><ul><li><a href="ui-decorators.model.html">model</a></li><li><a href="ui-decorators.ui.html">ui</a></li><li><a href="ui-decorators.ui.decorators.html">decorators</a></li></ul><h3>Interfaces</h3><ul><li><a href="UIModel.html">UIModel</a></li></ul></div><div class="category"><h2>Constants</h2><h3>Global</h3><ul><li><a href="global.html#ModelKeys">ModelKeys</a></li><li><a href="global.html#UIKeys">UIKeys</a></li></ul></div><div class="category"><h2>Decorators</h2><h3>Global</h3><ul><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uimodel">uimodel</a></li></ul></div>
                 
             </nav>
         </div>
@@ -180,15 +180,15 @@
             
                 <div class="member">
 
-<h4 class="name" id="uielement">
-    <a class="href-link" href="#uielement">#</a>
+<h4 class="name" id="ModelKeys">
+    <a class="href-link" href="#ModelKeys">#</a>
     
         
             <span class='tag'>constant</span>
         
     
     <span class="code-name">
-        uielement
+        ModelKeys
     </span>
     
 </h4>
@@ -237,9 +237,84 @@
 
     
         <p class="tag-source">
+            <a href="model_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="model_constants.ts.html">model/constants.ts</a>, <a href="model_constants.ts.html#line8">line 8</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="uielement">
+    <a class="href-link" href="#uielement">#</a>
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        uielement
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Adds the UIElement definition as metadata to the property, allowing it to be read by any <code>RenderStrategy</code></p>.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Adds the UIElement definition as metadata to the property, allowing it to be read by any <code>RenderStrategy</code></p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
             <a href="ui_decorators.ts.html" class="button">View Source</a>
             <span>
-                <a href="ui_decorators.ts.html">ui/decorators.ts</a>, <a href="ui_decorators.ts.html#line27">line 27</a>
+                <a href="ui_decorators.ts.html">ui/decorators.ts</a>, <a href="ui_decorators.ts.html#line29">line 29</a>
             </span>
         </p>
     
@@ -251,96 +326,26 @@
 
 </div>
             
-            </div>
-        </div>
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Methods</h1>
-            <div class="members">
-            
                 <div class="member">
 
-
+<h4 class="name" id="UIKeys">
+    <a class="href-link" href="#UIKeys">#</a>
     
-    <h4 class="name" id="getValidatorDefinition">
-        <a class="href-link" href="#getValidatorDefinition">#</a>
         
-        <span class="code-name">
-            
-                getValidatorDefinition<span class="signature">(input)</span><span class="type-signature"> &rarr; {Array.&lt;ValidatorDefinition>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    <p class="summary"><p>Gets the validator definition from a UInput element</p>.</p>
-    
-    
-    <div class="description">
-        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Gets the validator definition from a UInput element</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
+            <span class='tag'>constant</span>
         
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>input</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type"><a href="UIInputElement.html">UIInputElement</a></span>
+    
+    <span class="code-name">
+        UIKeys
+    </span>
+    
+</h4>
 
 
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"></td>
-</tr>
 
 
-        
-        </tbody>
-    </table>
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script>
 </div>
 
 
@@ -380,9 +385,9 @@
 
     
         <p class="tag-source">
-            <a href="utils_utils.ts.html" class="button">View Source</a>
+            <a href="ui_constants.ts.html" class="button">View Source</a>
             <span>
-                <a href="utils_utils.ts.html">utils/utils.ts</a>, <a href="utils_utils.ts.html#line14">line 14</a>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line7">line 7</a>
             </span>
         </p>
     
@@ -392,85 +397,50 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>a list with all the <code>ValidatorDefinition</code>s for all properties of the element</p></div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">Array.&lt;ValidatorDefinition></span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
 </div>
             
                 <div class="member">
 
-
+<h4 class="name" id="uimodel">
+    <a class="href-link" href="#uimodel">#</a>
     
-    <h4 class="name" id="registerInputValidators">
-        <a class="href-link" href="#registerInputValidators">#</a>
         
-        <span class="code-name">
-            
-                registerInputValidators<span class="signature">(element)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
+            <span class='tag'>constant</span>
+        
     
-
+    <span class="code-name">
+        uimodel
+    </span>
     
-    <p class="summary"><p>Registers the needed validators from an UInputElement in the Validator Registry</p>.</p>
-    
-    
-    <div class="description">
-        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Registers the needed validators from an UInputElement in the Validator Registry</p>
-    </div>
-    
+</h4>
+
+
+<p class="summary"><p>Tags the model as a uimodel, giving it the 'render' method</p>.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Tags the model as a uimodel, giving it the 'render' method</p><div class="mermaid">sequenceDiagram
+  participant System
+  participant uimodel
+  participant constructor
+  participant instance
+  System->>uimodel:do(constructor)
+  uimodel->>constructor: Executes the constructor
+  constructor->>uimodel: returns instance
+  uimodel->>instance: adds the render method
+  uimodel->>System: returns UIModel instance</div>
+</div>
 
 
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
-
-
-
-    <h5>Parameters:</h5>
     
 <div class="table-container">
-    <table class="params table">
+    <table class="props table">
         <thead>
         <tr>
             
@@ -479,6 +449,8 @@
 
             <th>Type</th>
 
+            
+            <th>Attributes</th>
             
 
             
@@ -489,31 +461,40 @@
 
         <tbody>
         
-
             
 <tr class="deep-level-0">
-  
-      <td class="name"><code>element</code></td>
-  
+    
+        <td class="name"><code>instanceCallback</code></td>
+    
 
-  <td class="type">
-  
-  </td>
+    <td class="type">
+    
+        
+<span class="param-type">function</span>
 
-  
 
-  
+    
+    </td>
 
-  <td class="description last"></td>
+    
+        <td class="attributes">
+        
+            &lt;optional><br>
+        
+
+        
+        </td>
+    
+
+    
+
+    <td class="description last"><p>optioncal callback returning the instance after creation for additional logic</p></td>
 </tr>
-
 
         
         </tbody>
     </table>
 </div>
-
-
 
 
 
@@ -550,9 +531,9 @@
 
     
         <p class="tag-source">
-            <a href="utils_utils.ts.html" class="button">View Source</a>
+            <a href="model_decorators.ts.html" class="button">View Source</a>
             <span>
-                <a href="utils_utils.ts.html">utils/utils.ts</a>, <a href="utils_utils.ts.html#line36">line 36</a>
+                <a href="model_decorators.ts.html">model/decorators.ts</a>, <a href="model_decorators.ts.html#line26">line 26</a>
             </span>
         </p>
     
@@ -562,26 +543,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
             
             </div>
         </div>
+    
+
     
 
     
