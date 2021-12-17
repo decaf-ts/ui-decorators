@@ -6,6 +6,7 @@ import {ValidationKeys} from "@tvenceslau/decorator-validation/lib";
  */
 export const UIKeys = {
     REFLECT: 'model.ui.',
+    UIMODEL: 'uimodel',
     ELEMENT: 'element',
     NAME: 'name',
     NAME_PREFIX: 'input-',

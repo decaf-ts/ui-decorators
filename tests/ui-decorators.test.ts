@@ -1,14 +1,15 @@
-import {getValidatorRegistry, maxlength, minlength, required} from "@tvenceslau/decorator-validation/lib/validation";
+import {maxlength, minlength, required} from "@tvenceslau/decorator-validation/lib/validation";
 import {uielement, uimodel, UIModel} from "../src";
 import {
     constructFromObject,
     getClassDecorators,
-    getPropertyDecorators,
+    getPropertyDecorators, model,
     Model,
     ModelKeys
 } from "@tvenceslau/decorator-validation/lib";
 import {UIKeys} from "../src/ui/constants";
 
+@model()
 @uimodel()
 // @ts-ignore
 class TestClass extends Model implements UIModel {
@@ -43,11 +44,16 @@ describe(`UI decorators Test`, function(){
 
     it('Decorates The class properly', function() {
 
-        const decorators: any[] = getClassDecorators(ModelKeys.REFLECT, testModel);
+        let decorators: any[] = getClassDecorators(ModelKeys.REFLECT, testModel);
 
         expect(decorators).toBeDefined();
         expect(decorators.length).toBe(1);
         expect(decorators[0].key).toEqual(ModelKeys.MODEL);
+
+        decorators = getClassDecorators(UIKeys.REFLECT, testModel);
+        expect(decorators).toBeDefined();
+        expect(decorators.length).toBe(1);
+        expect(decorators[0].key).toEqual(UIKeys.UIMODEL);
     })
 
     it('Decorates the properties properly', function() {
