@@ -1,5 +1,6 @@
 import "reflect-metadata";
-import {UIKeys} from "./constants";
+import { UIKeys } from "./constants";
+import { propMetadata } from "@decaf-ts/decorator-validation";
 
 /**
  * @namespace ui-decorators.ui.decorators
@@ -21,10 +22,11 @@ const getUIKey = (key: string) => UIKeys.REFLECT + key;
  * @memberOf ui-decorators.ui.decorators
  */
 export type UIElementMetadata = {
-    tag: string,
-    args?: any[],
-    props?: {[indexer: string]: any}
-}
+  tag: string;
+  args?: any[];
+  props?: Record<string, any>;
+  serialize?: boolean;
+};
 
 /**
  * Adds the UIElement definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
@@ -38,17 +40,53 @@ export type UIElementMetadata = {
  * @category Decorators
  * @subcategory ui-decorators
  */
-export const uielement = (tag: string, props?: {[indexer: string]: any}, ...args: any[]) => (target: any, propertyKey: string) => {
-    const metadata: UIElementMetadata = {
-        tag: tag,
-        props: props,
-        args: args
+export function uielement(
+  tag: string,
+  props?: { [indexer: string]: any },
+  serialize: boolean = false,
+  ...args: any[]
+) {
+  const metadata: UIElementMetadata = {
+    tag: tag,
+    serialize: serialize,
+    props: props,
+    args: args,
+  };
+  return propMetadata(getUIKey(UIKeys.ELEMENT), metadata);
+}
+/**
+ * @typedef UIPropMetadata
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIPropMetadata = {
+  name: string;
+  stringify: boolean;
+};
+
+/**
+ * Adds the UIProp definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
+ *
+ * this requires a '@uimodel' with a defined tag
+ *
+ * @param {string} [propName] the property name that will be passed to the component. defaults to the PropertyKey
+ *
+ * @decorator uiprop
+ *
+ * @category Decorators
+ * @subcategory ui-decorators
+ */
+export const uiprop =
+  (propName: string | undefined = undefined, stringify: boolean = false) =>
+  (target: any, propertyKey: string) => {
+    const metadata: UIPropMetadata = {
+      name: propName || propertyKey,
+      stringify: stringify,
     };
 
     Reflect.defineMetadata(
-        getUIKey(UIKeys.ELEMENT),
-        metadata,
-        target,
-        propertyKey
+      getUIKey(UIKeys.PROP),
+      metadata,
+      target,
+      propertyKey
     );
-}
+  };

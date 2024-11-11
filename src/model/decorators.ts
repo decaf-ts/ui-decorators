@@ -1,8 +1,6 @@
-import {construct, Model, model} from "@tvenceslau/decorator-validation/lib";
-import {getRenderStrategy} from "../ui";
-import {UIKeys} from "../ui/constants";
-
-export const getUIModelKey = (key: string) => UIKeys.REFLECT + key;
+import { UIKeys } from "../ui/constants";
+import { Model } from "@decaf-ts/decorator-validation";
+import { apply, metadata } from "@decaf-ts/reflection";
 
 /**
  * Tags the model as a uimodel, giving it the 'render' method
@@ -27,62 +25,17 @@ export const getUIModelKey = (key: string) => UIKeys.REFLECT + key;
  *
  * @category Decorators
  */
-export const uimodel = (tag?: string, props?: {[indexer: string]: string}, instanceCallback?: (instance: any) => void) => (original: Function) => {
+export function uimodel(tag?: string, props?: Record<string, any>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (original: any, propertyKey?: any) => {
+    const meta = {
+      tag: tag || original.name,
+      props: props,
+    };
+    return metadata(Model.uiKey(UIKeys.UIMODEL), meta)(original);
+  };
+}
 
-    // the new constructor behaviour
-    const newConstructor : any = function (...args: any[]) {
-        const instance = construct(original, ...args);
-
-        const metadata = Object.assign({}, {
-            class: original.name
-        });
-
-        Reflect.defineMetadata(
-            getUIModelKey(UIKeys.UIMODEL),
-            Object.assign(metadata, props || {}),
-            instance.constructor
-        );
-
-        function render(this: Model, ...args: any){
-            getRenderStrategy()(this, ...args);
-        }
-
-        Object.defineProperty(instance, render.name, {
-            enumerable: false,
-            writable: false,
-            value: render.bind(instance)
-        });
-
-        if (instanceCallback)
-            instanceCallback(instance);
-
-        return instance;
-    }
-
-    // copy prototype so instanceof operator still works
-    newConstructor.prototype = original.prototype;
-    // Sets the proper constructor name for type verification
-    Object.defineProperty(newConstructor, "name", {
-        writable: false,
-        enumerable: true,
-        configurable: false,
-        value: original.prototype.constructor.name
-    });
-    // return new constructor (will override original)
-    return newConstructor;
-    //
-    // return model(undefined, instance => {
-    //     function render(this: Model, ...args: any){
-    //         getRenderStrategy()(this, ...args);
-    //     }
-    //
-    //     Object.defineProperty(instance, render.name, {
-    //         enumerable: false,
-    //         writable: false,
-    //         value: render.bind(instance)
-    //     });
-    //
-    //     if (instanceCallback)
-    //         instanceCallback(instance);
-    // })(original)
+export function renderedBy(engine: string) {
+  return apply(metadata(Model.uiKey(UIKeys.RENDERED_BY), engine));
 }

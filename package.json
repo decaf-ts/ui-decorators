@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/decaf-ts/ts-workspace.git"
+    "url": "git+https://github.com/decaf-ts/ui-decorators.git"
   },
   "engines": {
     "node": ">=20.0.0",
@@ -60,11 +60,10 @@
   "author": "Tiago Venceslau",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/decaf-ts/ts-workspace/issues"
+    "url": "https://github.com/decaf-ts/ui-decorators/issues"
   },
-  "homepage": "https://github.com/decaf-ts/ts-workspace#readme",
+  "homepage": "https://github.com/decaf-ts/ui-decorators#readme",
   "devDependencies": {
-    "@decaf-ts/transactional-decorators": "latest",
     "@eslint/js": "^9.13.0",
     "@types/jest": "^29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
@@ -104,7 +103,6 @@
   "peerDependencies": {
     "@decaf-ts/db-decorators": "latest",
     "@decaf-ts/decorator-validation": "latest",
-    "@decaf-ts/injectable-decorators": "latest",
     "@decaf-ts/reflection": "latest",
     "reflect-metadata": "^0.2.1"
   }

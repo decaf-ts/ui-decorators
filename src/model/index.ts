@@ -3,5 +3,7 @@
  * @memberOf ui-decorators
  */
 
-export * from './decorators';
-export * from './types';
+import "./model";
+
+export * from "./decorators";
+export * from "./overrides";
