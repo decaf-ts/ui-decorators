@@ -80,7 +80,7 @@ export abstract class RenderingEngine<O = FieldDefinition> {
             children = children || [];
             children.push({
               tag: (dec.props as UIElementMetadata).tag,
-              props: (dec.props as UIElementMetadata).props,
+              props: (dec.props as UIElementMetadata).props as any,
             });
             break;
           default:

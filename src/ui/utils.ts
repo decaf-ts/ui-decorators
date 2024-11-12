@@ -10,7 +10,7 @@ import { HTML5DateFormat, UIKeys, ValidatableByAttribute } from "./constants";
  *
  * @memberOf ui-decorators-web.ui
  */
-const formatByType = function (type, value) {
+const formatByType = function (type: any, value: any) {
   switch (type) {
     case UIKeys.DATE:
       return formatDate(new Date(value), HTML5DateFormat);
