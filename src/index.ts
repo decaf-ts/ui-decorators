@@ -4,6 +4,7 @@
 
 export * from "./model";
 export * from "./ui";
+export * from "./errors";
 
 /**
  * @summary stores the current package version

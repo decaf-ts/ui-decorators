@@ -1,6 +1,8 @@
 import { UIKeys } from "../ui/constants";
-import { Model } from "@decaf-ts/decorator-validation";
 import { apply, metadata } from "@decaf-ts/reflection";
+import { RenderingEngine, UIElementMetadata } from "../ui";
+
+export type UIModelMetadata = Omit<UIElementMetadata, "serialize">;
 
 /**
  * Tags the model as a uimodel, giving it the 'render' method
@@ -28,14 +30,14 @@ import { apply, metadata } from "@decaf-ts/reflection";
 export function uimodel(tag?: string, props?: Record<string, any>) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (original: any, propertyKey?: any) => {
-    const meta = {
+    const meta: UIModelMetadata = {
       tag: tag || original.name,
       props: props,
     };
-    return metadata(Model.uiKey(UIKeys.UIMODEL), meta)(original);
+    return metadata(RenderingEngine.key(UIKeys.UIMODEL), meta)(original);
   };
 }
 
 export function renderedBy(engine: string) {
-  return apply(metadata(Model.uiKey(UIKeys.RENDERED_BY), engine));
+  return apply(metadata(RenderingEngine.key(UIKeys.RENDERED_BY), engine));
 }
