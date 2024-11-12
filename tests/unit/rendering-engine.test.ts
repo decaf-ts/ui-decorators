@@ -7,7 +7,7 @@ import { Model } from "@decaf-ts/decorator-validation";
 Model.setBuilder(Model.fromModel);
 
 describe("Rendering Engine", () => {
-  class TestEngine extends RenderingEngine {
+  class TestEngine extends RenderingEngine<void> {
     constructor(flavour: string) {
       super(flavour);
     }

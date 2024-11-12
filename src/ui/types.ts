@@ -1,13 +1,12 @@
 import { ValidationKeys } from "@decaf-ts/decorator-validation";
 
-export interface FieldDefinition {
+export interface FieldDefinition<T = void> {
   tag: string;
-  props: FieldProperties;
-  children?: FieldDefinition[];
+  props: T & FieldProperties;
+  children?: FieldDefinition<T>[];
 }
 
 export interface FieldProperties {
-  [k: string]: unknown;
   type: string;
   required?: boolean;
   maxLength?: number;

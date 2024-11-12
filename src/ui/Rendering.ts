@@ -15,7 +15,7 @@ import {
 import { RenderingError } from "./errors";
 import { getAllPropertyDecorators } from "@decaf-ts/reflection";
 
-export abstract class RenderingEngine<O = FieldDefinition> {
+export abstract class RenderingEngine<T = void> {
   private static cache: Record<
     string,
     Constructor<RenderingEngine<unknown>> | RenderingEngine<unknown>
@@ -32,7 +32,7 @@ export abstract class RenderingEngine<O = FieldDefinition> {
 
   abstract initialize(...args: any[]): Promise<void>;
 
-  render<M extends Model>(model: M, ...args: any[]): O {
+  render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
     const classDecorator: UIModelMetadata = Reflect.getMetadata(
       RenderingEngine.key(UIKeys.UIMODEL),
       model.constructor
@@ -49,7 +49,7 @@ export abstract class RenderingEngine<O = FieldDefinition> {
         string,
         DecoratorMetadata[]
       >;
-    let children: FieldDefinition[] | undefined;
+    let children: FieldDefinition<T>[] | undefined;
     const childProps: Record<string, any> = {};
 
     if (uiDecorators) {
@@ -95,7 +95,7 @@ export abstract class RenderingEngine<O = FieldDefinition> {
       tag: tag,
       props: Object.assign({}, childProps || {}, props),
       children: children,
-    } as O;
+    } as FieldDefinition<T>;
   }
 
   static register(engine: RenderingEngine<unknown>) {
