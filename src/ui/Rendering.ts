@@ -7,7 +7,7 @@ import {
 import { UIKeys } from "./constants";
 import { FieldDefinition } from "./types";
 
-export abstract class RenderingEngine<O = any> {
+export abstract class RenderingEngine<O = FieldDefinition> {
   private static cache: Record<
     string,
     Constructor<RenderingEngine<unknown>> | RenderingEngine<unknown>
