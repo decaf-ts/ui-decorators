@@ -1,4 +1,4 @@
-import { DBKeys, InternalError, suffixMethod } from "@decaf-ts/db-decorators";
+import { DBKeys, InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
   Model,
@@ -28,14 +28,9 @@ export abstract class RenderingEngine<O = FieldDefinition> {
 
   protected constructor(readonly flavour: string) {
     RenderingEngine.register(this);
-    suffixMethod(this, this.initialize, this.initializeSuffix);
   }
 
   abstract initialize(...args: any[]): Promise<void>;
-
-  protected initializeSuffix() {
-    this.initialized = true;
-  }
 
   render<M extends Model>(model: M, ...args: any[]): O {
     const classDecorator: UIModelMetadata = Reflect.getMetadata(
@@ -57,7 +52,7 @@ export abstract class RenderingEngine<O = FieldDefinition> {
     let children: FieldDefinition[] | undefined;
     const childProps: Record<string, any> = {};
 
-    if (uiDecorators && uiDecorators.length) {
+    if (uiDecorators) {
       const validationDecorators: Record<string, DecoratorMetadata[]> =
         getAllPropertyDecorators(model, ValidationKeys.REFLECT) as Record<
           string,
@@ -91,6 +86,8 @@ export abstract class RenderingEngine<O = FieldDefinition> {
           default:
             throw new RenderingError(`Invalid key: ${dec.key}`);
         }
+
+        const validationDecs: DecoratorMetadata[] = validationDecorators[key];
       }
     }
 

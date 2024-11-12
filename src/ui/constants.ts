@@ -1,4 +1,20 @@
-import { ModelKeys, ValidationKeys } from "@decaf-ts/decorator-validation";
+import {
+  Constructor,
+  DateValidator,
+  EmailValidator,
+  MaxLengthValidator,
+  MaxValidator,
+  MinLengthValidator,
+  MinValidator,
+  ModelKeys,
+  PasswordValidator,
+  PatternValidator,
+  RequiredValidator,
+  StepValidator,
+  URLValidator,
+  ValidationKeys,
+  Validator,
+} from "@decaf-ts/decorator-validation";
 
 /**
  * @enum UIKeys
@@ -29,4 +45,54 @@ export const UIKeys = {
   DATE: ValidationKeys.DATE,
   EMAIL: ValidationKeys.EMAIL,
   PASSWORD: ValidationKeys.PASSWORD,
+};
+
+export const ValidatableByType: Record<string, Constructor<Validator>> = [
+  { validationKey: UIKeys.EMAIL, validator: EmailValidator },
+  { validationKey: UIKeys.URL, validator: URLValidator },
+  { validationKey: UIKeys.DATE, validator: DateValidator },
+  { validationKey: UIKeys.PASSWORD, validator: PasswordValidator },
+].reduce((accum: Record<string, Constructor<Validator>>, vd) => {
+  accum[vd.validationKey] = vd.validator;
+  return accum;
+}, {});
+
+/**
+ * @constant ValidatableByAttribute
+ *
+ * @memberOf ui-decorators-web.ui
+ */
+export const ValidatableByAttribute: Record<string, Constructor<Validator>> = [
+  { validationKey: UIKeys.REQUIRED, validator: RequiredValidator },
+  { validationKey: UIKeys.MIN, validator: MinValidator },
+  { validationKey: UIKeys.MAX, validator: MaxValidator },
+  { validationKey: UIKeys.STEP, validator: StepValidator },
+  { validationKey: UIKeys.MIN_LENGTH, validator: MinLengthValidator },
+  { validationKey: UIKeys.MAX_LENGTH, validator: MaxLengthValidator },
+  { validationKey: UIKeys.PATTERN, validator: PatternValidator },
+].reduce((accum: Record<string, Constructor<Validator>>, vd) => {
+  accum[vd.validationKey] = vd.validator;
+  return accum;
+}, {});
+
+export function convertAttributeNameToWeb(attName: string) {
+  switch (attName) {
+    case UIKeys.MAX_LENGTH:
+      return "maxLength";
+    case UIKeys.MIN_LENGTH:
+      return "minLength";
+    default:
+      return attName;
+  }
+}
+
+export const HTML5DateFormat = "yyyy-MM-dd";
+
+export const HTML5InputTypes = {
+  TEXT: "text",
+  NUMBER: "number",
+  DATE: UIKeys.DATE,
+  EMAIL: UIKeys.EMAIL,
+  URL: UIKeys.URL,
+  PASSWORD: UIKeys.PASSWORD,
 };

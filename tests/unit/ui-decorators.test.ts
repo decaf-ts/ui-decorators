@@ -13,20 +13,7 @@ import {
   getPropertyDecorators,
 } from "@decaf-ts/reflection";
 import { UIKeys } from "../../src";
-
-@model()
-@uimodel()
-class TestClass extends Model {
-  @required()
-  @minlength(5)
-  @maxlength(15)
-  @uielement("input-element", { subtype: "OtherTest" })
-  name!: string;
-
-  constructor(model?: ModelArg<TestClass>) {
-    super(model);
-  }
-}
+import { TestClass } from "./models";
 
 describe(`UI decorators Test`, function () {
   let testModel: TestClass;
