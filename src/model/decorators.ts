@@ -1,5 +1,4 @@
 import { UIKeys } from "../ui/constants";
-import { Model } from "@decaf-ts/decorator-validation";
 import { apply, metadata } from "@decaf-ts/reflection";
 import { UIModelMetadata } from "../types";
 
@@ -33,10 +32,10 @@ export function uimodel(tag?: string, props?: Record<string, any>) {
       tag: tag || original.name,
       props: props,
     };
-    return metadata(Model.uiKey(UIKeys.UIMODEL), meta)(original);
+    return metadata(`${UIKeys.REFLECT}${UIKeys.UIMODEL}`, meta)(original);
   };
 }
 
 export function renderedBy(engine: string) {
-  return apply(metadata(Model.uiKey(UIKeys.RENDERED_BY), engine));
+  return apply(metadata(`${UIKeys.REFLECT}${UIKeys.RENDERED_BY}`, engine));
 }
