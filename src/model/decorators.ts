@@ -1,6 +1,7 @@
 import { UIKeys } from "../ui/constants";
 import { Model } from "@decaf-ts/decorator-validation";
 import { apply, metadata } from "@decaf-ts/reflection";
+import { UIModelMetadata } from "../types";
 
 /**
  * Tags the model as a uimodel, giving it the 'render' method
@@ -28,7 +29,7 @@ import { apply, metadata } from "@decaf-ts/reflection";
 export function uimodel(tag?: string, props?: Record<string, any>) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (original: any, propertyKey?: any) => {
-    const meta = {
+    const meta: UIModelMetadata = {
       tag: tag || original.name,
       props: props,
     };

@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
+import { UIPropMetadata } from "../types";
 
 /**
  * @namespace ui-decorators.ui.decorators
@@ -23,7 +24,6 @@ const getUIKey = (key: string) => UIKeys.REFLECT + key;
  */
 export type UIElementMetadata = {
   tag: string;
-  args?: any[];
   props?: Record<string, any>;
   serialize?: boolean;
 };
@@ -43,25 +43,15 @@ export type UIElementMetadata = {
 export function uielement(
   tag: string,
   props?: { [indexer: string]: any },
-  serialize: boolean = false,
-  ...args: any[]
+  serialize: boolean = false
 ) {
   const metadata: UIElementMetadata = {
     tag: tag,
     serialize: serialize,
     props: props,
-    args: args,
   };
   return propMetadata(getUIKey(UIKeys.ELEMENT), metadata);
 }
-/**
- * @typedef UIPropMetadata
- * @memberOf ui-decorators.ui.decorators
- */
-export type UIPropMetadata = {
-  name: string;
-  stringify: boolean;
-};
 
 /**
  * Adds the UIProp definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
@@ -75,18 +65,15 @@ export type UIPropMetadata = {
  * @category Decorators
  * @subcategory ui-decorators
  */
-export const uiprop =
-  (propName: string | undefined = undefined, stringify: boolean = false) =>
-  (target: any, propertyKey: string) => {
+export function uiprop(
+  propName: string | undefined = undefined,
+  stringify: boolean = false
+) {
+  return (target: any, propertyKey: string) => {
     const metadata: UIPropMetadata = {
-      name: propName || propertyKey,
-      stringify: stringify,
+      attr: propName || propertyKey,
+      serialize: stringify,
     };
-
-    Reflect.defineMetadata(
-      getUIKey(UIKeys.PROP),
-      metadata,
-      target,
-      propertyKey
-    );
+    propMetadata(getUIKey(UIKeys.PROP), metadata)(target, propertyKey);
   };
+}
