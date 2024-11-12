@@ -145,6 +145,5 @@ declare module "@decaf-ts/decorator-validation" {
      */
     static key(str: string): string;
     render<R>(...args: any[]): R;
-    static uiKey(key: string): string;
   }
 }

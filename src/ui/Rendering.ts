@@ -54,7 +54,7 @@ export abstract class RenderingEngine {
     const constructor = Model.get(model.constructor.name);
     if (!constructor) throw new InternalError("No model registered found");
     const flavour = Reflect.getMetadata(
-      Model.uiKey(UIKeys.UIMODEL),
+      `${UIKeys.REFLECT}${UIKeys.UIMODEL}`,
       constructor as ModelConstructor<Model>
     );
     return this.get(flavour).render(model, ...args);
