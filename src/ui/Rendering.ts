@@ -5,13 +5,16 @@ import {
   ModelConstructor,
 } from "@decaf-ts/decorator-validation";
 import { UIKeys } from "./constants";
+import { FieldDefinition } from "./types";
 
-export abstract class RenderingEngine {
+export abstract class RenderingEngine<O = any> {
   private static cache: Record<
     string,
-    Constructor<RenderingEngine> | RenderingEngine
+    Constructor<RenderingEngine<unknown>> | RenderingEngine<unknown>
   >;
-  private static current: Constructor<RenderingEngine> | RenderingEngine;
+  private static current:
+    | Constructor<RenderingEngine<unknown>>
+    | RenderingEngine<unknown>;
 
   protected initialized: boolean = false;
 
@@ -20,9 +23,12 @@ export abstract class RenderingEngine {
   }
 
   abstract initialize(...args: any[]): Promise<void>;
-  abstract render(...args: any[]): any;
 
-  static register(engine: RenderingEngine) {
+  render<M extends Model>(model: M, ...args: any[]): O {
+    throw new Error();
+  }
+
+  static register(engine: RenderingEngine<unknown>) {
     this.cache = this.cache || {};
     if (engine.flavour in this.cache)
       throw new InternalError(
