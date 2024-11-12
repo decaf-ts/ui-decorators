@@ -15,6 +15,12 @@ export type UIElementMetadata = {
 };
 
 /**
+ * @typedef UIElementMetadata
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIModelMetadata = Omit<UIElementMetadata, "serialize">;
+
+/**
  * @typedef UIPropMetadata
  * @memberOf ui-decorators.ui.decorators
  */

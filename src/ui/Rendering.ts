@@ -1,11 +1,19 @@
-import { InternalError } from "@decaf-ts/db-decorators";
+import { DBKeys, InternalError, suffixMethod } from "@decaf-ts/db-decorators";
 import {
   Constructor,
   Model,
   ModelConstructor,
+  ValidationKeys,
 } from "@decaf-ts/decorator-validation";
 import { UIKeys } from "./constants";
-import { FieldDefinition } from "./types";
+import {
+  FieldDefinition,
+  UIElementMetadata,
+  UIModelMetadata,
+  UIPropMetadata,
+} from "./types";
+import { RenderingError } from "./errors";
+import { getAllPropertyDecorators } from "@decaf-ts/reflection";
 
 export abstract class RenderingEngine<O = FieldDefinition> {
   private static cache: Record<
@@ -20,12 +28,77 @@ export abstract class RenderingEngine<O = FieldDefinition> {
 
   protected constructor(readonly flavour: string) {
     RenderingEngine.register(this);
+    suffixMethod(this, this.initialize, this.initializeSuffix);
   }
 
   abstract initialize(...args: any[]): Promise<void>;
 
+  protected initializeSuffix() {
+    this.initialized = true;
+  }
+
   render<M extends Model>(model: M, ...args: any[]): O {
-    throw new Error();
+    const classDecorator: UIModelMetadata = Reflect.getMetadata(
+      RenderingEngine.key(UIKeys.UIMODEL),
+      model.constructor
+    );
+    if (!classDecorator)
+      throw new RenderingError(
+        `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
+      );
+
+    const { tag, props } = classDecorator;
+
+    const uiDecorators: Record<string, DecoratorMetadata[]> =
+      getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
+        string,
+        DecoratorMetadata[]
+      >;
+    let children: FieldDefinition[] | undefined;
+    const childProps: Record<string, any> = {};
+
+    if (uiDecorators && uiDecorators.length) {
+      const validationDecorators: Record<string, DecoratorMetadata[]> =
+        getAllPropertyDecorators(model, ValidationKeys.REFLECT) as Record<
+          string,
+          DecoratorMetadata[]
+        >;
+      const dbDecorators: Record<string, DecoratorMetadata[]> =
+        getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
+          string,
+          DecoratorMetadata[]
+        >;
+
+      for (const key in uiDecorators) {
+        const decs = uiDecorators[key];
+        if (decs.length !== 2)
+          throw new RenderingError(
+            `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
+          );
+        const dec = decs[1]; // Ignore 0, its the design:type
+        if (!dec) throw new RenderingError(`No decorator found`);
+        switch (dec.key) {
+          case UIKeys.PROP:
+            childProps[key] = dec.props as UIPropMetadata;
+            break;
+          case UIKeys.ELEMENT:
+            children = children || [];
+            children.push({
+              tag: (dec.props as UIElementMetadata).tag,
+              props: (dec.props as UIElementMetadata).props,
+            });
+            break;
+          default:
+            throw new RenderingError(`Invalid key: ${dec.key}`);
+        }
+      }
+    }
+
+    return {
+      tag: tag,
+      props: Object.assign({}, childProps || {}, props),
+      children: children,
+    } as O;
   }
 
   static register(engine: RenderingEngine<unknown>) {
