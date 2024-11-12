@@ -1,5 +1,6 @@
 import { UIKeys } from "../ui/constants";
 import { apply, metadata } from "@decaf-ts/reflection";
+import { RenderingEngine } from "../ui/Rendering";
 
 /**
  * Tags the model as a uimodel, giving it the 'render' method
@@ -31,10 +32,10 @@ export function uimodel(tag?: string, props?: Record<string, any>) {
       tag: tag || original.name,
       props: props,
     };
-    return metadata(`${UIKeys.REFLECT}${UIKeys.UIMODEL}`, meta)(original);
+    return metadata(RenderingEngine.key(UIKeys.UIMODEL), meta)(original);
   };
 }
 
 export function renderedBy(engine: string) {
-  return apply(metadata(`${UIKeys.REFLECT}${UIKeys.RENDERED_BY}`, engine));
+  return apply(metadata(RenderingEngine.key(UIKeys.RENDERED_BY), engine));
 }

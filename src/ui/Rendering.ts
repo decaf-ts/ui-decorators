@@ -72,8 +72,8 @@ export abstract class RenderingEngine<O = FieldDefinition> {
     );
     return this.get(flavour).render(model, ...args);
   }
-  //
-  // static key(key: string) {
-  //   return `${UIKeys.REFLECT}${key}`;
-  // }
+
+  static key(key: string) {
+    return `${UIKeys.REFLECT}${key}`;
+  }
 }

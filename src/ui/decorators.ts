@@ -2,21 +2,12 @@ import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
 import { UIElementMetadata, UIPropMetadata } from "./types";
+import { RenderingEngine } from "./Rendering";
 
 /**
  * @namespace ui-decorators.ui.decorators
  * @memberOf ui-decorators.ui
  */
-
-/**
- *
- * @param {string} key
- *
- * @function getUIKey
- *
- * @memberOf ui-decorators.ui.decorators
- */
-const getUIKey = (key: string) => UIKeys.REFLECT + key;
 
 /**
  * Adds the UIElement definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
@@ -40,7 +31,7 @@ export function uielement(
     serialize: serialize,
     props: props,
   };
-  return propMetadata(getUIKey(UIKeys.ELEMENT), metadata);
+  return propMetadata(RenderingEngine.key(UIKeys.ELEMENT), metadata);
 }
 
 /**
@@ -64,6 +55,9 @@ export function uiprop(
       name: propName || propertyKey,
       stringify: stringify,
     };
-    propMetadata(getUIKey(UIKeys.PROP), metadata)(target, propertyKey);
+    propMetadata(RenderingEngine.key(UIKeys.PROP), metadata)(
+      target,
+      propertyKey
+    );
   };
 }
