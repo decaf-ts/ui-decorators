@@ -38,22 +38,29 @@ export abstract class RenderingEngine<O = FieldDefinition> {
     this.current = engine;
   }
 
-  private static getOrBoot(
-    obj: Constructor<RenderingEngine> | RenderingEngine
-  ): RenderingEngine {
-    if (obj instanceof RenderingEngine) return obj;
-    const engine: RenderingEngine = new obj();
+  private static getOrBoot<O>(
+    obj: Constructor<RenderingEngine<O>> | RenderingEngine<O>
+  ): RenderingEngine<O> {
+    if (obj instanceof RenderingEngine) return obj as RenderingEngine<O>;
+    const engine: RenderingEngine<O> = new obj();
     engine.initialize(); // make the booting async. use the initialized flag to control it
-    return engine;
+    return engine as RenderingEngine<O>;
   }
 
-  static get(flavour?: string): RenderingEngine {
-    if (!flavour) return this.getOrBoot(this.current);
+  static get<O>(flavour?: string): RenderingEngine<O> {
+    if (!flavour)
+      return this.getOrBoot<O>(
+        this.current as Constructor<RenderingEngine<O>> | RenderingEngine<O>
+      );
     if (!(flavour in this.cache))
       throw new InternalError(
         `Rendering engine under ${flavour} does not exist`
       );
-    return this.getOrBoot(this.cache[flavour]);
+    return this.getOrBoot<O>(
+      this.cache[flavour] as
+        | Constructor<RenderingEngine<O>>
+        | RenderingEngine<O>
+    );
   }
 
   static render<M extends Model>(model: M, ...args: any[]): any {
