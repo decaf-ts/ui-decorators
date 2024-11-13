@@ -19,7 +19,7 @@ export abstract class RenderingEngine<T = void> {
   private static cache: Record<
     string,
     Constructor<RenderingEngine<unknown>> | RenderingEngine<unknown>
-  >;
+  > = {};
   private static current:
     | Constructor<RenderingEngine<unknown>>
     | RenderingEngine<unknown>;
@@ -35,8 +35,9 @@ export abstract class RenderingEngine<T = void> {
   render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
     const classDecorator: UIModelMetadata = Reflect.getMetadata(
       RenderingEngine.key(UIKeys.UIMODEL),
-      model.constructor
+      Model.get(model.constructor.name) as any
     );
+
     if (!classDecorator)
       throw new RenderingError(
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
@@ -99,7 +100,6 @@ export abstract class RenderingEngine<T = void> {
   }
 
   static register(engine: RenderingEngine<unknown>) {
-    this.cache = this.cache || {};
     if (engine.flavour in this.cache)
       throw new InternalError(
         `Rendering engine under ${engine.flavour} already exists`
@@ -137,7 +137,7 @@ export abstract class RenderingEngine<T = void> {
     const constructor = Model.get(model.constructor.name);
     if (!constructor) throw new InternalError("No model registered found");
     const flavour = Reflect.getMetadata(
-      `${UIKeys.REFLECT}${UIKeys.UIMODEL}`,
+      RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>
     );
     return this.get(flavour).render(model, ...args);
