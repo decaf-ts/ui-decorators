@@ -10,11 +10,17 @@ import {
   Serializable,
   Validatable,
 } from "@decaf-ts/decorator-validation";
+import { Renderable } from "./Renderable";
 
 declare module "@decaf-ts/decorator-validation" {
   // @ts-expect-error hacky override
   declare abstract class Model
-    implements Validatable, Serializable, Hashable, Comparable<Model>
+    implements
+      Validatable,
+      Serializable,
+      Hashable,
+      Comparable<Model>,
+      Renderable
   {
     protected constructor(arg?: ModelArg<Model>);
 
