@@ -1,13 +1,4 @@
-import {
-  maxlength,
-  minlength,
-  model,
-  Model,
-  ModelArg,
-  ModelKeys,
-  required,
-} from "@decaf-ts/decorator-validation";
-import { uielement, uimodel } from "../../src";
+import { ModelKeys } from "@decaf-ts/decorator-validation";
 import {
   getClassDecorators,
   getPropertyDecorators,

@@ -75,17 +75,6 @@ export const ValidatableByAttribute: Record<string, Constructor<Validator>> = [
   return accum;
 }, {});
 
-export function convertAttributeNameToWeb(attName: string) {
-  switch (attName) {
-    case UIKeys.MAX_LENGTH:
-      return "maxLength";
-    case UIKeys.MIN_LENGTH:
-      return "minLength";
-    default:
-      return attName;
-  }
-}
-
 export const HTML5DateFormat = "yyyy-MM-dd";
 
 export const HTML5InputTypes = {

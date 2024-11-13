@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
-import { UIElementMetadata, UIPropMetadata } from "./types";
+import { FieldProperties, UIElementMetadata, UIPropMetadata } from "./types";
 import { RenderingEngine } from "./Rendering";
 
 /**
@@ -26,12 +26,23 @@ export function uielement(
   props?: Record<string, any>,
   serialize: boolean = false
 ) {
-  const metadata: UIElementMetadata = {
-    tag: tag,
-    serialize: serialize,
-    props: props,
+  return (original: any, propertyKey?: any) => {
+    const metadata: UIElementMetadata = {
+      tag: tag,
+      serialize: serialize,
+      props: Object.assign(
+        {
+          name: propertyKey,
+        },
+        props || {}
+      ),
+    };
+
+    return propMetadata(RenderingEngine.key(UIKeys.ELEMENT), metadata)(
+      original,
+      propertyKey
+    );
   };
-  return propMetadata(RenderingEngine.key(UIKeys.ELEMENT), metadata);
 }
 
 /**

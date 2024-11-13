@@ -5,7 +5,7 @@ import {
   ModelConstructor,
   ValidationKeys,
 } from "@decaf-ts/decorator-validation";
-import { UIKeys } from "./constants";
+import { UIKeys, ValidatableByAttribute, ValidatableByType } from "./constants";
 import {
   FieldDefinition,
   UIElementMetadata,
@@ -32,11 +32,27 @@ export abstract class RenderingEngine<T = void> {
 
   abstract initialize(...args: any[]): Promise<void>;
 
+  protected translate(key: string): string {
+    switch (key) {
+      // case UIKeys.MAX_LENGTH:
+      //   return "maxLength";
+      // case UIKeys.MIN_LENGTH:
+      //   return 'minLength';
+      default:
+        return key;
+    }
+  }
+
   render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
-    const classDecorator: UIModelMetadata = Reflect.getMetadata(
-      RenderingEngine.key(UIKeys.UIMODEL),
-      Model.get(model.constructor.name) as any
-    );
+    const classDecorator: UIModelMetadata =
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UIMODEL),
+        model.constructor
+      ) ||
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UIMODEL),
+        Model.get(model.constructor.name) as any
+      );
 
     if (!classDecorator)
       throw new RenderingError(
@@ -77,18 +93,36 @@ export abstract class RenderingEngine<T = void> {
           case UIKeys.PROP:
             childProps[key] = dec.props as UIPropMetadata;
             break;
-          case UIKeys.ELEMENT:
+          case UIKeys.ELEMENT: {
             children = children || [];
-            children.push({
+            const childDefinition: FieldDefinition<T> = {
               tag: (dec.props as UIElementMetadata).tag,
               props: (dec.props as UIElementMetadata).props as any,
-            });
+            };
+
+            const validationDecs: DecoratorMetadataObject[] =
+              validationDecorators[key] as DecoratorMetadataObject[];
+
+            const typeDec: DecoratorMetadataObject =
+              validationDecs.shift() as DecoratorMetadataObject;
+            for (const dec of validationDecs) {
+              if ((dec.key as string) in ValidatableByAttribute) {
+                childProps[this.translate(key)] = dec.props;
+                continue;
+              }
+              if ((dec.key as string) in ValidatableByType) {
+                childProps[UIKeys.TYPE] = dec.props;
+                continue;
+              }
+              console.log(dec);
+            }
+
+            children.push(childDefinition);
             break;
+          }
           default:
             throw new RenderingError(`Invalid key: ${dec.key}`);
         }
-
-        const validationDecs: DecoratorMetadata[] = validationDecorators[key];
       }
     }
 
