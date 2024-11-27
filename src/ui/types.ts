@@ -1,3 +1,5 @@
+import { OperationKeys } from "@decaf-ts/db-decorators";
+
 export interface FieldDefinition<T = void> {
   tag: string;
   props: T & FieldProperties;
@@ -9,6 +11,7 @@ export interface FieldProperties {
   label: string;
   placeholder?: string;
   type: string;
+  hidden?: boolean;
   // Validation
   required?: boolean;
   readonly?: boolean;
@@ -18,6 +21,7 @@ export interface FieldProperties {
   min?: number | Date;
   pattern?: string;
   step?: number;
+  custom?: string[];
 }
 
 /**
@@ -44,3 +48,9 @@ export type UIPropMetadata = {
   name: string;
   stringify: boolean;
 };
+
+export type CrudOperationKeys =
+  | OperationKeys.CREATE
+  | OperationKeys.READ
+  | OperationKeys.UPDATE
+  | OperationKeys.DELETE;

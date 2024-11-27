@@ -33,6 +33,8 @@ export const UIKeys = {
   TYPE: "type",
   SUB_TYPE: "subtype",
 
+  HIDDEN: "hidden",
+
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,
   MIN: ValidationKeys.MIN,
@@ -78,10 +80,26 @@ export const ValidatableByAttribute: Record<string, Constructor<Validator>> = [
 export const HTML5DateFormat = "yyyy-MM-dd";
 
 export const HTML5InputTypes = {
-  TEXT: "text",
-  NUMBER: "number",
+  BUTTON: "button",
+  CHECKBOX: "checkbox",
+  COLOR: "color",
   DATE: UIKeys.DATE,
+  DATETIME_LOCAL: "datetime-local",
   EMAIL: UIKeys.EMAIL,
-  URL: UIKeys.URL,
+  FILE: "file",
+  HIDDEN: "hidden",
+  IMAGE: "image",
+  MONTH: "month",
+  NUMBER: "number",
   PASSWORD: UIKeys.PASSWORD,
+  RADIO: "radio",
+  RANGE: "range",
+  RESET: "reset",
+  SEARCH: "search",
+  SUBMIT: "submit",
+  TEL: "tel",
+  TEXT: "text",
+  TIME: "time",
+  URL: UIKeys.URL,
+  WEEK: "week",
 };

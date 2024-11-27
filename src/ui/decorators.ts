@@ -1,13 +1,30 @@
 import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
-import { FieldProperties, UIElementMetadata, UIPropMetadata } from "./types";
+import { CrudOperationKeys, UIElementMetadata, UIPropMetadata } from "./types";
 import { RenderingEngine } from "./Rendering";
+import { OperationKeys } from "@decaf-ts/db-decorators";
 
 /**
  * @namespace ui-decorators.ui.decorators
  * @memberOf ui-decorators.ui
  */
+
+export function hideOn(...operations: CrudOperationKeys[]) {
+  return propMetadata<CrudOperationKeys[]>(
+    RenderingEngine.key(UIKeys.HIDDEN),
+    operations
+  );
+}
+
+export function hidden() {
+  return hideOn(
+    OperationKeys.CREATE,
+    OperationKeys.READ,
+    OperationKeys.UPDATE,
+    OperationKeys.DELETE
+  );
+}
 
 /**
  * Adds the UIElement definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
