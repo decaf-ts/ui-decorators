@@ -13,7 +13,7 @@ import {
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { getAllPropertyDecorators } from "@decaf-ts/reflection";
+import { Reflection } from "@decaf-ts/reflection";
 
 export abstract class RenderingEngine<T = void> {
   private static cache: Record<
@@ -62,7 +62,7 @@ export abstract class RenderingEngine<T = void> {
     const { tag, props } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
-      getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
+      Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
         string,
         DecoratorMetadata[]
       >;
@@ -71,12 +71,12 @@ export abstract class RenderingEngine<T = void> {
 
     if (uiDecorators) {
       const validationDecorators: Record<string, DecoratorMetadata[]> =
-        getAllPropertyDecorators(model, ValidationKeys.REFLECT) as Record<
-          string,
-          DecoratorMetadata[]
-        >;
+        Reflection.getAllPropertyDecorators(
+          model,
+          ValidationKeys.REFLECT
+        ) as Record<string, DecoratorMetadata[]>;
       const dbDecorators: Record<string, DecoratorMetadata[]> =
-        getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
+        Reflection.getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
           string,
           DecoratorMetadata[]
         >;

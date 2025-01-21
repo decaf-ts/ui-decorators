@@ -1,8 +1,5 @@
 import { ModelKeys } from "@decaf-ts/decorator-validation";
-import {
-  getClassDecorators,
-  getPropertyDecorators,
-} from "@decaf-ts/reflection";
+import { Reflection } from "@decaf-ts/reflection";
 import { UIKeys } from "../../src";
 import { TestClass } from "./models";
 
@@ -16,13 +13,16 @@ describe(`UI decorators Test`, function () {
   });
 
   it("Decorates The class properly", function () {
-    let decorators: any[] = getClassDecorators(ModelKeys.REFLECT, testModel);
+    let decorators: any[] = Reflection.getClassDecorators(
+      ModelKeys.REFLECT,
+      testModel
+    );
 
     expect(decorators).toBeDefined();
     expect(decorators.length).toBe(2);
     expect(decorators[1].key).toEqual(ModelKeys.MODEL);
 
-    decorators = getClassDecorators(UIKeys.REFLECT, testModel);
+    decorators = Reflection.getClassDecorators(UIKeys.REFLECT, testModel);
     expect(decorators).toBeDefined();
     expect(decorators.length).toBe(1);
     expect(decorators[0].key).toEqual(UIKeys.UIMODEL);
@@ -30,7 +30,12 @@ describe(`UI decorators Test`, function () {
 
   it("Decorates the properties properly", function () {
     const propertyDecorators: { [indexer: string]: any } =
-      getPropertyDecorators(UIKeys.REFLECT, testModel, "name", false);
+      Reflection.getPropertyDecorators(
+        UIKeys.REFLECT,
+        testModel,
+        "name",
+        false
+      );
 
     expect(propertyDecorators).toBeDefined();
     expect(propertyDecorators.decorators.length).toEqual(2);
