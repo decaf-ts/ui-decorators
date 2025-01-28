@@ -18,6 +18,41 @@ const formatByType = function (type: any, value: any) {
       return value;
   }
 };
+
+export function parseToNumber(value: string | number) {
+  if (typeof value === "number" && !isNaN(value)) return value;
+
+  const parsed = Number(value);
+  if (!isNaN(parsed)) return parsed;
+
+  return undefined;
+}
+
+export function escapeHtml(value: string) {
+  if (!value) return undefined;
+
+  const tagsToReplace: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+  };
+  return `${value}`.replace(/[&<>]/g, (tag) => {
+    return tagsToReplace[tag] || tag;
+  });
+}
+
+export function revertHtml(value: string) {
+  const tagsToReplace: Record<string, string> = {
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+  };
+
+  return `${value}`.replace(/&lt;|&gt;|&amp;/g, (tag) => {
+    return tagsToReplace[tag] || tag;
+  });
+}
+
 //
 //
 // export function getValidationsByAttribute<M extends Model>(

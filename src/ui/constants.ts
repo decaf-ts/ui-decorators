@@ -103,3 +103,8 @@ export const HTML5InputTypes = {
   URL: UIKeys.URL,
   WEEK: "week",
 };
+
+export const HTML5CheckTypes = [
+  HTML5InputTypes.CHECKBOX,
+  HTML5InputTypes.RADIO,
+];
