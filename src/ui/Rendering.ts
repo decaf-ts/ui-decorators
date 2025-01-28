@@ -174,7 +174,7 @@ export abstract class RenderingEngine<T = void> {
       RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>
     );
-    return this.get(flavour).render(model, ...args);
+    return RenderingEngine.get(flavour).render(model, ...args);
   }
 
   static key(key: string) {
