@@ -6,7 +6,7 @@ export interface FieldDefinition<T = void> {
   children?: FieldDefinition<T>[];
 }
 
-export interface FieldProperties {
+export interface FieldProperties extends Record<string, any> {
   name: string;
   label: string;
   placeholder?: string;
@@ -21,7 +21,6 @@ export interface FieldProperties {
   min?: number | Date;
   pattern?: string;
   step?: number;
-  custom?: string[];
 }
 
 /**

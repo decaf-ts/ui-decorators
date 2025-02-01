@@ -3,9 +3,15 @@ import {
   Constructor,
   Model,
   ModelConstructor,
+  ReservedModels,
   ValidationKeys,
 } from "@decaf-ts/decorator-validation";
-import { UIKeys, ValidatableByAttribute, ValidatableByType } from "./constants";
+import {
+  HTML5InputTypes,
+  UIKeys,
+  ValidatableByAttribute,
+  ValidatableByType,
+} from "./constants";
 import {
   FieldDefinition,
   UIElementMetadata,
@@ -32,15 +38,39 @@ export abstract class RenderingEngine<T = void> {
 
   abstract initialize(...args: any[]): Promise<void>;
 
-  protected translate(key: string): string {
-    switch (key) {
-      // case UIKeys.MAX_LENGTH:
-      //   return "maxLength";
-      // case UIKeys.MIN_LENGTH:
-      //   return 'minLength';
-      default:
-        return key;
+  translate(key: string, toView = true): string {
+    if (toView) {
+      switch (key) {
+        case ReservedModels.STRING:
+          return HTML5InputTypes.TEXT;
+        case ReservedModels.NUMBER:
+        case ReservedModels.BIGINT:
+          return HTML5InputTypes.NUMBER;
+        case ReservedModels.BOOLEAN:
+          return HTML5InputTypes.CHECKBOX;
+        case ReservedModels.DATE:
+          return HTML5InputTypes.DATE;
+      }
+    } else {
+      switch (key) {
+        case HTML5InputTypes.TEXT:
+        case HTML5InputTypes.EMAIL:
+        case HTML5InputTypes.COLOR:
+        case HTML5InputTypes.PASSWORD:
+        case HTML5InputTypes.TEL:
+        case HTML5InputTypes.URL:
+          return ReservedModels.STRING;
+        case HTML5InputTypes.NUMBER:
+          return ReservedModels.NUMBER;
+        case HTML5InputTypes.CHECKBOX:
+          return ReservedModels.BOOLEAN;
+        case HTML5InputTypes.DATE:
+        case HTML5InputTypes.DATETIME_LOCAL:
+        case HTML5InputTypes.TIME:
+          return ReservedModels.DATE;
+      }
     }
+    return key;
   }
 
   render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
