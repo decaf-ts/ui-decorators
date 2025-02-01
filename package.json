@@ -1,6 +1,6 @@
 {
   "name": "@decaf-ts/ui-decorators",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Extension of decorator validation to ui elements to allow for web integration",
   "type": "module",
   "exports": {
