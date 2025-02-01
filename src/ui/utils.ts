@@ -1,23 +1,19 @@
-import {
-  formatDate,
-  Model,
-  ValidationKeys,
-} from "@decaf-ts/decorator-validation";
-import { HTML5DateFormat, UIKeys, ValidatableByAttribute } from "./constants";
+import { formatDate } from "@decaf-ts/decorator-validation";
+import { HTML5DateFormat, UIKeys } from "./constants";
 
 /**
  * @function formatByType
  *
  * @memberOf ui-decorators-web.ui
  */
-const formatByType = function (type: any, value: any) {
+export function formatByType(type: any, value: any) {
   switch (type) {
     case UIKeys.DATE:
       return formatDate(new Date(value), HTML5DateFormat);
     default:
       return value;
   }
-};
+}
 
 export function parseToNumber(value: string | number) {
   if (typeof value === "number" && !isNaN(value)) return value;

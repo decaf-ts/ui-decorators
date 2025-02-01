@@ -73,6 +73,7 @@ export abstract class RenderingEngine<T = void> {
     return key;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
     const classDecorator: UIModelMetadata =
       Reflect.getMetadata(
@@ -105,6 +106,7 @@ export abstract class RenderingEngine<T = void> {
           model,
           ValidationKeys.REFLECT
         ) as Record<string, DecoratorMetadata[]>;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const dbDecorators: Record<string, DecoratorMetadata[]> =
         Reflection.getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
           string,
@@ -133,6 +135,7 @@ export abstract class RenderingEngine<T = void> {
             const validationDecs: DecoratorMetadataObject[] =
               validationDecorators[key] as DecoratorMetadataObject[];
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const typeDec: DecoratorMetadataObject =
               validationDecs.shift() as DecoratorMetadataObject;
             for (const dec of validationDecs) {
