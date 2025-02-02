@@ -34,6 +34,7 @@ export abstract class RenderingEngine<T = void> {
 
   protected constructor(readonly flavour: string) {
     RenderingEngine.register(this);
+    console.log(`decaf's ${flavour} rendering engine loaded`);
   }
 
   abstract initialize(...args: any[]): Promise<void>;
@@ -73,8 +74,11 @@ export abstract class RenderingEngine<T = void> {
     return key;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  render<M extends Model>(model: M, ...args: any[]): FieldDefinition<T> {
+  render<M extends Model>(
+    model: M,
+    globalProps: Record<string, unknown> = {},
+    ...args: any[]
+  ): FieldDefinition<T> {
     const classDecorator: UIModelMetadata =
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
@@ -106,12 +110,12 @@ export abstract class RenderingEngine<T = void> {
           model,
           ValidationKeys.REFLECT
         ) as Record<string, DecoratorMetadata[]>;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const dbDecorators: Record<string, DecoratorMetadata[]> =
-        Reflection.getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
-          string,
-          DecoratorMetadata[]
-        >;
+      // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // const dbDecorators: Record<string, DecoratorMetadata[]> =
+      //   Reflection.getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
+      //     string,
+      //     DecoratorMetadata[]
+      //   >;
 
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
@@ -129,7 +133,11 @@ export abstract class RenderingEngine<T = void> {
             children = children || [];
             const childDefinition: FieldDefinition<T> = {
               tag: (dec.props as UIElementMetadata).tag,
-              props: (dec.props as UIElementMetadata).props as any,
+              props: Object.assign(
+                {},
+                (dec.props as UIElementMetadata).props as any,
+                globalProps
+              ),
             };
 
             const validationDecs: DecoratorMetadataObject[] =
@@ -161,7 +169,7 @@ export abstract class RenderingEngine<T = void> {
 
     return {
       tag: tag,
-      props: Object.assign({}, childProps || {}, props),
+      props: Object.assign({}, props, globalProps),
       children: children,
     } as FieldDefinition<T>;
   }
