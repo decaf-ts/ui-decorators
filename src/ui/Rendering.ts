@@ -1,4 +1,4 @@
-import { DBKeys, InternalError } from "@decaf-ts/db-decorators";
+import { InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
   Model,
@@ -77,6 +77,7 @@ export abstract class RenderingEngine<T = void> {
   render<M extends Model>(
     model: M,
     globalProps: Record<string, unknown> = {},
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ...args: any[]
   ): FieldDefinition<T> {
     const classDecorator: UIModelMetadata =
