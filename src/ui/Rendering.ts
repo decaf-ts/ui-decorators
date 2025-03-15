@@ -21,14 +21,15 @@ import {
 import { RenderingError } from "./errors";
 import { Reflection } from "@decaf-ts/reflection";
 
-export abstract class RenderingEngine<T = void> {
+export abstract class RenderingEngine<T = void, R = void> {
   private static cache: Record<
     string,
-    Constructor<RenderingEngine<unknown>> | RenderingEngine<unknown>
+    | Constructor<RenderingEngine<unknown, unknown>>
+    | RenderingEngine<unknown, unknown>
   > = {};
   private static current:
-    | Constructor<RenderingEngine<unknown>>
-    | RenderingEngine<unknown>;
+    | Constructor<RenderingEngine<unknown, unknown>>
+    | RenderingEngine<unknown, unknown>;
 
   protected initialized: boolean = false;
 
@@ -74,11 +75,22 @@ export abstract class RenderingEngine<T = void> {
     return key;
   }
 
-  render<M extends Model>(
+  /**
+   * @description Converts a model to a field definition, processing UI decorators and validation rules.
+   *
+   * @summary This method extracts UI-related metadata from the model, including class-level decorators
+   * and property-level decorators. It processes both UI properties and UI elements, applying
+   * validation rules where applicable.
+   *
+   * @template M - Type extending Model
+   * @param {M} model - The model instance to convert to a field definition
+   * @param {Record<string, unknown>} [globalProps={}] - Global properties to be applied to all child elements
+   * @returns {FieldDefinition<T>} A field definition object representing the UI structure of the model
+   * @throws {RenderingError} If no UI definitions are set for the model or if there are invalid decorators
+   */
+  protected toFieldDefinition<M extends Model>(
     model: M,
-    globalProps: Record<string, unknown> = {},
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ...args: any[]
+    globalProps: Record<string, unknown> = {}
   ): FieldDefinition<T> {
     const classDecorator: UIModelMetadata =
       Reflect.getMetadata(
@@ -111,12 +123,6 @@ export abstract class RenderingEngine<T = void> {
           model,
           ValidationKeys.REFLECT
         ) as Record<string, DecoratorMetadata[]>;
-      // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // const dbDecorators: Record<string, DecoratorMetadata[]> =
-      //   Reflection.getAllPropertyDecorators(model, DBKeys.REFLECT) as Record<
-      //     string,
-      //     DecoratorMetadata[]
-      //   >;
 
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
@@ -175,6 +181,24 @@ export abstract class RenderingEngine<T = void> {
     } as FieldDefinition<T>;
   }
 
+  /**
+   * Renders a model with global properties and additional arguments.
+   * This abstract method should be implemented by subclasses to define specific rendering behavior.
+   *
+   * @abstract
+   * @template M - Type extending Model
+   * @template R - Rendering engine implementation specific output type
+   * @param {M} model - The model to be rendered
+   * @param {Record<string, unknown>} globalProps - Global properties to be applied to all elements during rendering
+   * @param {...any[]} args - Additional arguments that may be required for specific rendering implementations
+   * @returns {R} The rendered result, type depends on the specific implementation
+   */
+  abstract render<M extends Model>(
+    model: M,
+    globalProps: Record<string, unknown>,
+    ...args: any[]
+  ): R;
+
   static register(engine: RenderingEngine<unknown>) {
     if (engine.flavour in this.cache)
       throw new InternalError(
@@ -216,6 +240,7 @@ export abstract class RenderingEngine<T = void> {
       RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>
     );
+    // @ts-ignore
     return RenderingEngine.get(flavour).render(model, ...args);
   }
 
