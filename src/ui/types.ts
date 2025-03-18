@@ -6,11 +6,10 @@ export interface FieldDefinition<T = void> {
   children?: FieldDefinition<T>[];
 }
 
-export interface FieldProperties extends Record<string, any> {
+export interface FieldProperties {
   name: string;
-  label: string;
-  placeholder?: string;
   type: string;
+  value: string | number | Date;
   hidden?: boolean;
   // Validation
   required?: boolean;

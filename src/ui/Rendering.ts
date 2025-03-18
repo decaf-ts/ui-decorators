@@ -1,17 +1,14 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
+  minlength,
   Model,
   ModelConstructor,
   ReservedModels,
   ValidationKeys,
+  ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
-import {
-  HTML5InputTypes,
-  UIKeys,
-  ValidatableByAttribute,
-  ValidatableByType,
-} from "./constants";
+import { HTML5InputTypes, UIKeys } from "./constants";
 import {
   FieldDefinition,
   UIElementMetadata,
@@ -19,18 +16,45 @@ import {
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { Reflection } from "@decaf-ts/reflection";
+import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
 
-export abstract class RenderingEngine<T = void, R = void> {
+/**
+ * @description Abstract class for rendering UI components based on model metadata.
+ * @summary The RenderingEngine class provides a framework for converting model metadata into UI field definitions.
+ * It handles the translation of model properties to UI elements, applies validation rules, and manages different rendering flavors.
+ * This class is designed to be extended by specific rendering implementations.
+ *
+ * @template T The type of the rendering result, defaults to void
+ * @template R The type of the field definition, defaults to FieldDefinition<T>
+ *
+ * @param {string} flavour - The flavor of the rendering engine.
+ *
+ * @class RenderingEngine
+ */
+export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
+  /**
+   * @description Cache for storing rendering engine instances or constructors.
+   * @private
+   * @static
+   */
   private static cache: Record<
     string,
     | Constructor<RenderingEngine<unknown, unknown>>
     | RenderingEngine<unknown, unknown>
   > = {};
+
+  /**
+   * @description The currently active rendering engine.
+   * @private
+   * @static
+   */
   private static current:
     | Constructor<RenderingEngine<unknown, unknown>>
     | RenderingEngine<unknown, unknown>;
 
+  /**
+   * Flag indicating whether the rendering engine has been initialized.
+   */
   protected initialized: boolean = false;
 
   protected constructor(readonly flavour: string) {
@@ -38,9 +62,26 @@ export abstract class RenderingEngine<T = void, R = void> {
     console.log(`decaf's ${flavour} rendering engine loaded`);
   }
 
+  /**
+   * @description Initializes the rendering engine.
+   * @summary Abstract method to be implemented by subclasses for specific initialization logic.
+   *
+   * @param {...any[]} args - Any additional arguments needed for initialization.
+   * @returns {Promise<void>} A promise that resolves when initialization is complete.
+   *
+   * @abstract
+   */
   abstract initialize(...args: any[]): Promise<void>;
 
-  translate(key: string, toView = true): string {
+  /**
+   * @description Translates between model types and HTML input types.
+   * @summary Converts model data types to appropriate HTML input types and vice versa.
+   *
+   * @param {string} key - The key to translate.
+   * @param {boolean} [toView=true] - Direction of translation (true for model to view, false for view to model).
+   * @returns {string} The translated type.
+   */
+  translate(key: string, toView: boolean = true): string {
     if (toView) {
       switch (key) {
         case ReservedModels.STRING:
@@ -76,17 +117,97 @@ export abstract class RenderingEngine<T = void, R = void> {
   }
 
   /**
-   * @description Converts a model to a field definition, processing UI decorators and validation rules.
+   * @description Checks if a type is validatable by its nature.
+   * @summary Determines if a given UI key represents a type that is inherently validatable.
    *
-   * @summary This method extracts UI-related metadata from the model, including class-level decorators
-   * and property-level decorators. It processes both UI properties and UI elements, applying
-   * validation rules where applicable.
+   * @param {string} key - The UI key to check.
+   * @returns {boolean} True if the type is validatable, false otherwise.
+   */
+  protected isValidatableByType(key: string): boolean {
+    return [UIKeys.EMAIL, UIKeys.URL, UIKeys.DATE, UIKeys.PASSWORD].includes(
+      key
+    );
+  }
+
+  /**
+   * @description Checks if a type is validatable by attribute.
+   * @summary Determines if a given UI key represents a validation that can be applied as an attribute.
    *
-   * @template M - Type extending Model
-   * @param {M} model - The model instance to convert to a field definition
-   * @param {Record<string, unknown>} [globalProps={}] - Global properties to be applied to all child elements
-   * @returns {FieldDefinition<T>} A field definition object representing the UI structure of the model
-   * @throws {RenderingError} If no UI definitions are set for the model or if there are invalid decorators
+   * @param {string} key - The UI key to check.
+   * @returns {boolean} True if the type is validatable by attribute, false otherwise.
+   */
+  protected isValidatableByAttribute(key: string): boolean {
+    return [
+      UIKeys.REQUIRED,
+      UIKeys.MIN,
+      UIKeys.MAX,
+      UIKeys.STEP,
+      UIKeys.MIN_LENGTH,
+      UIKeys.MAX_LENGTH,
+      UIKeys.PATTERN,
+      UIKeys.URL,
+      UIKeys.EMAIL,
+      UIKeys.PASSWORD,
+    ].includes(key);
+  }
+
+  /**
+   * @description Converts validation metadata to an attribute value.
+   * @summary Transforms validation metadata into a value suitable for use as an HTML attribute.
+   *
+   * @param {string} key - The validation key.
+   * @param {ValidationMetadata} value - The validation metadata.
+   * @returns {string | number | boolean} The converted attribute value.
+   */
+  protected toAttributeValue(
+    key: string,
+    value: ValidationMetadata
+  ): string | number | boolean {
+    switch (key) {
+      case UIKeys.MIN:
+      case UIKeys.MAX:
+      case UIKeys.MIN_LENGTH:
+      case UIKeys.MAX_LENGTH:
+      case UIKeys.STEP:
+        return value.value;
+      case UIKeys.EMAIL:
+      case UIKeys.URL:
+      case UIKeys.PATTERN:
+      case UIKeys.PASSWORD:
+        return value.pattern;
+      default:
+        return true;
+    }
+  }
+
+  /**
+   * @description Converts a model to a field definition.
+   * @summary Processes a model instance, extracting UI-related metadata and validation rules to create a field definition.
+   *
+   * @template M Type extending Model
+   * @param {M} model - The model instance to convert.
+   * @param {Record<string, unknown>} [globalProps={}] - Global properties to apply to all child elements.
+   * @returns {FieldDefinition<T>} A field definition object representing the UI structure of the model.
+   * @throws {RenderingError} If no UI definitions are set for the model or if there are invalid decorators.
+   *
+   * @mermaid
+   * sequenceDiagram
+   *  participant C as Client
+   *  participant RE as RenderingEngine
+   *  participant R as Reflection
+   *  participant M as Model
+   *  C->>RE: toFieldDefinition(model, globalProps)
+   *  RE->>R: getMetadata(UIKeys.UIMODEL, model.constructor)
+   *  R-->>RE: UIModelMetadata
+   *  RE->>R: getAllPropertyDecorators(model, UIKeys.REFLECT)
+   *  R-->>RE: Record<string, DecoratorMetadata[]>
+   *  RE->>R: getAllPropertyDecorators(model, ValidationKeys.REFLECT)
+   *  R-->>RE: Record<string, DecoratorMetadata<ValidationMetadata>[]>
+   *  loop For each property
+   *    RE->>RE: Process UI decorators
+   *    RE->>RE: Apply validation rules
+   *  end
+   *  RE-->>C: FieldDefinition<T>
    */
   protected toFieldDefinition<M extends Model>(
     model: M,
@@ -114,15 +235,17 @@ export abstract class RenderingEngine<T = void, R = void> {
         string,
         DecoratorMetadata[]
       >;
-    let children: FieldDefinition<T>[] | undefined;
+    let children: FieldDefinition<Record<string, any>>[] | undefined;
     const childProps: Record<string, any> = {};
 
     if (uiDecorators) {
-      const validationDecorators: Record<string, DecoratorMetadata[]> =
-        Reflection.getAllPropertyDecorators(
-          model,
-          ValidationKeys.REFLECT
-        ) as Record<string, DecoratorMetadata[]>;
+      const validationDecorators: Record<
+        string,
+        DecoratorMetadata<ValidationMetadata>[]
+      > = Reflection.getAllPropertyDecorators(
+        model,
+        ValidationKeys.REFLECT
+      ) as Record<string, DecoratorMetadata<ValidationMetadata>[]>;
 
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
@@ -138,7 +261,7 @@ export abstract class RenderingEngine<T = void, R = void> {
             break;
           case UIKeys.ELEMENT: {
             children = children || [];
-            const childDefinition: FieldDefinition<T> = {
+            const childDefinition: FieldDefinition<Record<string, any>> = {
               tag: (dec.props as UIElementMetadata).tag,
               props: Object.assign(
                 {},
@@ -147,19 +270,25 @@ export abstract class RenderingEngine<T = void, R = void> {
               ),
             };
 
-            const validationDecs: DecoratorMetadataObject[] =
-              validationDecorators[key] as DecoratorMetadataObject[];
+            const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
+              validationDecorators[
+                key
+              ] as DecoratorMetadata<ValidationMetadata>[];
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const typeDec: DecoratorMetadataObject =
-              validationDecs.shift() as DecoratorMetadataObject;
+              validationDecs.shift() as DecoratorMetadata;
             for (const dec of validationDecs) {
-              if ((dec.key as string) in ValidatableByAttribute) {
-                childProps[this.translate(key)] = dec.props;
+              childDefinition.props["props"] =
+                childDefinition.props["props"] || {};
+
+              if (this.isValidatableByAttribute(dec.key)) {
+                childDefinition.props["props"][this.translate(dec.key)] =
+                  this.toAttributeValue(dec.key, dec.props);
                 continue;
               }
-              if ((dec.key as string) in ValidatableByType) {
-                childProps[UIKeys.TYPE] = dec.props;
+              if (this.isValidatableByType(dec.key)) {
+                childDefinition.props["props"][UIKeys.TYPE] = dec.key;
                 continue;
               }
               console.log(dec);
@@ -182,16 +311,17 @@ export abstract class RenderingEngine<T = void, R = void> {
   }
 
   /**
-   * Renders a model with global properties and additional arguments.
-   * This abstract method should be implemented by subclasses to define specific rendering behavior.
+   * @description Renders a model with global properties and additional arguments.
+   * @summary Abstract method to be implemented by subclasses to define specific rendering behavior.
+   *
+   * @template M Type extending Model
+   * @template R Rendering engine implementation specific output type
+   * @param {M} model - The model to be rendered.
+   * @param {Record<string, unknown>} globalProps - Global properties to be applied to all elements during rendering.
+   * @param {...any[]} args - Additional arguments that may be required for specific rendering implementations.
+   * @returns {R} The rendered result, type depends on the specific implementation.
    *
    * @abstract
-   * @template M - Type extending Model
-   * @template R - Rendering engine implementation specific output type
-   * @param {M} model - The model to be rendered
-   * @param {Record<string, unknown>} globalProps - Global properties to be applied to all elements during rendering
-   * @param {...any[]} args - Additional arguments that may be required for specific rendering implementations
-   * @returns {R} The rendered result, type depends on the specific implementation
    */
   abstract render<M extends Model>(
     model: M,
@@ -199,7 +329,16 @@ export abstract class RenderingEngine<T = void, R = void> {
     ...args: any[]
   ): R;
 
-  static register(engine: RenderingEngine<unknown>) {
+  /**
+   * @description Registers a rendering engine instance.
+   * @summary Adds a rendering engine to the static cache and sets it as the current engine.
+   *
+   * @param {RenderingEngine<unknown, unknown>} engine - The rendering engine to register.
+   * @throws {InternalError} If an engine with the same flavor already exists.
+   *
+   * @static
+   */
+  static register(engine: RenderingEngine<unknown, unknown>) {
     if (engine.flavour in this.cache)
       throw new InternalError(
         `Rendering engine under ${engine.flavour} already exists`
@@ -208,6 +347,17 @@ export abstract class RenderingEngine<T = void, R = void> {
     this.current = engine;
   }
 
+  /**
+   * @description Retrieves or initializes a rendering engine.
+   * @summary Gets an existing engine instance or creates and initializes a new one if given a constructor.
+   *
+   * @template O The type of the rendering engine output
+   * @param {Constructor<RenderingEngine<O>> | RenderingEngine<O>} obj - The engine instance or constructor.
+   * @returns {RenderingEngine<O>} The initialized rendering engine.
+   *
+   * @private
+   * @static
+   */
   private static getOrBoot<O>(
     obj: Constructor<RenderingEngine<O>> | RenderingEngine<O>
   ): RenderingEngine<O> {
@@ -217,6 +367,17 @@ export abstract class RenderingEngine<T = void, R = void> {
     return engine as RenderingEngine<O>;
   }
 
+  /**
+   * @description Retrieves a rendering engine by flavor.
+   * @summary Gets the current rendering engine or a specific one by flavor.
+   *
+   * @template O The type of the rendering engine output
+   * @param {string} [flavour] - The flavor of the rendering engine to retrieve.
+   * @returns {RenderingEngine<O>} The requested rendering engine.
+   * @throws {InternalError} If the requested flavor does not exist.
+   *
+   * @static
+   */
   static get<O>(flavour?: string): RenderingEngine<O> {
     if (!flavour)
       return this.getOrBoot<O>(
@@ -233,6 +394,18 @@ export abstract class RenderingEngine<T = void, R = void> {
     );
   }
 
+  /**
+   * @description Renders a model using the appropriate rendering engine.
+   * @summary Determines the correct rendering engine for a model and invokes its render method.
+   *
+   * @template M Type extending Model
+   * @param {M} model - The model to render.
+   * @param {...any[]} args - Additional arguments to pass to the render method.
+   * @returns {any} The result of the rendering process.
+   * @throws {InternalError} If no registered model is found.
+   *
+   * @static
+   */
   static render<M extends Model>(model: M, ...args: any[]): any {
     const constructor = Model.get(model.constructor.name);
     if (!constructor) throw new InternalError("No model registered found");
@@ -244,7 +417,16 @@ export abstract class RenderingEngine<T = void, R = void> {
     return RenderingEngine.get(flavour).render(model, ...args);
   }
 
-  static key(key: string) {
+  /**
+   * @description Generates a metadata key for UI-related properties.
+   * @summary Prefixes a given key with the UI reflection prefix.
+   *
+   * @param {string} key - The key to prefix.
+   * @returns {string} The prefixed key.
+   *
+   * @static
+   */
+  static key(key: string): string {
     return `${UIKeys.REFLECT}${key}`;
   }
 }

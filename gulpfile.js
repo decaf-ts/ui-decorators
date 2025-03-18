@@ -190,7 +190,7 @@ function makeDocs() {
 
   function compileDocs() {
     return run.default(
-      "npx jsdoc -c jsdocs.json -t ./node_modules/better-docs"
+      "npx jsdoc -c jsdocs.json -t ./node_modules/better-docs --verbose"
     )();
   }
 
