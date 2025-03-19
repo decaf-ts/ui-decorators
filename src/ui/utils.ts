@@ -6,10 +6,15 @@ import { HTML5DateFormat, UIKeys } from "./constants";
  *
  * @memberOf ui-decorators-web.ui
  */
-export function formatByType(type: any, value: any) {
+export function formatByType(
+  type: any,
+  value: any,
+  ...args: unknown[]
+): string | number {
   switch (type) {
     case UIKeys.DATE:
-      return formatDate(new Date(value), HTML5DateFormat);
+      const format: string = (args.shift() as string) || HTML5DateFormat;
+      return formatDate(new Date(value), format);
     default:
       return value;
   }

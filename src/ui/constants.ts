@@ -34,6 +34,7 @@ export const UIKeys = {
   SUB_TYPE: "subtype",
 
   HIDDEN: "hidden",
+  FORMAT: "format",
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,

@@ -20,6 +20,7 @@ export interface FieldProperties {
   min?: number | Date;
   pattern?: string;
   step?: number;
+  format?: string;
 }
 
 /**

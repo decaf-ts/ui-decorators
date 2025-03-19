@@ -8,7 +8,7 @@ import {
   ValidationKeys,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
-import { HTML5InputTypes, UIKeys } from "./constants";
+import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
 import {
   FieldDefinition,
   UIElementMetadata,
@@ -17,6 +17,7 @@ import {
 } from "./types";
 import { RenderingError } from "./errors";
 import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
+import { formatByType } from "./utils";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -145,9 +146,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       UIKeys.MIN_LENGTH,
       UIKeys.MAX_LENGTH,
       UIKeys.PATTERN,
-      UIKeys.URL,
-      UIKeys.EMAIL,
-      UIKeys.PASSWORD,
     ].includes(key);
   }
 
@@ -185,6 +183,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @summary Processes a model instance, extracting UI-related metadata and validation rules to create a field definition.
    *
    * @template M Type extending Model
+   * @template T Type referencing the specific Rendering engine field properties/inputs
    * @param {M} model - The model instance to convert.
    * @param {Record<string, unknown>} [globalProps={}] - Global properties to apply to all child elements.
    * @returns {FieldDefinition<T>} A field definition object representing the UI structure of the model.
@@ -279,20 +278,35 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             const typeDec: DecoratorMetadataObject =
               validationDecs.shift() as DecoratorMetadata;
             for (const dec of validationDecs) {
-              childDefinition.props["props"] =
-                childDefinition.props["props"] || {};
-
               if (this.isValidatableByAttribute(dec.key)) {
-                childDefinition.props["props"][this.translate(dec.key)] =
+                childDefinition.props[this.translate(dec.key)] =
                   this.toAttributeValue(dec.key, dec.props);
                 continue;
               }
               if (this.isValidatableByType(dec.key)) {
-                childDefinition.props["props"][UIKeys.TYPE] = dec.key;
+                if (dec.key === HTML5InputTypes.DATE) {
+                  childDefinition.props[UIKeys.FORMAT] =
+                    dec.props.format || HTML5DateFormat;
+                }
+                childDefinition.props[UIKeys.TYPE] = dec.key;
                 continue;
               }
               console.log(dec);
             }
+
+            if (!childDefinition.props[UIKeys.TYPE]) {
+              let basicType = (typeDec.props as { name: string }).name;
+              childDefinition.props[UIKeys.TYPE] = this.translate(
+                basicType.toLowerCase(),
+                true
+              );
+            }
+
+            childDefinition.props.value = formatByType(
+              childDefinition.props[UIKeys.TYPE],
+              model[key as keyof M],
+              childDefinition.props[UIKeys.FORMAT]
+            );
 
             children.push(childDefinition);
             break;

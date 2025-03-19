@@ -1,13 +1,7 @@
-import { RenderingEngine, uielement } from "../../src";
-import { DemoModel, TestClass } from "./models";
+import { RenderingEngine } from "../../src";
+import { DemoModel, usedDateFormat } from "./models";
 import { FieldDefinition } from "../../src/ui/types";
-import {
-  date,
-  minlength,
-  Model,
-  required,
-  url,
-} from "@decaf-ts/decorator-validation";
+import { Model } from "@decaf-ts/decorator-validation";
 
 // @ts-expect-error stoopid jest
 Model.setBuilder(Model.fromModel);
@@ -46,6 +40,7 @@ describe("Rendering Engine", () => {
       id: 1,
       name: "name",
       birthdate: new Date(),
+      year: 2022,
       email: "email@example.com",
       website: "https://example.com",
       password: "Password123!",
@@ -65,12 +60,15 @@ describe("Rendering Engine", () => {
       switch (key) {
         case "birthdate":
           return "date";
+        case "id":
         case "year":
           return "number";
         case "password":
           return "password";
         case "email":
           return "email";
+        case "website":
+          return "url";
         default:
           return "text";
       }
@@ -78,31 +76,44 @@ describe("Rendering Engine", () => {
 
     ["id", "name", "birthdate", "year", "email", "website", "password"].forEach(
       (key, i) => {
-        if (!definition.children) throw new Error("Child not defined");
-        expect(definition.children[i].tag).toEqual("decaf-crud-field");
+        try {
+          if (!definition.children) throw new Error("Child not defined");
 
-        const propsExpectancy: any = {
-          label: key,
-          type: parseType(key),
-        };
+          expect(definition.children[i].tag).toEqual("decaf-crud-field");
 
-        if (key !== "website") {
-          propsExpectancy["required"] = true;
+          const propsExpectancy: any = {
+            label: `translation.demo.${key}.label`,
+            type: parseType(key),
+            value: testModel[key as keyof DemoModel],
+          };
+
+          if (key !== "website") {
+            propsExpectancy["required"] = true;
+          }
+
+          if (key === "birthdate") {
+            propsExpectancy["format"] = usedDateFormat;
+            propsExpectancy["value"] = propsExpectancy["value"].toString();
+          }
+
+          if (key === "name") {
+            propsExpectancy["minlength"] = 5;
+            propsExpectancy["placeholder"] =
+              `translation.demo.${key}.placeholder`;
+          }
+
+          expect(definition.children[i].props).toEqual(
+            Object.assign(
+              {
+                name: key,
+                operation: "create",
+              },
+              propsExpectancy
+            )
+          );
+        } catch (e: unknown) {
+          throw e;
         }
-
-        if (key === "name") {
-          propsExpectancy["minlength"] = 5;
-        }
-
-        if (["email", "url", "password"].includes(key)) {
-          propsExpectancy["pattern"] = expect.any(RegExp);
-        }
-
-        expect(definition.children[i].props).toEqual({
-          name: key,
-          operation: "create",
-          props: propsExpectancy,
-        });
       }
     );
   });
