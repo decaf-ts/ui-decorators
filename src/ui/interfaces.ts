@@ -1,8 +1,6 @@
 import { FieldProperties } from "./types";
 import { CrudOperations } from "@decaf-ts/db-decorators";
 
-export interface CrudFormField<T = void> {
+export interface CrudFormField extends FieldProperties {
   operation: CrudOperations;
-  props: FieldProperties & T;
-  value: string;
 }

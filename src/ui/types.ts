@@ -11,6 +11,7 @@ export interface FieldProperties {
   type: string;
   value: string | number | Date;
   hidden?: boolean;
+  disabled?: boolean;
   // Validation
   required?: boolean;
   readonly?: boolean;
