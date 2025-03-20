@@ -1,7 +1,6 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
-  minlength,
   Model,
   ModelConstructor,
   ReservedModels,
@@ -277,7 +276,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 key
               ] as DecoratorMetadata<ValidationMetadata>[];
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const typeDec: DecoratorMetadataObject =
               validationDecs.shift() as DecoratorMetadata;
             for (const dec of validationDecs) {
@@ -298,7 +296,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
 
             if (!childDefinition.props[UIKeys.TYPE]) {
-              let basicType = (typeDec.props as { name: string }).name;
+              const basicType = (typeDec.props as { name: string }).name;
               childDefinition.props[UIKeys.TYPE] = this.translate(
                 basicType.toLowerCase(),
                 true
@@ -436,7 +434,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>
     );
-    // @ts-ignore
+
+    // @ts-expect-error for the var args type check
     return RenderingEngine.get(flavour).render(model, ...args);
   }
 

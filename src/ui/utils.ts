@@ -12,13 +12,11 @@ export function formatByType(
   value: any,
   ...args: unknown[]
 ): string | number {
-  switch (type) {
-    case UIKeys.DATE:
-      const format: string = (args.shift() as string) || HTML5DateFormat;
-      return formatDate(new Date(value), format);
-    default:
-      return value;
+  if (type === UIKeys.DATE) {
+    const format: string = (args.shift() as string) || HTML5DateFormat;
+    return formatDate(new Date(value), format);
   }
+  return value;
 }
 
 export function parseToNumber(value: string | number) {
@@ -59,6 +57,7 @@ export function generateUIModelID<M extends Model>(model: M) {
   let id: string | number;
   try {
     id = findModelId(model);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
     id = Date.now();
   }
