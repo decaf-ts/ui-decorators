@@ -51,6 +51,7 @@ describe("Rendering Engine", () => {
     const definition = engine.render(testModel, { operation: "create" });
     expect(definition).toBeDefined();
     expect(definition.tag).toEqual("decaf-crud-form");
+    expect(definition.rendererId).toBeDefined();
     expect(definition.props).toEqual({ operation: "create", test: "1" });
     expect(definition.children).toBeDefined();
     if (!definition.children) throw new Error("Children not defined");

@@ -11,13 +11,14 @@ import {
 import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
 import {
   FieldDefinition,
+  FieldProperties,
   UIElementMetadata,
   UIModelMetadata,
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
 import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
-import { formatByType } from "./utils";
+import { formatByType, generateUIModelID } from "./utils";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -186,6 +187,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @template T Type referencing the specific Rendering engine field properties/inputs
    * @param {M} model - The model instance to convert.
    * @param {Record<string, unknown>} [globalProps={}] - Global properties to apply to all child elements.
+   * @param {boolean} [generateId=true] - Flag indicating whether to populate the rendererId property.
    * @returns {FieldDefinition<T>} A field definition object representing the UI structure of the model.
    * @throws {RenderingError} If no UI definitions are set for the model or if there are invalid decorators.
    *
@@ -210,7 +212,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    */
   protected toFieldDefinition<M extends Model>(
     model: M,
-    globalProps: Record<string, unknown> = {}
+    globalProps: Record<string, unknown> = {},
+    generateId: boolean = true
   ): FieldDefinition<T> {
     const classDecorator: UIModelMetadata =
       Reflect.getMetadata(
@@ -317,11 +320,17 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       }
     }
 
-    return {
+    const result: FieldDefinition<T> = {
       tag: tag,
-      props: Object.assign({}, props, globalProps),
-      children: children,
-    } as FieldDefinition<T>;
+      props: Object.assign({}, props, globalProps) as T & FieldProperties,
+      children: children as FieldDefinition<any>[],
+    };
+
+    if (generateId) {
+      result.rendererId = generateUIModelID(model);
+    }
+
+    return result;
   }
 
   /**

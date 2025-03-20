@@ -1,5 +1,6 @@
-import { formatDate } from "@decaf-ts/decorator-validation";
+import { formatDate, Model } from "@decaf-ts/decorator-validation";
 import { HTML5DateFormat, UIKeys } from "./constants";
+import { findModelId } from "@decaf-ts/db-decorators";
 
 /**
  * @function formatByType
@@ -54,41 +55,13 @@ export function revertHtml(value: string) {
   });
 }
 
-//
-//
-// export function getValidationsByAttribute<M extends Model>(
-//   validationProperties: UIPropertyDecoratorDefinition[],
-//   validationsByType: ValidationsByKey
-// ): ValidationsByKey {
-//   const parseValueByKey = function (key, value, prop) {
-//     if (!value) return value;
-//
-//     switch (key) {
-//       case ValidationKeys.PATTERN:
-//         const regexp = new RegExp(`^/(.+)/[gimuy]*$`, "g");
-//         const match = regexp.exec(value);
-//         return match ? match[1] : match;
-//       case ValidationKeys.MIN:
-//       case ValidationKeys.MAX:
-//         if (prop in validationsByType)
-//           return formatByType(Object.keys(validationsByType[prop])[0], value);
-//       default:
-//         return value;
-//     }
-//   };
-//   return validationProperties.reduce((accum, vp) => {
-//     accum[vp.prop] = vp.decorators.reduce((ac, decorator) => {
-//       if (decorator.key in ValidatableByAttribute) {
-//         let parsedValue = parseValueByKey(
-//           decorator.key,
-//           decorator.props["value"],
-//           vp.prop
-//         );
-//         if (typeof parsedValue === "undefined") parsedValue = "true";
-//         ac[decorator.key] = parsedValue;
-//       }
-//       return ac;
-//     }, {});
-//     return accum;
-//   }, {});
-// }
+export function generateUIModelID<M extends Model>(model: M) {
+  let id: string | number;
+  try {
+    id = findModelId(model);
+  } catch (e: unknown) {
+    id = Date.now();
+  }
+  const name = model.constructor.name;
+  return `${name}-${id}`;
+}

@@ -2,6 +2,7 @@ import { OperationKeys } from "@decaf-ts/db-decorators";
 
 export interface FieldDefinition<T = void> {
   tag: string;
+  rendererId?: string;
   props: T & FieldProperties;
   children?: FieldDefinition<T>[];
 }
