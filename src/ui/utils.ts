@@ -1,6 +1,12 @@
-import { formatDate, Model } from "@decaf-ts/decorator-validation";
-import { HTML5DateFormat, UIKeys } from "./constants";
-import { findModelId } from "@decaf-ts/db-decorators";
+import {
+  formatDate,
+  Model,
+  parseDate,
+  ReservedModels,
+} from "@decaf-ts/decorator-validation";
+import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
+import { findModelId, InternalError } from "@decaf-ts/db-decorators";
+import { FieldProperties } from "./types";
 
 /**
  * @function formatByType
@@ -17,6 +23,41 @@ export function formatByType(
     return formatDate(new Date(value), format);
   }
   return value;
+}
+
+export function parseValueByType(
+  type: string,
+  value: string | number,
+  fieldProps: FieldProperties
+): string | number | Date {
+  let result: string | number | Date | undefined = undefined;
+  switch (type) {
+    case HTML5InputTypes.NUMBER:
+      result = parseToNumber(value);
+      break;
+    case HTML5InputTypes.DATE:
+      const format: string | undefined = fieldProps.format;
+      result =
+        typeof value === ReservedModels.NUMBER
+          ? new Date(value)
+          : !!value
+            ? format
+              ? parseDate(format, value)
+              : new Date(value)
+            : undefined;
+      break;
+    default:
+      result =
+        typeof value === ReservedModels.STRING
+          ? escapeHtml(value as string)
+          : result;
+  }
+  if (typeof result === "undefined") {
+    throw new InternalError(
+      `Failed to parse value of type ${type} from ${typeof value} - ${value}`
+    );
+  }
+  return result;
 }
 
 export function parseToNumber(value: string | number) {
