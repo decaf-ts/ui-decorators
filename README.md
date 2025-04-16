@@ -1,3 +1,5 @@
+ARCHIVED. Moved to become part of the ![decaf-ts](gitub.com/decaf-ts) project
+
 [![Build](https://github.com/TiagoVenceslau/ui-decorators/actions/workflows/nodejs-build.yaml/badge.svg)](https://github.com/TiagoVenceslau/ui-decorators)
 [![Tests](https://github.com/TiagoVenceslau/ui-decorators/actions/workflows/jest-test.yaml/badge.svg)](https://github.com/TiagoVenceslau/ui-decorators)
 ![Alt text](https://raw.github.com/TiagoVenceslau/ui-decorators/master/workdocs/badges/badge-lines.svg?sanitize=true)
