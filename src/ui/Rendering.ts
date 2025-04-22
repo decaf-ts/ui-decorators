@@ -7,7 +7,13 @@ import {
   ValidationKeys,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
-import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
+import {
+  HTML5DateFormat,
+  HTML5InputTypes,
+  UIKeys,
+  ValidatableByAttribute,
+  ValidatableByType,
+} from "./constants";
 import {
   FieldDefinition,
   FieldProperties,
@@ -125,12 +131,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @returns {boolean} True if the type is validatable, false otherwise.
    */
   protected isValidatableByType(key: string): boolean {
-    return new Set<string>([
-      UIKeys.EMAIL,
-      UIKeys.URL,
-      UIKeys.DATE,
-      UIKeys.PASSWORD,
-    ]).has(key);
+    return Object.keys(ValidatableByType).includes(key);
   }
 
   /**
@@ -141,15 +142,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @returns {boolean} True if the type is validatable by attribute, false otherwise.
    */
   protected isValidatableByAttribute(key: string): boolean {
-    return new Set<string>([
-      UIKeys.REQUIRED,
-      UIKeys.MIN,
-      UIKeys.MAX,
-      UIKeys.STEP,
-      UIKeys.MIN_LENGTH,
-      UIKeys.MAX_LENGTH,
-      UIKeys.PATTERN,
-    ]).has(key);
+    return Object.keys(ValidatableByAttribute).includes(key);
   }
 
   /**
@@ -159,26 +152,18 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @param {string} key - The validation key.
    * @param {ValidationMetadata} value - The validation metadata.
    * @returns {string | number | boolean} The converted attribute value.
+   * @throws {Error} If the given key is not validatable by attribute.
    */
   protected toAttributeValue(
     key: string,
     value: ValidationMetadata
   ): string | number | boolean {
-    switch (key) {
-      case UIKeys.MIN:
-      case UIKeys.MAX:
-      case UIKeys.MIN_LENGTH:
-      case UIKeys.MAX_LENGTH:
-      case UIKeys.STEP:
-        return value.value;
-      case UIKeys.EMAIL:
-      case UIKeys.URL:
-      case UIKeys.PATTERN:
-      case UIKeys.PASSWORD:
-        return value.pattern;
-      default:
-        return true;
-    }
+    if (!Object.keys(ValidatableByAttribute).includes(key))
+      throw new Error(
+        `Invalid attribute key "${key}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
+      );
+
+    return key === UIKeys.REQUIRED ? true : value[key];
   }
 
   /**

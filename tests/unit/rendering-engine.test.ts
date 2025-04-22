@@ -1,6 +1,6 @@
-import { RenderingEngine } from "../../src";
+import type { FieldDefinition } from "../../src";
+import { RenderingEngine, ValidatableByAttribute } from "../../src";
 import { DemoModel, usedDateFormat } from "./models";
-import { FieldDefinition } from "../../src/ui/types";
 import { Model } from "@decaf-ts/decorator-validation";
 
 // @ts-expect-error stoopid jest
@@ -116,6 +116,21 @@ describe("Rendering Engine", () => {
           throw e;
         }
       }
+    );
+  });
+
+  it("Should throw when an invalid key is provided", () => {
+    const invalidKey = "invalidKey";
+    const randomValue = Math.random().toString();
+    expect(() => {
+      engine["toAttributeValue"](invalidKey, {
+        [invalidKey]: randomValue,
+        message: "Should throw an error",
+      });
+    }).toThrowError(
+      new Error(
+        `Invalid attribute key "${invalidKey}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
+      )
     );
   });
 });
