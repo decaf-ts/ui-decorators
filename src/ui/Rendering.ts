@@ -125,9 +125,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @returns {boolean} True if the type is validatable, false otherwise.
    */
   protected isValidatableByType(key: string): boolean {
-    return [UIKeys.EMAIL, UIKeys.URL, UIKeys.DATE, UIKeys.PASSWORD].includes(
-      key
-    );
+    return new Set<string>([
+      UIKeys.EMAIL,
+      UIKeys.URL,
+      UIKeys.DATE,
+      UIKeys.PASSWORD,
+    ]).has(key);
   }
 
   /**
@@ -138,7 +141,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @returns {boolean} True if the type is validatable by attribute, false otherwise.
    */
   protected isValidatableByAttribute(key: string): boolean {
-    return [
+    return new Set<string>([
       UIKeys.REQUIRED,
       UIKeys.MIN,
       UIKeys.MAX,
@@ -146,7 +149,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       UIKeys.MIN_LENGTH,
       UIKeys.MAX_LENGTH,
       UIKeys.PATTERN,
-    ].includes(key);
+    ]).has(key);
   }
 
   /**

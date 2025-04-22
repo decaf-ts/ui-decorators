@@ -35,17 +35,18 @@ export function parseValueByType(
     case HTML5InputTypes.NUMBER:
       result = parseToNumber(value);
       break;
-    case HTML5InputTypes.DATE:
+    case HTML5InputTypes.DATE: {
       const format: string | undefined = fieldProps.format;
       result =
         typeof value === ReservedModels.NUMBER
           ? new Date(value)
-          : !!value
+          : value
             ? format
               ? parseDate(format, value)
               : new Date(value)
             : undefined;
       break;
+    }
     default:
       result =
         typeof value === ReservedModels.STRING
