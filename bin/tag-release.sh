@@ -69,14 +69,14 @@ fi
 
 if [[ $(git status --porcelain) ]]; then
   git add .
-  git commit -m "$TAG - $MESSAGE - before release preparation"
+  git commit -m "$TAG - $MESSAGE - after release preparation"
 fi
 
 npm version "$TAG" -m "$MESSAGE"
 
 git push --follow-tags
 
-if [[ "$MESSAGE" =~ -no-ci$ ]]; then
-  NPM_TOKEN=$(cat .npmtoken) npm publish --access public
-fi
+#if [[ "$MESSAGE" =~ -no-ci$ ]]; then
+NPM_TOKEN=$(cat .npmtoken) npm publish --access public
+#fi
 
