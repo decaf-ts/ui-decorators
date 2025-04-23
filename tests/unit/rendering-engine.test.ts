@@ -15,6 +15,7 @@ describe("Rendering Engine", () => {
     render<M extends Model>(
       model: M,
       globalProps: Record<string, unknown>,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ...args: any[]
     ): FieldDefinition<void> {
       return this.toFieldDefinition(model, globalProps);
@@ -77,6 +78,7 @@ describe("Rendering Engine", () => {
 
     ["id", "name", "birthdate", "year", "email", "website", "password"].forEach(
       (key, i) => {
+        // eslint-disable-next-line no-useless-catch
         try {
           if (!definition.children) throw new Error("Child not defined");
 

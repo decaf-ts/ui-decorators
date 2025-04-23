@@ -11,8 +11,7 @@ import {
   url,
 } from "@decaf-ts/decorator-validation";
 import { uielement, uimodel } from "../../src";
-import { id, OperationKeys } from "@decaf-ts/db-decorators";
-import { hideOn } from "../../src";
+import { id } from "@decaf-ts/db-decorators";
 
 export const usedDateFormat = "yyyy/MM/dd";
 

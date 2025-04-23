@@ -32,18 +32,22 @@
       "useLongnameInNav": false
     },
     "better-docs": {
-      "name": "reflection",
-      "title": "util library with common reflection based functions",
+      "name": "ui-decorators",
+      "title": "Decaf's UI Decorator Library",
       "hideGenerator": true,
       "useLongnameInNav": false,
       "navLinks": [
         {
+          "label": "Test Results",
+          "href": "workdocs/reports/html/test-report.html"
+        },
+        {
           "label": "Test Coverage",
-          "href": "workdocs/coverage"
+          "href": "workdocs/reports/coverage"
         },
         {
           "label": "Github Repository",
-          "href": "https://github.com/decaf-ts/reflection#readme"
+          "href": "https://github.com/decaf-ts/ui-decorators#readme"
         },
         {
           "label": "Github Profile",
