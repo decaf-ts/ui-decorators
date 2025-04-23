@@ -71,7 +71,8 @@ export function parseToNumber(value: string | number) {
 }
 
 export function escapeHtml(value: string) {
-  if (!value) return undefined;
+  if (!value) 
+    return value;
 
   const tagsToReplace: Record<string, string> = {
     "&": "&amp;",
