@@ -1,5 +1,6 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
+  ComparisonValidationKeys,
   Constructor,
   Model,
   ModelConstructor,
@@ -163,7 +164,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         `Invalid attribute key "${key}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
       );
 
-    return key === UIKeys.REQUIRED ? true : value[key];
+    return key === UIKeys.REQUIRED
+      ? true
+      : key in ComparisonValidationKeys
+        ? value.propertyToCompare
+        : value[key];
   }
 
   /**
@@ -440,4 +445,3 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     return `${UIKeys.REFLECT}${key}`;
   }
 }
-
