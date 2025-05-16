@@ -166,7 +166,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
     return key === UIKeys.REQUIRED
       ? true
-      : key in ComparisonValidationKeys
+      : Object.values(ComparisonValidationKeys).includes(key)
         ? value.propertyToCompare
         : value[key];
   }

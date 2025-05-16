@@ -1,5 +1,6 @@
 import {
   date,
+  diff,
   email,
   maxlength,
   minlength,
@@ -39,6 +40,7 @@ export class DemoModel extends Model {
 
   @required()
   @minlength(5)
+  @diff("email")
   @uielement("decaf-crud-field", {
     label: "translation.demo.name.label",
     placeholder: "translation.demo.name.placeholder",
