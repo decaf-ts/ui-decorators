@@ -144,12 +144,15 @@ describe("Rendering Engine", () => {
   describe("toAttributeValue", () => {
     const validationMetadata = Object.values(UIKeys).reduce(
       (acc, k) => {
-        acc[k] = Math.random();
+        const r = Math.random();
+        acc[k] = Object.values(ComparisonValidationKeys).includes(k as any)
+          ? r.toString(36).toUpperCase()
+          : r;
         return acc;
       },
       {} as Record<string, any>
     );
-    validationMetadata["propertyToCompare"] = Math.random().toString();
+    // validationMetadata["propertyToCompare"] = Math.random().toString();
 
     it("required key", () => {
       const result = engine["toAttributeValue"](
@@ -164,7 +167,7 @@ describe("Rendering Engine", () => {
       const regularKeys = Object.keys(validationMetadata).filter((k) => {
         return (
           Object.keys(ValidatableByAttribute).includes(k) &&
-          !Object.values(ComparisonValidationKeys).includes(k) &&
+          !Object.values(ComparisonValidationKeys).includes(k as any) &&
           k !== UIKeys.REQUIRED
         );
       });
@@ -185,7 +188,7 @@ describe("Rendering Engine", () => {
           validationMetadata as ValidationMetadata
         );
         expect(typeof result).toEqual("string");
-        expect(result).toBe(validationMetadata["propertyToCompare"]);
+        expect(result).toBe(validationMetadata[key]);
       });
     });
 
@@ -193,7 +196,7 @@ describe("Rendering Engine", () => {
       const regularKeys = Object.keys(validationMetadata).filter((k) => {
         return (
           !Object.keys(ValidatableByAttribute).includes(k) &&
-          !Object.values(ComparisonValidationKeys).includes(k) &&
+          !Object.values(ComparisonValidationKeys).includes(k as any) &&
           k !== UIKeys.REQUIRED
         );
       });

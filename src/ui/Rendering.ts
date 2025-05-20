@@ -1,6 +1,5 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
-  ComparisonValidationKeys,
   Constructor,
   Model,
   ModelConstructor,
@@ -23,7 +22,7 @@ import {
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
+import { DecoratorMetadata, Reflection } from "@decaf-ts/reflection";
 import { formatByType, generateUIModelID } from "./utils";
 
 /**
@@ -164,11 +163,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         `Invalid attribute key "${key}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
       );
 
-    return key === UIKeys.REQUIRED
-      ? true
-      : Object.values(ComparisonValidationKeys).includes(key as any)
-        ? value.propertyToCompare
-        : value[key];
+    return key === UIKeys.REQUIRED ? true : value[key];
   }
 
   /**
