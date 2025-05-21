@@ -1,0 +1,36 @@
+{
+    "git.ignoreLimitWarning": true,
+    
+    // The number of spaces a tab is equal to. This setting is overridden
+    // based on the file contents when `editor.detectIndentation` is true.
+    "editor.tabSize": 2,
+    // Insert spaces when pressing Tab. This setting is overriden
+    // based on the file contents when `editor.detectIndentation` is true.
+    "editor.insertSpaces": true,
+
+    // When opening a file, `editor.tabSize` and `editor.insertSpaces`
+    // will be detected based on the file contents. Set to false to keep
+    // the values you've explicitly set, above.
+    "editor.detectIndentation": false,
+    // trocar a cor de selecao do texto
+    "workbench.colorCustomizations": {
+        // "editor.selectionBackground": "#135564",
+        // "editor.selectionHighlightBackground": "#135564"
+        "editor.selectionBackground": "#6f0b42",
+        "editor.selectionHighlightBackground": "#6f0b42"
+    },
+
+    "eslint.alwaysShowStatus": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    
+	// "css.validate": false // pra desabilitar logo tudo de css,
+	"css.hover.references": false,
+	"css.hover.documentation": false,
+
+	// caso queira tirar no HTML tmbm
+	// "html.hover.documentation": false,
+	// "html.hover.references": false,
+   
+}

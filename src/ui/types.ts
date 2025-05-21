@@ -6,6 +6,7 @@ export interface FieldDefinition<T = void> {
   rendererId?: string;
   props: T & FieldProperties;
   children?: FieldDefinition<T>[];
+  item?: UIListItemElementMetadata;
 }
 
 export interface FieldProperties {
@@ -62,3 +63,26 @@ export type CrudOperationKeys =
   | OperationKeys.READ
   | OperationKeys.UPDATE
   | OperationKeys.DELETE;
+
+/**
+ * @typedef UIListPropMetadata
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIListPropMetadata = {
+  name: string;
+  props: Record<string, any>;
+};
+
+/**
+ * @typedef UIListItemModelMetadata
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIListItemModelMetadata = {
+  item: UIListItemElementMetadata;
+};
+
+/**
+ * @typedef UIListItemElementMetada
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UIListItemElementMetadata =  Omit<UIElementMetadata, "serialize"> & {mapper: Record<string, string>};

@@ -18,11 +18,13 @@ import {
   FieldDefinition,
   FieldProperties,
   UIElementMetadata,
+  UIListItemElementMetadata,
+  UIListItemModelMetadata,
   UIModelMetadata,
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { DecoratorMetadata, Reflection } from "@decaf-ts/reflection";
+import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
 import { formatByType, generateUIModelID } from "./utils";
 
 /**
@@ -202,7 +204,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
-    const classDecorator: UIModelMetadata =
+    const classDecorators: [UIModelMetadata, UIListItemModelMetadata] = [
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
         model.constructor
@@ -210,14 +212,17 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
         Model.get(model.constructor.name) as any
-      );
-
-    if (!classDecorator)
+      ), 
+      Reflect.getMetadata(RenderingEngine.key(UIKeys.UILISTITEM), model.constructor) ||
+      Reflect.getMetadata(RenderingEngine.key(UIKeys.UILISTITEM),Model.get(model.constructor.name) as any)
+    ];
+    if (!classDecorators)
       throw new RenderingError(
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
       );
 
-    const { tag, props } = classDecorator;
+    const classDecorator = Object.assign({},...classDecorators);
+    const { tag, props, item } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
       Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
@@ -225,8 +230,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         DecoratorMetadata[]
       >;
     let children: FieldDefinition<Record<string, any>>[] | undefined;
-    const childProps: Record<string, any> = {};
-
+    let childProps: Record<string, any> = item?.props || {};
+    let mapper: Record<string, string> = {};
+    
     if (uiDecorators) {
       const validationDecorators: Record<
         string,
@@ -238,80 +244,99 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
-        if (decs.length !== 2)
-          throw new RenderingError(
-            `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
-          );
-        const dec = decs[1]; // Ignore 0, its the design:type
-        if (!dec) throw new RenderingError(`No decorator found`);
-        switch (dec.key) {
-          case UIKeys.PROP:
-            childProps[key] = dec.props as UIPropMetadata;
-            break;
-          case UIKeys.ELEMENT: {
-            children = children || [];
-            const childDefinition: FieldDefinition<Record<string, any>> = {
-              tag: (dec.props as UIElementMetadata).tag,
-              props: Object.assign(
-                {},
-                (dec.props as UIElementMetadata).props as any,
-                globalProps
-              ),
-            };
+        const types = Object.values(decs).filter(item => item.key === UIKeys.PROP || item.key === UIKeys.ELEMENT);
+        if (types?.length > 1)
+          throw new RenderingError(`Only one type of decoration is allowed. Please choose between @uiprop and @uielement`);
+        decs.shift();
+        decs.forEach((dec) => {
+          if (!dec) 
+            throw new RenderingError(`No decorator found`);
 
-            const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
-              validationDecorators[
-                key
-              ] as DecoratorMetadata<ValidationMetadata>[];
+          switch (dec.key) {
+            case UIKeys.PROP:
+              childProps[key] = dec.props as UIPropMetadata;
+              break;
+            case UIKeys.UILISTPROP: {
+              mapper = mapper || {};
+              mapper[dec.props?.name as string] = key;
+              const props = Object.assign({}, (classDecorator.props?.item || {}), item?.props || {}, dec.props?.props || {}, globalProps);
+              childProps = {
+                tag: item?.tag || props.render || "",
+                props: Object.assign(
+                    {},
+                    childProps?.props,  
+                    {mapper},
+                    props
+                  ),  
+              };
+              
+              break;       
+            }
+            case UIKeys.ELEMENT: {
+              children = children || [];
+              const childDefinition: FieldDefinition<Record<string, any>> = {
+                tag: (dec.props as UIElementMetadata).tag,
+                props: Object.assign(
+                  {},
+                  (dec.props as UIElementMetadata).props as any,
+                  globalProps
+                ),
+              };
 
-            const typeDec: DecoratorMetadataObject =
-              validationDecs.shift() as DecoratorMetadata;
-            for (const dec of validationDecs) {
-              if (this.isValidatableByAttribute(dec.key)) {
-                childDefinition.props[this.translate(dec.key)] =
-                  this.toAttributeValue(dec.key, dec.props);
-                continue;
-              }
-              if (this.isValidatableByType(dec.key)) {
-                if (dec.key === HTML5InputTypes.DATE) {
-                  childDefinition.props[UIKeys.FORMAT] =
-                    dec.props.format || HTML5DateFormat;
+              const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
+                validationDecorators[
+                  key
+                ] as DecoratorMetadata<ValidationMetadata>[];
+
+              const typeDec: DecoratorMetadataObject =
+                validationDecs.shift() as DecoratorMetadata;
+              for (const dec of validationDecs) {
+                if (this.isValidatableByAttribute(dec.key)) {
+                  childDefinition.props[this.translate(dec.key)] =
+                    this.toAttributeValue(dec.key, dec.props);
+                  continue;
                 }
-                childDefinition.props[UIKeys.TYPE] = dec.key;
-                continue;
+                if (this.isValidatableByType(dec.key)) {
+                  if (dec.key === HTML5InputTypes.DATE) {
+                    childDefinition.props[UIKeys.FORMAT] =
+                      dec.props.format || HTML5DateFormat;
+                  }
+                  childDefinition.props[UIKeys.TYPE] = dec.key;
+                  continue;
+                }
+                console.log(dec);
               }
-              console.log(dec);
-            }
 
-            if (!childDefinition.props[UIKeys.TYPE]) {
-              const basicType = (typeDec.props as { name: string }).name;
-              childDefinition.props[UIKeys.TYPE] = this.translate(
-                basicType.toLowerCase(),
-                true
+              if (!childDefinition.props[UIKeys.TYPE]) {
+                const basicType = (typeDec.props as { name: string }).name;
+                childDefinition.props[UIKeys.TYPE] = this.translate(
+                  basicType.toLowerCase(),
+                  true
+                );
+              }
+
+              childDefinition.props.value = formatByType(
+                childDefinition.props[UIKeys.TYPE],
+                model[key as keyof M],
+                childDefinition.props[UIKeys.FORMAT]
               );
+
+              children.push(childDefinition);
+              break;
             }
-
-            childDefinition.props.value = formatByType(
-              childDefinition.props[UIKeys.TYPE],
-              model[key as keyof M],
-              childDefinition.props[UIKeys.FORMAT]
-            );
-
-            children.push(childDefinition);
-            break;
+            default:
+              throw new RenderingError(`Invalid key: ${dec.key}`);
           }
-          default:
-            throw new RenderingError(`Invalid key: ${dec.key}`);
-        }
+        })
       }
     }
-
-    const result: FieldDefinition<T> = {
+   
+    const result: FieldDefinition<T> = { 
       tag: tag,
+      item: childProps as UIListItemElementMetadata,
       props: Object.assign({}, props, globalProps) as T & FieldProperties,
       children: children as FieldDefinition<any>[],
     };
-
     if (generateId) {
       result.rendererId = generateUIModelID(model);
     }
@@ -440,3 +465,4 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     return `${UIKeys.REFLECT}${key}`;
   }
 }
+

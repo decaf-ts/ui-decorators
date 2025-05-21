@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
-import { CrudOperationKeys, UIElementMetadata, UIPropMetadata } from "./types";
+import { CrudOperationKeys, UIElementMetadata, UIListPropMetadata, UIPropMetadata } from "./types";
 import { RenderingEngine } from "./Rendering";
 import { OperationKeys } from "@decaf-ts/db-decorators";
 
@@ -84,6 +84,38 @@ export function uiprop(
       stringify: stringify,
     };
     propMetadata(RenderingEngine.key(UIKeys.PROP), metadata)(
+      target,
+      propertyKey
+    );
+  };
+}
+
+
+/**
+ * Decorates a property to define a list property for UI mapping.
+ * This decorator requires a '@uilistitem' with a defined tag.
+ *
+ * @param {string | undefined} [propName] - The property name that will be passed to the component.
+ * Defaults to the PropertyKey.
+ * @param {Record<string, any>} [props] - Additional properties to pass to the component.
+ *
+ * @returns {(target: any, propertyKey: string) => void} - A decorator function.
+ *
+ * @decorator uilistprop
+ *
+ * @category Decorators
+ * @subcategory ui-decorators
+ */
+export function uilistprop(
+  propName: string | undefined = undefined,
+  props?: Record<string, any>,
+) {
+  return (target: any, propertyKey: string) => {
+      const metadata: Partial<UIListPropMetadata> = {
+      name: propName || propertyKey,
+      props: props || {}
+    };
+    propMetadata(RenderingEngine.key(UIKeys.UILISTPROP), metadata)(
       target,
       propertyKey
     );

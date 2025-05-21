@@ -36,6 +36,9 @@ export const UIKeys = {
   NAME_PREFIX: "input-",
   CUSTOM_PROPS: "customValidationProps",
 
+  UILISTITEM: "uilistitem",
+  UILISTPROP: "listprop",
+
   TYPE: "type",
   SUB_TYPE: "subtype",
 
