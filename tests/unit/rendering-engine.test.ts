@@ -1,7 +1,11 @@
 import type { FieldDefinition } from "../../src";
-import { RenderingEngine, ValidatableByAttribute } from "../../src";
+import { RenderingEngine, UIKeys, ValidatableByAttribute } from "../../src";
 import { DemoModel, usedDateFormat } from "./models";
-import { Model } from "@decaf-ts/decorator-validation";
+import {
+  ComparisonValidationKeys,
+  Model,
+  ValidationMetadata,
+} from "@decaf-ts/decorator-validation";
 
 // @ts-expect-error stoopid jest
 Model.setBuilder(Model.fromModel);
@@ -101,6 +105,7 @@ describe("Rendering Engine", () => {
 
           if (key === "name") {
             propsExpectancy["minlength"] = 5;
+            propsExpectancy["different"] = "email";
             propsExpectancy["placeholder"] =
               `translation.demo.${key}.placeholder`;
           }
@@ -134,5 +139,78 @@ describe("Rendering Engine", () => {
         `Invalid attribute key "${invalidKey}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
       )
     );
+  });
+
+  describe("toAttributeValue", () => {
+    const validationMetadata = Object.values(UIKeys).reduce(
+      (acc, k) => {
+        const r = Math.random();
+        acc[k] = Object.values(ComparisonValidationKeys).includes(k as any)
+          ? r.toString(36).toUpperCase()
+          : r;
+        return acc;
+      },
+      {} as Record<string, any>
+    );
+    // validationMetadata["propertyToCompare"] = Math.random().toString();
+
+    it("required key", () => {
+      const result = engine["toAttributeValue"](
+        UIKeys.REQUIRED,
+        validationMetadata as ValidationMetadata
+      );
+      expect(typeof result).toBe("boolean");
+      expect(result).toBeTruthy();
+    });
+
+    it("regular keys", () => {
+      const regularKeys = Object.keys(validationMetadata).filter((k) => {
+        return (
+          Object.keys(ValidatableByAttribute).includes(k) &&
+          !Object.values(ComparisonValidationKeys).includes(k as any) &&
+          k !== UIKeys.REQUIRED
+        );
+      });
+      regularKeys.forEach((key) => {
+        const result = engine["toAttributeValue"](
+          key,
+          validationMetadata as ValidationMetadata
+        );
+        expect(typeof result).toEqual("number");
+        expect(result).toBe(validationMetadata[key]);
+      });
+    });
+
+    it("comparison keys", () => {
+      Object.values(ComparisonValidationKeys).forEach((key) => {
+        const result = engine["toAttributeValue"](
+          key,
+          validationMetadata as ValidationMetadata
+        );
+        expect(typeof result).toEqual("string");
+        expect(result).toBe(validationMetadata[key]);
+      });
+    });
+
+    it("invalid keys", () => {
+      const regularKeys = Object.keys(validationMetadata).filter((k) => {
+        return (
+          !Object.keys(ValidatableByAttribute).includes(k) &&
+          !Object.values(ComparisonValidationKeys).includes(k as any) &&
+          k !== UIKeys.REQUIRED
+        );
+      });
+
+      regularKeys.forEach((key) => {
+        expect(() =>
+          engine["toAttributeValue"](
+            key,
+            validationMetadata as ValidationMetadata
+          )
+        ).toThrowError(
+          new RegExp(`Invalid attribute key "${key}". Expected one of:`)
+        );
+      });
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { OperationKeys } from "@decaf-ts/db-decorators";
+import { UIKeys } from "./constants";
 
 export interface FieldDefinition<T = void> {
   tag: string;
@@ -23,6 +24,12 @@ export interface FieldProperties {
   pattern?: string;
   step?: number;
   format?: string;
+  [UIKeys.EQUALS]?: string;
+  [UIKeys.DIFF]?: string;
+  [UIKeys.LESS_THAN]?: string;
+  [UIKeys.LESS_THAN_OR_EQUAL]?: string;
+  [UIKeys.GREATER_THAN]?: string;
+  [UIKeys.GREATER_THAN_OR_EQUAL]?: string;
 }
 
 /**

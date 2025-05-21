@@ -22,7 +22,7 @@ import {
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { Reflection, DecoratorMetadata } from "@decaf-ts/reflection";
+import { DecoratorMetadata, Reflection } from "@decaf-ts/reflection";
 import { formatByType, generateUIModelID } from "./utils";
 
 /**
@@ -440,4 +440,3 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     return `${UIKeys.REFLECT}${key}`;
   }
 }
-
