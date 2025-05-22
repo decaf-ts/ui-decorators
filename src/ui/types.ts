@@ -85,4 +85,8 @@ export type UIListItemModelMetadata = {
  * @typedef UIListItemElementMetada
  * @memberOf ui-decorators.ui.decorators
  */
-export type UIListItemElementMetadata =  Omit<UIElementMetadata, "serialize"> & {mapper: Record<string, string>};
+export type UIListItemElementMetadata = {
+  tag: string;
+  props?: Record<string, any>;
+  mapper?: Record<string, string>;
+}
