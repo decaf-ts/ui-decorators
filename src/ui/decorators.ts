@@ -92,16 +92,13 @@ export function uiprop(
 
 
 /**
- * Decorates a property to define a list property for UI mapping.
- * This decorator requires a '@uilistitem' with a defined tag.
+ * Adds the UIListProp definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
  *
- * @param {string | undefined} [propName] - The property name that will be passed to the component.
- * Defaults to the PropertyKey.
- * @param {Record<string, any>} [props] - Additional properties to pass to the component.
+ * this requires a '@uilistitem' with a defined tag
  *
- * @returns {(target: any, propertyKey: string) => void} - A decorator function.
+ * @param {string} [propName] the property name that will be passed to the component. defaults to the PropertyKey
  *
- * @decorator uilistprop
+ * @decorator uiprop
  *
  * @category Decorators
  * @subcategory ui-decorators
