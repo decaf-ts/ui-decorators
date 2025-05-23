@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { UIKeys } from "./constants";
 import { propMetadata } from "@decaf-ts/decorator-validation";
-import { CrudOperationKeys, UIElementMetadata, UIPropMetadata } from "./types";
+import { CrudOperationKeys, UIElementMetadata, UIListPropMetadata, UIPropMetadata } from "./types";
 import { RenderingEngine } from "./Rendering";
 import { OperationKeys } from "@decaf-ts/db-decorators";
 
@@ -84,6 +84,35 @@ export function uiprop(
       stringify: stringify,
     };
     propMetadata(RenderingEngine.key(UIKeys.PROP), metadata)(
+      target,
+      propertyKey
+    );
+  };
+}
+
+
+/**
+ * Adds the UIListProp definition as metadata to the property, allowing it to be read by any {@link RenderStrategy}
+ *
+ * this requires a '@uilistitem' with a defined tag
+ *
+ * @param {string} [propName] the property name that will be passed to the component. defaults to the PropertyKey
+ *
+ * @decorator uiprop
+ *
+ * @category Decorators
+ * @subcategory ui-decorators
+ */
+export function uilistprop(
+  propName: string | undefined = undefined,
+  props?: Record<string, any>,
+) {
+  return (target: any, propertyKey: string) => {
+      const metadata: Partial<UIListPropMetadata> = {
+      name: propName || propertyKey,
+      props: props || {}
+    };
+    propMetadata(RenderingEngine.key(UIKeys.UILISTPROP), metadata)(
       target,
       propertyKey
     );

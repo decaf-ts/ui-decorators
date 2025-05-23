@@ -1,7 +1,7 @@
 import { UIKeys } from "../ui/constants";
 import { apply, metadata } from "@decaf-ts/reflection";
 import { RenderingEngine } from "../ui/Rendering";
-import { UIModelMetadata } from "../ui/types";
+import { UIListItemModelMetadata, UIModelMetadata } from "../ui/types";
 
 /**
  * Tags the model as a uimodel, giving it the 'render' method
@@ -39,4 +39,37 @@ export function uimodel(tag?: string, props?: Record<string, any>) {
 
 export function renderedBy(engine: string) {
   return apply(metadata(RenderingEngine.key(UIKeys.RENDERED_BY), engine));
+}
+
+/**
+ * Tags the model as a list item for UI rendering, specifying how it should be rendered in list contexts
+ *
+ * @param {string} [tag] optional param. will render the provided element as the list item container
+ * @param {{}} [props] optional param. Attributes to be passed to the tag element
+ *
+ * @decorator uilistitem
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant System
+ *   participant uilistitem
+ *   participant Model
+ *   System->>uilistitem: apply to Model
+ *   uilistitem->>Model: adds list item metadata
+ *   Model->>System: returns Model with list item rendering capabilities
+ *
+ * @category Decorators
+ */
+export function uilistitem(tag?: string,  props?: Record<string, any>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (original: any, propertyKey?: any) => {
+    const meta: UIListItemModelMetadata = { 
+      item: {
+        tag: tag || original.name,
+        props: props,
+      } 
+      
+    };
+    return metadata(RenderingEngine.key(UIKeys.UILISTITEM), meta)(original);
+  };
 }

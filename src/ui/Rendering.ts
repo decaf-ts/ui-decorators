@@ -8,17 +8,13 @@ import {
   ValidationKeys,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
-import {
-  HTML5DateFormat,
-  HTML5InputTypes,
-  UIKeys,
-  ValidatableByAttribute,
-  ValidatableByType,
-} from "./constants";
+import { HTML5DateFormat, HTML5InputTypes, UIKeys, ValidatableByAttribute, ValidatableByType } from "./constants";
 import {
   FieldDefinition,
   FieldProperties,
   UIElementMetadata,
+  UIListItemElementMetadata,
+  UIListItemModelMetadata,
   UIModelMetadata,
   UIPropMetadata,
 } from "./types";
@@ -203,21 +199,32 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
-    const classDecorator: UIModelMetadata =
+    const classDecorators: [UIModelMetadata, UIListItemModelMetadata] = [
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
         model.constructor
       ) ||
+        Reflect.getMetadata(
+          RenderingEngine.key(UIKeys.UIMODEL),
+          Model.get(model.constructor.name) as any
+        ),
       Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UIMODEL),
-        Model.get(model.constructor.name) as any
-      );
-    if (!classDecorator)
+        RenderingEngine.key(UIKeys.UILISTITEM),
+        model.constructor
+      ) ||
+        Reflect.getMetadata(
+          RenderingEngine.key(UIKeys.UILISTITEM),
+          Model.get(model.constructor.name) as any
+        ),
+    ];
+
+    if (!classDecorators)
       throw new RenderingError(
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
       );
 
-    const { tag, props } = classDecorator;
+    const classDecorator = Object.assign({},...classDecorators);
+    const { tag, props, item } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
       Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
@@ -225,7 +232,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         DecoratorMetadata[]
       >;
     let children: FieldDefinition<Record<string, any>>[] | undefined;
-    const childProps: Record<string, any> = {};
+    let childProps: Record<string, any> = item?.props || {};
+    let mapper: Record<string, string> = {};
 
     if (uiDecorators) {
       const validationDecorators: Record<
@@ -238,107 +246,129 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
-        if (decs.length !== 2)
+        const types = Object.values(decs).filter(
+          (item) => item.key === UIKeys.PROP || item.key === UIKeys.ELEMENT
+        );
+        if (types?.length > 1)
           throw new RenderingError(
             `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
           );
-        const dec = decs[1]; // Ignore 0, its the design:type
-        if (!dec) throw new RenderingError(`No decorator found`);
-        switch (dec.key) {
-          case UIKeys.PROP: {
-            if (!isPropertyModel(model, key)) {
-              childProps[key] = dec.props as UIPropMetadata;
+        decs.shift();
+        decs.forEach((dec) => {
+          if (!dec) throw new RenderingError(`No decorator found`);
+
+          switch (dec.key) {
+            case UIKeys.PROP: {
+              if (!isPropertyModel(model, key)) {
+                childProps[key] = dec.props as UIPropMetadata;
+                break;
+              }
+
+              let Clazz;
+              const submodel = (model as Record<string, any>)[key] as Model;
+              const constructable =
+                typeof submodel === "object" &&
+                submodel !== null &&
+                !Array.isArray(submodel);
+              if (!constructable)
+                Clazz = new (Model.get(
+                  dec.props?.name as string
+                ) as ModelConstructor<Model>)();
+
+              children = children || [];
+              const childDefinition = this.toFieldDefinition(
+                submodel || Clazz,
+                globalProps,
+                false
+              );
+              children.push(
+                childDefinition as FieldDefinition<Record<string, any>>
+              );
               break;
             }
-
-            let Clazz;
-            const submodel = (model as Record<string, any>)[key] as Model;
-            const constructable =
-              typeof submodel === "object" &&
-              submodel !== null &&
-              !Array.isArray(submodel);
-            if (!constructable)
-              Clazz = new (Model.get(
-                dec.props?.name as string
-              ) as ModelConstructor<Model>)();
-
-            children = children || [];
-            const childDefinition = this.toFieldDefinition(
-              submodel || Clazz,
-              globalProps,
-              false
-            );
-            children.push(
-              childDefinition as FieldDefinition<Record<string, any>>
-            );
-            break;
-          }
-          case UIKeys.ELEMENT: {
-            children = children || [];
-            const childDefinition: FieldDefinition<Record<string, any>> = {
-              tag: (dec.props as UIElementMetadata).tag,
-              props: Object.assign(
+            case UIKeys.UILISTPROP: {
+              mapper = mapper || {};
+              mapper[dec.props?.name as string] = key;
+              const props = Object.assign(
                 {},
-                (dec.props as UIElementMetadata).props as any,
+                classDecorator.props?.item || {},
+                item?.props || {},
+                dec.props?.props || {},
                 globalProps
-              ),
-            };
-
-            const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
-              validationDecorators[
-                key
-              ] as DecoratorMetadata<ValidationMetadata>[];
-
-            const typeDec: DecoratorMetadataObject =
-              validationDecs.shift() as DecoratorMetadata;
-            for (const dec of validationDecs) {
-              if (this.isValidatableByAttribute(dec.key)) {
-                childDefinition.props[this.translate(dec.key)] =
-                  this.toAttributeValue(dec.key, dec.props);
-                continue;
-              }
-              if (this.isValidatableByType(dec.key)) {
-                if (dec.key === HTML5InputTypes.DATE) {
-                  childDefinition.props[UIKeys.FORMAT] =
-                    dec.props.format || HTML5DateFormat;
-                }
-                childDefinition.props[UIKeys.TYPE] = dec.key;
-                continue;
-              }
-            }
-
-            if (!childDefinition.props[UIKeys.TYPE]) {
-              const basicType = (typeDec.props as { name: string }).name;
-              childDefinition.props[UIKeys.TYPE] = this.translate(
-                basicType.toLowerCase(),
-                true
               );
+              childProps = {
+                tag: item?.tag || props.render || "",
+                props: Object.assign({}, childProps?.props, { mapper }, props),
+              };
+
+              break;
             }
+            case UIKeys.ELEMENT: {
+              children = children || [];
+              const childDefinition: FieldDefinition<Record<string, any>> = {
+                tag: (dec.props as UIElementMetadata).tag,
+                props: Object.assign(
+                  {},
+                  (dec.props as UIElementMetadata).props as any,
+                  globalProps
+                ),
+              };
 
-            childDefinition.props.value = formatByType(
-              childDefinition.props[UIKeys.TYPE],
-              model[key as keyof M],
-              childDefinition.props[UIKeys.FORMAT]
-            );
+              const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
+                validationDecorators[
+                  key
+                ] as DecoratorMetadata<ValidationMetadata>[];
 
-            children.push(childDefinition);
-            break;
+              const typeDec: DecoratorMetadataObject =
+                validationDecs.shift() as DecoratorMetadata;
+              for (const dec of validationDecs) {
+                if (this.isValidatableByAttribute(dec.key)) {
+                  childDefinition.props[this.translate(dec.key)] =
+                    this.toAttributeValue(dec.key, dec.props);
+                  continue;
+                }
+                if (this.isValidatableByType(dec.key)) {
+                  if (dec.key === HTML5InputTypes.DATE) {
+                    childDefinition.props[UIKeys.FORMAT] =
+                      dec.props.format || HTML5DateFormat;
+                  }
+                  childDefinition.props[UIKeys.TYPE] = dec.key;
+                  continue;
+                }
+              }
+
+              if (!childDefinition.props[UIKeys.TYPE]) {
+                const basicType = (typeDec.props as { name: string }).name;
+                childDefinition.props[UIKeys.TYPE] = this.translate(
+                  basicType.toLowerCase(),
+                  true
+                );
+              }
+
+              childDefinition.props.value = formatByType(
+                childDefinition.props[UIKeys.TYPE],
+                model[key as keyof M],
+                childDefinition.props[UIKeys.FORMAT]
+              );
+
+              children.push(childDefinition);
+              break;
+            }
+            default:
+              throw new RenderingError(`Invalid key: ${dec.key}`);
           }
-          default:
-            throw new RenderingError(`Invalid key: ${dec.key}`);
-        }
+        });
       }
     }
 
     const result: FieldDefinition<T> = {
       tag: tag,
+      item: childProps as UIListItemElementMetadata,
       props: Object.assign({}, props, globalProps) as T & FieldProperties,
       children: children as FieldDefinition<any>[],
     };
 
-    if (generateId) {
-      result.rendererId = generateUIModelID(model);
-    }
+    if (generateId) result.rendererId = generateUIModelID(model);
 
     return result;
   }
