@@ -1,6 +1,7 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
+  isPropertyModel,
   Model,
   ModelConstructor,
   ReservedModels,
@@ -211,7 +212,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         RenderingEngine.key(UIKeys.UIMODEL),
         Model.get(model.constructor.name) as any
       );
-
     if (!classDecorator)
       throw new RenderingError(
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
@@ -245,9 +245,34 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         const dec = decs[1]; // Ignore 0, its the design:type
         if (!dec) throw new RenderingError(`No decorator found`);
         switch (dec.key) {
-          case UIKeys.PROP:
-            childProps[key] = dec.props as UIPropMetadata;
+          case UIKeys.PROP: {
+            if (!isPropertyModel(model, key)) {
+              childProps[key] = dec.props as UIPropMetadata;
+              break;
+            }
+
+            let Clazz;
+            const submodel = (model as Record<string, any>)[key] as Model;
+            const constructable =
+              typeof submodel === "object" &&
+              submodel !== null &&
+              !Array.isArray(submodel);
+            if (!constructable)
+              Clazz = new (Model.get(
+                dec.props?.name as string
+              ) as ModelConstructor<Model>)();
+
+            children = children || [];
+            const childDefinition = this.toFieldDefinition(
+              submodel || Clazz,
+              globalProps,
+              false
+            );
+            children.push(
+              childDefinition as FieldDefinition<Record<string, any>>
+            );
             break;
+          }
           case UIKeys.ELEMENT: {
             children = children || [];
             const childDefinition: FieldDefinition<Record<string, any>> = {
@@ -280,7 +305,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 childDefinition.props[UIKeys.TYPE] = dec.key;
                 continue;
               }
-              console.log(dec);
             }
 
             if (!childDefinition.props[UIKeys.TYPE]) {
