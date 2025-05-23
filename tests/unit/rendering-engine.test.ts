@@ -15,7 +15,6 @@ import {
 } from "./models";
 import {
   ComparisonValidationKeys,
-  isPropertyModel,
   model,
   Model,
   ValidationMetadata,
@@ -169,7 +168,7 @@ describe("Rendering Engine", () => {
       }
 
       const root = new RootModel();
-      const def = engine.toFieldDefinition(root, {});
+      const def = engine["toFieldDefinition"](root, {});
 
       expect(def.children).toBeUndefined();
       // expect(def.childProps?.nested).toEqual({ name: "nested" });
@@ -215,7 +214,7 @@ describe("Rendering Engine", () => {
     it("should call toFieldDefinition for submodel if it is undefined", () => {
       const model = new ParentModel({});
       expect(model.neighbor).toBeUndefined();
-      expect(isPropertyModel(model, "neighbor")).toBeTruthy();
+      expect(Model.isPropertyModel(model, "neighbor")).toBeTruthy();
 
       const globalProps = { operation: "update" };
       const def = engine["toFieldDefinition"](model, globalProps);

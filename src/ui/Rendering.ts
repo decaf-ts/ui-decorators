@@ -1,14 +1,19 @@
 import { InternalError } from "@decaf-ts/db-decorators";
 import {
   Constructor,
-  isPropertyModel,
   Model,
   ModelConstructor,
   ReservedModels,
   ValidationKeys,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
-import { HTML5DateFormat, HTML5InputTypes, UIKeys, ValidatableByAttribute, ValidatableByType } from "./constants";
+import {
+  HTML5DateFormat,
+  HTML5InputTypes,
+  UIKeys,
+  ValidatableByAttribute,
+  ValidatableByType,
+} from "./constants";
 import {
   FieldDefinition,
   FieldProperties,
@@ -223,7 +228,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
       );
 
-    const classDecorator = Object.assign({},...classDecorators);
+    const classDecorator = Object.assign({}, ...classDecorators);
     const { tag, props, item } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
@@ -259,7 +264,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
           switch (dec.key) {
             case UIKeys.PROP: {
-              if (!isPropertyModel(model, key)) {
+              if (!Model.isPropertyModel(model, key)) {
                 childProps[key] = dec.props as UIPropMetadata;
                 break;
               }
