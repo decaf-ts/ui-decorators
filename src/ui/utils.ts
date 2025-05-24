@@ -71,8 +71,7 @@ export function parseToNumber(value: string | number) {
 }
 
 export function escapeHtml(value: string) {
-  if (!value) 
-    return value;
+  if (!value) return value;
 
   const tagsToReplace: Record<string, string> = {
     "&": "&amp;",
@@ -99,7 +98,7 @@ export function revertHtml(value: string) {
 export function generateUIModelID<M extends Model>(model: M) {
   let id: string | number;
   try {
-    id = findModelId(model);
+    id = findModelId(model) as string | number;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
     id = Date.now();
