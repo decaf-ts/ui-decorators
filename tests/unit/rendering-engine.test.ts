@@ -1,8 +1,21 @@
 import type { FieldDefinition } from "../../src";
-import { RenderingEngine, UIKeys, ValidatableByAttribute } from "../../src";
-import { DemoModel, usedDateFormat } from "./models";
+import {
+  RenderingEngine,
+  UIKeys,
+  uimodel,
+  uiprop,
+  ValidatableByAttribute,
+} from "../../src";
+import {
+  AddressModel,
+  DemoModel,
+  NeighborModel,
+  ParentModel,
+  usedDateFormat,
+} from "./models";
 import {
   ComparisonValidationKeys,
+  model,
   Model,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
@@ -139,6 +152,95 @@ describe("Rendering Engine", () => {
         `Invalid attribute key "${invalidKey}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
       )
     );
+  });
+
+  describe("toFieldDefinition", () => {
+    it("should assign props when uiprop is a common type", () => {
+      @uimodel("decaf-crud-form")
+      @model()
+      class RootModel extends Model {
+        @uiprop()
+        nested: string = "just a string";
+
+        constructor() {
+          super();
+        }
+      }
+
+      const root = new RootModel();
+      const def = engine["toFieldDefinition"](root, {});
+
+      expect(def.children).toBeUndefined();
+      // expect(def.childProps?.nested).toEqual({ name: "nested" });
+    });
+
+    it("should call toFieldDefinition for submodel if it is constructable", () => {
+      const model = new ParentModel({
+        name: "parent.name",
+        neighbor: new NeighborModel({
+          name: "neighbor.name",
+          address: new AddressModel({
+            street: "address.street",
+            zipcode: Math.floor(Math.random() * 100000) + 100000,
+          }),
+        }),
+      });
+      const globalProps = { operation: "create", dummy: "prop" };
+      const def = engine["toFieldDefinition"](model, globalProps);
+
+      expect(def.tag).toEqual("decaf-crud-form");
+      expect(def.props).toEqual(globalProps);
+      expect(def.children).toHaveLength(Object.keys(model).length);
+
+      const neighborDef = (
+        def.children as FieldDefinition[]
+      ).pop() as FieldDefinition;
+      expect(neighborDef.tag).toEqual("decaf-crud-form");
+      expect(neighborDef.props).toEqual(globalProps);
+      expect(neighborDef.children).toHaveLength(
+        Object.keys(model.neighbor).length
+      );
+
+      const addressDef = (
+        neighborDef.children as FieldDefinition[]
+      ).pop() as FieldDefinition;
+      expect(addressDef.tag).toEqual("decaf-address-form");
+      expect(addressDef.props).toEqual(globalProps);
+      expect(addressDef.children).toHaveLength(
+        Object.keys(model.neighbor.address).length
+      );
+    });
+
+    it("should call toFieldDefinition for submodel if it is undefined", () => {
+      const model = new ParentModel({});
+      expect(model.neighbor).toBeUndefined();
+      expect(Model.isPropertyModel(model, "neighbor")).toBeTruthy();
+
+      const globalProps = { operation: "update" };
+      const def = engine["toFieldDefinition"](model, globalProps);
+
+      expect(def.tag).toEqual("decaf-crud-form");
+      expect(def.props).toEqual(globalProps);
+      expect(def.children).toHaveLength(Object.keys(model).length);
+
+      const neighborDef = (
+        def.children as FieldDefinition[]
+      ).pop() as FieldDefinition;
+      expect(neighborDef.tag).toEqual("decaf-crud-form");
+      expect(neighborDef.props).toEqual(globalProps);
+      expect(neighborDef.children).toHaveLength(
+        Object.keys(new NeighborModel({})).length
+      );
+
+      const addressDef = (
+        neighborDef.children as FieldDefinition[]
+      ).pop() as FieldDefinition;
+      expect(addressDef.tag).toEqual("decaf-address-form");
+      expect(addressDef.props).toEqual(globalProps);
+      expect(addressDef.children).toHaveLength(
+        Object.keys(new AddressModel({})).length
+      );
+    });
   });
 
   describe("toAttributeValue", () => {

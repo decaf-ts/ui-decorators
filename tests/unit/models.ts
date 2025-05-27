@@ -11,7 +11,7 @@ import {
   required,
   url,
 } from "@decaf-ts/decorator-validation";
-import { uielement, uimodel } from "../../src";
+import { uielement, uimodel, uiprop } from "../../src";
 import { id } from "@decaf-ts/db-decorators";
 
 export const usedDateFormat = "yyyy/MM/dd";
@@ -71,6 +71,67 @@ export class DemoModel extends Model {
   password!: string;
 
   constructor(arg?: ModelArg<DemoModel>) {
+    super(arg);
+  }
+}
+
+@uimodel("decaf-address-form")
+@model()
+export class AddressModel extends Model {
+  @id()
+  @uielement("ngx-decaf-crud-field", { label: "Address id" })
+  id!: number;
+
+  @required()
+  @uielement("ngx-decaf-crud-field", { label: "Street" })
+  street!: string;
+
+  @uielement("ngx-decaf-crud-field", { label: "Zipcode" })
+  zipcode?: number;
+
+  constructor(arg?: ModelArg<AddressModel>) {
+    super(arg);
+  }
+}
+
+@uimodel("decaf-crud-form")
+@model()
+export class NeighborModel extends Model {
+  @id()
+  @uielement("ngx-decaf-crud-field", { label: "Neighbor id" })
+  id!: string;
+
+  @required()
+  @uielement("ngx-decaf-crud-field", { label: "Neighbor name" })
+  name!: string;
+
+  // @type(AddressModel.name)
+  @uiprop(AddressModel.name)
+  address!: AddressModel;
+
+  constructor(arg?: ModelArg<NeighborModel>) {
+    super(arg);
+  }
+}
+
+@uimodel("decaf-crud-form")
+@model()
+export class ParentModel extends Model {
+  @id()
+  @uielement("ngx-decaf-crud-field", { label: "Parent id" })
+  id!: number;
+
+  @required()
+  @minlength(3)
+  @uielement("ngx-decaf-crud-field", { label: "Parent name" })
+  name!: string;
+
+  // @required()
+  // @type(NeighborModel.name)
+  @uiprop(NeighborModel.name)
+  neighbor!: NeighborModel;
+
+  constructor(arg?: ModelArg<ParentModel>) {
     super(arg);
   }
 }

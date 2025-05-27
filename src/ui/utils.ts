@@ -96,7 +96,7 @@ export function revertHtml(value: string) {
 }
 
 export function generateUIModelID<M extends Model>(model: M) {
-  let id: string | number;
+  let id: string | number | bigint;
   try {
     id = findModelId(model) as string | number;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
