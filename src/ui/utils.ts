@@ -11,7 +11,7 @@ import { FieldProperties } from "./types";
 /**
  * @function formatByType
  *
- * @memberOf ui-decorators-web.ui
+ * @memberOf module:ui-decorators
  */
 export function formatByType(
   type: any,
