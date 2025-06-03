@@ -147,12 +147,9 @@ export function uielement(
     const metadata: UIElementMetadata = {
       tag: tag,
       serialize: serialize,
-      props: Object.assign(
-        {
-          name: propertyKey,
-        },
-        props || {}
-      ),
+      props: Object.assign({}, props || {}, {
+        name: propertyKey,
+      }),
     };
 
     return propMetadata(RenderingEngine.key(UIKeys.ELEMENT), metadata)(

@@ -44,6 +44,8 @@ export interface FieldDefinition<T = void> {
  * @memberOf module:ui-decorators
  *
  * @property {string} name - The name of the field
+ * @property {string} path - The full hierarchical path of the field
+ * @property {string} childOf - The parent path of the immediate parent field, if nested
  * @property {string} type - The type of the field (e.g., 'text', 'number')
  * @property {string|number|Date} value - The current value of the field
  * @property {boolean} [hidden] - Whether the field is hidden
@@ -66,6 +68,8 @@ export interface FieldDefinition<T = void> {
  */
 export interface FieldProperties {
   name: string;
+  path: string;
+  childOf?: string;
   type: string;
   value: string | number | Date;
   hidden?: boolean;

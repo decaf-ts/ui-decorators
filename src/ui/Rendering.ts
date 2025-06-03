@@ -240,6 +240,10 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     let childProps: Record<string, any> = item?.props || {};
     let mapper: Record<string, string> = {};
 
+    const getPath = (parent: string | undefined, prop: string) => {
+      return parent ? [parent, prop].join(".") : prop;
+    };
+
     if (uiDecorators) {
       const validationDecorators: Record<
         string,
@@ -281,9 +285,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 ) as ModelConstructor<Model>)();
 
               children = children || [];
+              const childrenGlobalProps = Object.assign({}, globalProps || {}, {
+                childOf: getPath(globalProps?.childOf as string, key),
+              });
               const childDefinition = this.toFieldDefinition(
                 submodel || Clazz,
-                globalProps,
+                childrenGlobalProps,
                 false
               );
               children.push(
@@ -310,13 +317,24 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.ELEMENT: {
               children = children || [];
+
+              const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
+              const props = Object.assign(
+                {},
+                uiProps.props as any,
+                {
+                  path: getPath(
+                    globalProps?.childOf as string,
+                    uiProps.props!.name
+                  ),
+                  childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
+                },
+                globalProps
+              );
+
               const childDefinition: FieldDefinition<Record<string, any>> = {
-                tag: (dec.props as UIElementMetadata).tag,
-                props: Object.assign(
-                  {},
-                  (dec.props as UIElementMetadata).props as any,
-                  globalProps
-                ),
+                tag: uiProps.tag,
+                props,
               };
 
               const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
