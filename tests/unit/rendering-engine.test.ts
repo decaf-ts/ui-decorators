@@ -93,6 +93,27 @@ describe("Rendering Engine", () => {
       }
     }
 
+    const additionalProps: any = {
+      id: {
+        required: true,
+      },
+      name: {
+        required: true,
+        minlength: 5,
+        different: "email",
+        placeholder: `translation.demo.name.placeholder`,
+      },
+      birthdate: {
+        required: true,
+        format: usedDateFormat,
+        value: testModel["birthdate"].toString(),
+      },
+      year: { required: true },
+      email: { required: true },
+      website: {},
+      password: { required: true },
+    };
+
     ["id", "name", "birthdate", "year", "email", "website", "password"].forEach(
       (key, i) => {
         // eslint-disable-next-line no-useless-catch
@@ -105,23 +126,10 @@ describe("Rendering Engine", () => {
             label: `translation.demo.${key}.label`,
             type: parseType(key),
             value: testModel[key as keyof DemoModel],
+            path: key,
+            childOf: undefined,
+            ...(additionalProps[key] || {}),
           };
-
-          if (key !== "website") {
-            propsExpectancy["required"] = true;
-          }
-
-          if (key === "birthdate") {
-            propsExpectancy["format"] = usedDateFormat;
-            propsExpectancy["value"] = propsExpectancy["value"].toString();
-          }
-
-          if (key === "name") {
-            propsExpectancy["minlength"] = 5;
-            propsExpectancy["different"] = "email";
-            propsExpectancy["placeholder"] =
-              `translation.demo.${key}.placeholder`;
-          }
 
           expect(definition.children[i].props).toEqual(
             Object.assign(
@@ -196,7 +204,10 @@ describe("Rendering Engine", () => {
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(neighborDef.tag).toEqual("decaf-crud-form");
-      expect(neighborDef.props).toEqual(globalProps);
+      expect(neighborDef.props).toEqual({
+        ...globalProps,
+        childOf: "neighbor",
+      });
       expect(neighborDef.children).toHaveLength(
         Object.keys(model.neighbor).length
       );
@@ -205,7 +216,10 @@ describe("Rendering Engine", () => {
         neighborDef.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(addressDef.tag).toEqual("decaf-address-form");
-      expect(addressDef.props).toEqual(globalProps);
+      expect(addressDef.props).toEqual({
+        ...globalProps,
+        childOf: "neighbor.address",
+      });
       expect(addressDef.children).toHaveLength(
         Object.keys(model.neighbor.address).length
       );
@@ -227,7 +241,10 @@ describe("Rendering Engine", () => {
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(neighborDef.tag).toEqual("decaf-crud-form");
-      expect(neighborDef.props).toEqual(globalProps);
+      expect(neighborDef.props).toEqual({
+        ...globalProps,
+        childOf: "neighbor",
+      });
       expect(neighborDef.children).toHaveLength(
         Object.keys(new NeighborModel({})).length
       );
@@ -236,7 +253,10 @@ describe("Rendering Engine", () => {
         neighborDef.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(addressDef.tag).toEqual("decaf-address-form");
-      expect(addressDef.props).toEqual(globalProps);
+      expect(addressDef.props).toEqual({
+        ...globalProps,
+        childOf: "neighbor.address",
+      });
       expect(addressDef.children).toHaveLength(
         Object.keys(new AddressModel({})).length
       );
