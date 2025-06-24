@@ -150,3 +150,13 @@ export function uilistitem(tag?: string, props?: Record<string, any>) {
     return metadata(RenderingEngine.key(UIKeys.UILISTITEM), meta)(original);
   };
 }
+
+
+export function uihandlers(props?: Record<string, any>) {
+  return (original: any) => {
+    const meta = {
+      handlers: props
+    };
+    return metadata(RenderingEngine.key(UIKeys.HANDLERS), meta)(original);
+  };
+}
