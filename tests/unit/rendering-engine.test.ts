@@ -70,7 +70,7 @@ describe("Rendering Engine", () => {
     expect(definition).toBeDefined();
     expect(definition.tag).toEqual("decaf-crud-form");
     expect(definition.rendererId).toBeDefined();
-    expect(definition.props).toEqual({ operation: "create", test: "1" });
+    expect(definition.props).toEqual({ operation: "create", test: "1", handlers: {} });
     expect(definition.children).toBeDefined();
     if (!definition.children) throw new Error("Children not defined");
     expect(definition.children?.length).toEqual(7);
@@ -193,9 +193,9 @@ describe("Rendering Engine", () => {
           }),
         }),
       });
-      const globalProps = { operation: "create", dummy: "prop" };
+      const globalProps = { operation: "create", dummy: "prop", handlers: {} };
       const def = engine["toFieldDefinition"](model, globalProps);
-
+ 
       expect(def.tag).toEqual("decaf-crud-form");
       expect(def.props).toEqual(globalProps);
       expect(def.children).toHaveLength(Object.keys(model).length);
@@ -230,7 +230,7 @@ describe("Rendering Engine", () => {
       expect(model.neighbor).toBeUndefined();
       expect(Model.isPropertyModel(model, "neighbor")).toBeTruthy();
 
-      const globalProps = { operation: "update" };
+      const globalProps = { operation: "update", handlers: {} };
       const def = engine["toFieldDefinition"](model, globalProps);
 
       expect(def.tag).toEqual("decaf-crud-form");
