@@ -219,6 +219,67 @@ export function uiprop(
 }
 
 /**
+ * @description Decorator that maps a model property to a UI component property
+ * @summary Specifies how a property should be passed to a UI component
+ * This decorator allows you to define how a model property should be mapped to
+ * a property of the UI component when rendering. It requires the class to be
+ * decorated with @uimodel.
+ *
+ * @param {string} [propName] The name of the property to pass to the component (defaults to the property key)
+ * @param {boolean} [stringify=false] Whether to stringify the property value
+ * @return {Function} A property decorator function
+ *
+ * @function uiprop
+ * @category Property Decorators
+ *
+ * @example
+ * // Map model properties to component properties
+ * @uimodel('user-profile')
+ * class UserProfile {
+ *   @attribute()
+ *   @uiprop() // Will be passed as 'fullName' to the component
+ *   fullName: string;
+ *
+ *   @attribute()
+ *   @uiprop('userEmail') // Will be passed as 'userEmail' to the component
+ *   email: string;
+ *
+ *   @attribute()
+ *   @uiprop('userData', true) // Will be passed as stringified JSON
+ *   userData: Record<string, any>;
+ * }
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant Model
+ *   participant uiprop
+ *   participant RenderingEngine
+ *   participant Component
+ *   Model->>uiprop: Apply to property
+ *   uiprop->>Model: Add prop metadata
+ *   RenderingEngine->>Model: Get prop metadata
+ *   Model->>RenderingEngine: Return prop name and stringify flag
+ *   RenderingEngine->>Component: Pass property with specified name
+ */
+export function uichild(
+  propName: string | undefined = undefined,
+  stringify: boolean = false,
+  tag?: string
+) {
+  return (target: any, propertyKey: string) => {
+    const metadata: UIPropMetadata = {
+      name: propName || propertyKey,
+      stringify: stringify,
+      tag: tag,
+    } as any;
+    propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
+      target,
+      propertyKey
+    );
+  };
+}
+
+/**
  * @description Decorator that maps a model property to a list item component
  * @summary Specifies how a property should be rendered in a list context
  * This decorator allows you to define how a model property containing a list

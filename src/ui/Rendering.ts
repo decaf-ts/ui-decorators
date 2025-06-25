@@ -298,6 +298,38 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               );
               break;
             }
+            case UIKeys.CHILD: {
+              if (!Model.isPropertyModel(model, key)) {
+                childProps[key] = dec.props as UIPropMetadata;
+                break;
+              }
+
+              let Clazz;
+              const submodel = (model as Record<string, any>)[key] as Model;
+              const constructable =
+                typeof submodel === "object" &&
+                submodel !== null &&
+                !Array.isArray(submodel);
+              if (!constructable)
+                Clazz = new (Model.get(
+                  dec.props?.name as string
+                ) as ModelConstructor<Model>)();
+
+              children = children || [];
+              const childrenGlobalProps = Object.assign({}, globalProps || {}, {
+                inheritsTag: dec.props.tag,
+                childOf: getPath(globalProps?.childOf as string, key),
+              });
+              const childDefinition = this.toFieldDefinition(
+                submodel || Clazz,
+                childrenGlobalProps,
+                false
+              );
+              children.push(
+                childDefinition as FieldDefinition<Record<string, any>>
+              );
+              break;
+            }
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
               mapper[dec.props?.name as string] = key;
@@ -331,6 +363,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 },
                 globalProps
               );
+              delete props["inheritsTag"];
 
               const childDefinition: FieldDefinition<Record<string, any>> = {
                 tag: uiProps.tag,
@@ -385,7 +418,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     }
 
     const result: FieldDefinition<T> = {
-      tag: tag,
+      tag: (globalProps?.inheritsTag as string) || tag,
       item: childProps as UIListItemElementMetadata,
       props: Object.assign({}, props, globalProps) as T & FieldProperties,
       children: children as FieldDefinition<any>[],

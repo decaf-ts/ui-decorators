@@ -82,6 +82,7 @@ export const UIKeys = {
   RENDERED_BY: "rendered-by",
   ELEMENT: "element",
   PROP: "prop",
+  CHILD: "child",
   NAME: "name",
   NAME_PREFIX: "input-",
   CUSTOM_PROPS: "customValidationProps",
