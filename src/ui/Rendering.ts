@@ -204,7 +204,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
-    const classDecorators: [UIModelMetadata, UIListItemModelMetadata] = [
+    const classDecorators: UIModelMetadata[] | UIListItemModelMetadata[] = [
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
         model.constructor
@@ -221,6 +221,14 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           RenderingEngine.key(UIKeys.UILISTITEM),
           Model.get(model.constructor.name) as any
         ),
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.HANDLERS),
+        model.constructor
+      ) ||
+        Reflect.getMetadata(
+          RenderingEngine.key(UIKeys.HANDLERS),
+          Model.get(model.constructor.name) as any
+        )
     ];
 
     if (!classDecorators)
@@ -229,7 +237,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       );
 
     const classDecorator = Object.assign({}, ...classDecorators);
-    const { tag, props, item } = classDecorator;
+    const { tag, props, item, handlers} = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
       Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
@@ -239,7 +247,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     let children: FieldDefinition<Record<string, any>>[] | undefined;
     let childProps: Record<string, any> = item?.props || {};
     let mapper: Record<string, string> = {};
-
     const getPath = (parent: string | undefined, prop: string) => {
       return parent ? [parent, prop].join(".") : prop;
     };
@@ -420,7 +427,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     const result: FieldDefinition<T> = {
       tag: (globalProps?.inheritsTag as string) || tag,
       item: childProps as UIListItemElementMetadata,
-      props: Object.assign({}, props, globalProps) as T & FieldProperties,
+      props: Object.assign({}, props, globalProps, {handlers: handlers || {}}) as T & FieldProperties,
       children: children as FieldDefinition<any>[],
     };
 
@@ -526,8 +533,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @static
    */
   static render<M extends Model>(model: M, ...args: any[]): any {
-    const constructor = Model.get(model.constructor.name);
-    if (!constructor) throw new InternalError("No model registered found");
+    const constructor = Model.get(model.constructor.name) || Model.fromObject(model);
+    if (!constructor) 
+      throw new InternalError("No model registered found");
     const flavour = Reflect.getMetadata(
       RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>
