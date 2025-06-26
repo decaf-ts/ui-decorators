@@ -70,7 +70,11 @@ describe("Rendering Engine", () => {
     expect(definition).toBeDefined();
     expect(definition.tag).toEqual("decaf-crud-form");
     expect(definition.rendererId).toBeDefined();
-    expect(definition.props).toEqual({ operation: "create", test: "1", handlers: {} });
+    expect(definition.props).toEqual({
+      operation: "create",
+      test: "1",
+      handlers: {},
+    });
     expect(definition.children).toBeDefined();
     if (!definition.children) throw new Error("Children not defined");
     expect(definition.children?.length).toEqual(7);
@@ -195,7 +199,7 @@ describe("Rendering Engine", () => {
       });
       const globalProps = { operation: "create", dummy: "prop", handlers: {} };
       const def = engine["toFieldDefinition"](model, globalProps);
- 
+
       expect(def.tag).toEqual("decaf-crud-form");
       expect(def.props).toEqual(globalProps);
       expect(def.children).toHaveLength(Object.keys(model).length);
@@ -203,7 +207,7 @@ describe("Rendering Engine", () => {
       const neighborDef = (
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
-      expect(neighborDef.tag).toEqual("decaf-crud-form");
+      expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
         childOf: "neighbor",
@@ -215,7 +219,7 @@ describe("Rendering Engine", () => {
       const addressDef = (
         neighborDef.children as FieldDefinition[]
       ).pop() as FieldDefinition;
-      expect(addressDef.tag).toEqual("decaf-address-form");
+      expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
         childOf: "neighbor.address",
@@ -240,7 +244,7 @@ describe("Rendering Engine", () => {
       const neighborDef = (
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
-      expect(neighborDef.tag).toEqual("decaf-crud-form");
+      expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
         childOf: "neighbor",
@@ -252,7 +256,7 @@ describe("Rendering Engine", () => {
       const addressDef = (
         neighborDef.children as FieldDefinition[]
       ).pop() as FieldDefinition;
-      expect(addressDef.tag).toEqual("decaf-address-form");
+      expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
         childOf: "neighbor.address",

@@ -204,6 +204,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
+    const { inheritsTag, ...globalPropsWithoutInherits } = globalProps;
+    globalProps = globalPropsWithoutInherits;
+
     const classDecorators: UIModelMetadata[] | UIListItemModelMetadata[] = [
       Reflect.getMetadata(
         RenderingEngine.key(UIKeys.UIMODEL),
@@ -228,7 +231,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         Reflect.getMetadata(
           RenderingEngine.key(UIKeys.HANDLERS),
           Model.get(model.constructor.name) as any
-        )
+        ),
     ];
 
     if (!classDecorators)
@@ -237,7 +240,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       );
 
     const classDecorator = Object.assign({}, ...classDecorators);
-    const { tag, props, item, handlers} = classDecorator;
+    const { tag, props, item, handlers } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
       Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
@@ -275,41 +278,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
           switch (dec.key) {
             case UIKeys.PROP: {
-              if (!Model.isPropertyModel(model, key)) {
-                childProps[key] = dec.props as UIPropMetadata;
-                break;
-              }
-
-              let Clazz;
-              const submodel = (model as Record<string, any>)[key] as Model;
-              const constructable =
-                typeof submodel === "object" &&
-                submodel !== null &&
-                !Array.isArray(submodel);
-              if (!constructable)
-                Clazz = new (Model.get(
-                  dec.props?.name as string
-                ) as ModelConstructor<Model>)();
-
-              children = children || [];
-              const childrenGlobalProps = Object.assign({}, globalProps || {}, {
-                childOf: getPath(globalProps?.childOf as string, key),
-              });
-              const childDefinition = this.toFieldDefinition(
-                submodel || Clazz,
-                childrenGlobalProps,
-                false
-              );
-              children.push(
-                childDefinition as FieldDefinition<Record<string, any>>
-              );
+              childProps[key] = dec.props as UIPropMetadata;
               break;
             }
             case UIKeys.CHILD: {
-              if (!Model.isPropertyModel(model, key)) {
-                childProps[key] = dec.props as UIPropMetadata;
-                break;
-              }
+              if (!Model.isPropertyModel(model, key))
+                throw new RenderingError(`Child "${key}" must be a model.`);
 
               let Clazz;
               const submodel = (model as Record<string, any>)[key] as Model;
@@ -317,10 +291,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 typeof submodel === "object" &&
                 submodel !== null &&
                 !Array.isArray(submodel);
-              if (!constructable)
-                Clazz = new (Model.get(
-                  dec.props?.name as string
-                ) as ModelConstructor<Model>)();
+              // create instance if undefined
+              if (!constructable) {
+                const clazzName = (dec.props.props as Record<string, any>)
+                  ?.name as string;
+                Clazz = new (Model.get(clazzName) as ModelConstructor<Model>)();
+              }
 
               children = children || [];
               const childrenGlobalProps = Object.assign({}, globalProps || {}, {
@@ -328,7 +304,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 childOf: getPath(globalProps?.childOf as string, key),
               });
               const childDefinition = this.toFieldDefinition(
-                submodel || Clazz,
+                submodel || Clazz, // Must avoid undefined values — an instance is required to retrieve properties.
                 childrenGlobalProps,
                 false
               );
@@ -370,7 +346,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 },
                 globalProps
               );
-              delete props["inheritsTag"];
 
               const childDefinition: FieldDefinition<Record<string, any>> = {
                 tag: uiProps.tag,
@@ -425,9 +400,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     }
 
     const result: FieldDefinition<T> = {
-      tag: (globalProps?.inheritsTag as string) || tag,
+      tag: inheritsTag || tag,
       item: childProps as UIListItemElementMetadata,
-      props: Object.assign({}, props, globalProps, {handlers: handlers || {}}) as T & FieldProperties,
+      props: Object.assign({}, props, globalProps, {
+        handlers: handlers || {},
+      }) as T & FieldProperties,
       children: children as FieldDefinition<any>[],
     };
 
@@ -533,9 +510,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @static
    */
   static render<M extends Model>(model: M, ...args: any[]): any {
-    const constructor = Model.get(model.constructor.name) || Model.fromObject(model);
-    if (!constructor) 
-      throw new InternalError("No model registered found");
+    const constructor =
+      Model.get(model.constructor.name) || Model.fromObject(model);
+    if (!constructor) throw new InternalError("No model registered found");
     const flavour = Reflect.getMetadata(
       RenderingEngine.key(UIKeys.RENDERED_BY),
       constructor as ModelConstructor<Model>

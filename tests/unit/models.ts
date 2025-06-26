@@ -11,7 +11,7 @@ import {
   required,
   url,
 } from "@decaf-ts/decorator-validation";
-import { uielement, uimodel, uiprop } from "../../src";
+import { uichild, uielement, uimodel } from "../../src";
 import { id } from "@decaf-ts/db-decorators";
 
 export const usedDateFormat = "yyyy/MM/dd";
@@ -106,7 +106,7 @@ export class NeighborModel extends Model {
   name!: string;
 
   // @type(AddressModel.name)
-  @uiprop(AddressModel.name)
+  @uichild(AddressModel.name, "fieldset-address-component")
   address!: AddressModel;
 
   constructor(arg?: ModelArg<NeighborModel>) {
@@ -128,7 +128,7 @@ export class ParentModel extends Model {
 
   // @required()
   // @type(NeighborModel.name)
-  @uiprop(NeighborModel.name)
+  @uichild(NeighborModel.name, "fieldset-neighbor-component")
   neighbor!: NeighborModel;
 
   constructor(arg?: ModelArg<ParentModel>) {
