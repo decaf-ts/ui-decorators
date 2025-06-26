@@ -219,59 +219,74 @@ export function uiprop(
 }
 
 /**
- * @description Decorator that maps a model property to a UI component property
- * @summary Specifies how a property should be passed to a UI component
- * This decorator allows you to define how a model property should be mapped to
- * a property of the UI component when rendering. It requires the class to be
- * decorated with @uimodel.
+ * @description Decorator that maps a nested model property to a UI component property.
+ * @summary Defines how a parent component should render the child model when nested.
  *
- * @param {string} [propName] The name of the property to pass to the component (defaults to the property key)
- * @param {boolean} [stringify=false] Whether to stringify the property value
- * @return {Function} A property decorator function
+ * This decorator is used to decorate properties that are nested models.
+ * When applied, it allows overriding the default tag of the child model with the provided one,
+ * enabling different rendering behavior when the model acts as a child (nested)
+ * compared to when it is rendered as the parent model.
  *
- * @function uiprop
+ * It requires the class to be decorated with `@uimodel`.
+ *
+ * @param {string} clazz The model class name to pass to the component (defaults to the property key).
+ * @param {string} tag The HTML element or component tag name to override the UI tag of the nested model
+ * @param {Record<string, any>} [props] Additional properties to pass to the element
+ * @param {boolean} [serialize=false] Whether the property should be serialized
+ * @return {Function} A property decorator function.
+ *
+ * @function uichild
  * @category Property Decorators
  *
  * @example
- * // Map model properties to component properties
+ * // Map a nested model to a component property with a different tag when nested
+ * @uimodel('address-component')
+ * class Address {
+ *   @attribute()
+ *   street: string;
+ *
+ *   @attribute()
+ *   city: string;
+ * }
+ *
  * @uimodel('user-profile')
  * class UserProfile {
  *   @attribute()
- *   @uiprop() // Will be passed as 'fullName' to the component
- *   fullName: string;
- *
- *   @attribute()
- *   @uiprop('userEmail') // Will be passed as 'userEmail' to the component
- *   email: string;
- *
- *   @attribute()
- *   @uiprop('userData', true) // Will be passed as stringified JSON
- *   userData: Record<string, any>;
+ *   @uichild(Address.name, 'address-child-component')
+ *   address: Address;
  * }
+ *
+ * // In this example, the Address model has the default tag 'address-component' when rendered as a root component,
+ * // but when used inside UserProfile, it is rendered with the overridden tag 'address-child-component'
  *
  * @mermaid
  * sequenceDiagram
  *   participant Model
- *   participant uiprop
+ *   participant uichild
  *   participant RenderingEngine
  *   participant Component
- *   Model->>uiprop: Apply to property
- *   uiprop->>Model: Add prop metadata
- *   RenderingEngine->>Model: Get prop metadata
- *   Model->>RenderingEngine: Return prop name and stringify flag
- *   RenderingEngine->>Component: Pass property with specified name
+ *   Model->>uichild: Apply to property
+ *   uichild->>Model: Add child metadata
+ *   RenderingEngine->>Model: Get child metadata
+ *   Model->>RenderingEngine: Return prop name, stringify flag, and child tag override
+ *   RenderingEngine->>Component: Pass property with specified name and render with overridden tag if nested
  */
+
 export function uichild(
-  propName: string | undefined = undefined,
-  stringify: boolean = false,
-  tag?: string
+  clazz: string,
+  tag: string,
+  props: Record<string, any> = {},
+  serialize: boolean = false
 ) {
   return (target: any, propertyKey: string) => {
-    const metadata: UIPropMetadata = {
-      name: propName || propertyKey,
-      stringify: stringify,
+    const metadata: UIElementMetadata = {
       tag: tag,
-    } as any;
+      serialize: serialize,
+      props: Object.assign({}, props || {}, {
+        name: clazz || propertyKey,
+      }),
+    };
+
     propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
       target,
       propertyKey
