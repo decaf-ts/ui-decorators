@@ -1,6 +1,8 @@
-import type { FieldDefinition } from "../../src";
 import {
+  FieldDefinition,
   RenderingEngine,
+  uichild,
+  uielement,
   UIKeys,
   uimodel,
   uiprop,
@@ -15,8 +17,11 @@ import {
 } from "./models";
 import {
   ComparisonValidationKeys,
+  minlength,
   model,
   Model,
+  ModelArg,
+  required,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
 
@@ -210,6 +215,7 @@ describe("Rendering Engine", () => {
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
+        name: "NeighborModel",
         childOf: "neighbor",
       });
       expect(neighborDef.children).toHaveLength(
@@ -222,6 +228,7 @@ describe("Rendering Engine", () => {
       expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
+        name: "AddressModel",
         childOf: "neighbor.address",
       });
       expect(addressDef.children).toHaveLength(
@@ -247,6 +254,7 @@ describe("Rendering Engine", () => {
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
+        name: "NeighborModel",
         childOf: "neighbor",
       });
       expect(neighborDef.children).toHaveLength(
@@ -259,11 +267,72 @@ describe("Rendering Engine", () => {
       expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
+        name: "AddressModel",
         childOf: "neighbor.address",
       });
       expect(addressDef.children).toHaveLength(
         Object.keys(new AddressModel({})).length
       );
+    });
+
+    it("should throw if @uimodel decorator is missing", () => {
+      @model()
+      class NoUIModel extends Model {
+        @required()
+        @minlength(3)
+        @uielement("ngx-decaf-crud-field", { label: "Name" })
+        name!: string;
+
+        constructor(arg?: ModelArg<NoUIModel>) {
+          super(arg);
+        }
+      }
+
+      expect(() =>
+        engine["toFieldDefinition"](new NoUIModel({}), {})
+      ).toThrowError(
+        `No ui definitions set for model NoUIModel. Did you use @uimodel?`
+      );
+    });
+
+    it("should throw if decorated with both @uielement and @uiprop", () => {
+      @uimodel("ui-model-component")
+      @model()
+      class TestModel extends Model {
+        @required()
+        @minlength(3)
+        @uielement("ngx-decaf-crud-field", { label: "Name" })
+        @uiprop("ngx-decaf-crud-field")
+        name!: string;
+
+        constructor(arg?: ModelArg<TestModel>) {
+          super(arg);
+        }
+      }
+
+      expect(() =>
+        engine["toFieldDefinition"](new TestModel({}), {})
+      ).toThrowError(
+        `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
+      );
+    });
+
+    it("should throw if @uichild is not a model", () => {
+      @uimodel("ui-model-component")
+      @model()
+      class TestModel extends Model {
+        @required()
+        @uichild("name", "component-tag")
+        name!: string;
+
+        constructor(arg?: ModelArg<TestModel>) {
+          super(arg);
+        }
+      }
+
+      expect(() =>
+        engine["toFieldDefinition"](new TestModel({}), {})
+      ).toThrowError(`Child "name" must be a model`);
     });
   });
 
