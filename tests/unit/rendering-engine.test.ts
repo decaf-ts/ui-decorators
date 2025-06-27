@@ -210,6 +210,7 @@ describe("Rendering Engine", () => {
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
+        name: "NeighborModel",
         childOf: "neighbor",
       });
       expect(neighborDef.children).toHaveLength(
@@ -222,6 +223,7 @@ describe("Rendering Engine", () => {
       expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
+        name: "AddressModel",
         childOf: "neighbor.address",
       });
       expect(addressDef.children).toHaveLength(
@@ -247,6 +249,7 @@ describe("Rendering Engine", () => {
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
+        name: "NeighborModel",
         childOf: "neighbor",
       });
       expect(neighborDef.children).toHaveLength(
@@ -259,6 +262,7 @@ describe("Rendering Engine", () => {
       expect(addressDef.tag).toEqual("fieldset-address-component");
       expect(addressDef.props).toEqual({
         ...globalProps,
+        name: "AddressModel",
         childOf: "neighbor.address",
       });
       expect(addressDef.children).toHaveLength(
