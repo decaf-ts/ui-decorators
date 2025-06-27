@@ -204,7 +204,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
-    const { inheritsTag, ...globalPropsWithoutInherits } = globalProps;
+    const { inheritProps, ...globalPropsWithoutInherits } = globalProps;
     globalProps = globalPropsWithoutInherits;
 
     const classDecorators: UIModelMetadata[] | UIListItemModelMetadata[] = [
@@ -239,7 +239,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
       );
 
-    const classDecorator = Object.assign({}, ...classDecorators);
+    const classDecorator = Object.assign(
+      {},
+      ...classDecorators,
+      inheritProps ? inheritProps : {} // override tag and properties when it is a component that should inherit properties from its parent.
+    );
     const { tag, props, item, handlers } = classDecorator;
 
     const uiDecorators: Record<string, DecoratorMetadata[]> =
@@ -300,7 +304,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
               children = children || [];
               const childrenGlobalProps = Object.assign({}, globalProps || {}, {
-                inheritsTag: dec.props.tag,
+                inheritProps: dec.props as UIModelMetadata,
                 childOf: getPath(globalProps?.childOf as string, key),
               });
               const childDefinition = this.toFieldDefinition(
@@ -400,7 +404,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     }
 
     const result: FieldDefinition<T> = {
-      tag: inheritsTag || tag,
+      tag: tag,
       item: childProps as UIListItemElementMetadata,
       props: Object.assign({}, props, globalProps, {
         handlers: handlers || {},
