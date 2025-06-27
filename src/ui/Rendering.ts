@@ -232,9 +232,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           RenderingEngine.key(UIKeys.HANDLERS),
           Model.get(model.constructor.name) as any
         ),
-    ];
+    ].filter(Boolean);
 
-    if (!classDecorators)
+    if (!classDecorators.length)
       throw new RenderingError(
         `No ui definitions set for model ${model.constructor.name}. Did you use @uimodel?`
       );
