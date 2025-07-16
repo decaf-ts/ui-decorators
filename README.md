@@ -13,7 +13,7 @@ ARCHIVED. Moved to become part of the ![decaf-ts](gitub.com/decaf-ts) project
 ![Node Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbadges%2Fshields%2Fmaster%2Fpackage.json&label=Node&query=$.engines.node&colorB=blue)
 ![NPM Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbadges%2Fshields%2Fmaster%2Fpackage.json&label=NPM&query=$.engines.npm&colorB=purple)
 
-
+ 
 ## User Interface Decorators
 
 Adds a new Decorator ```uielement``` to add UI metadata to the model, that can be later interpreted by different rendering strategies
