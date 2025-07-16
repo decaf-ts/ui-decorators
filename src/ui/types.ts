@@ -32,6 +32,8 @@ export interface FieldDefinition<T = void> {
   props: T & FieldProperties;
   children?: FieldDefinition<T>[];
   item?: UIListItemElementMetadata;
+  col?: number | string[];
+  row?: number | string[];
 }
 
 /**
@@ -117,6 +119,10 @@ export type UIPropMetadata = {
   stringify: boolean;
 };
 
+/**
+ * @typedef CrudOperationKeys
+ * @memberOf module:ui-decorators
+ */
 export type CrudOperationKeys =
   | OperationKeys.CREATE
   | OperationKeys.READ
@@ -141,7 +147,7 @@ export type UIListItemModelMetadata = {
 };
 
 /**
- * @typedef UIListItemElementMetada
+ * @typedef UIListItemElementMetadata
  * @memberOf module:ui-decorators
  */
 export type UIListItemElementMetadata = {
@@ -149,3 +155,39 @@ export type UIListItemElementMetadata = {
   props?: Record<string, any>;
   mapper?: Record<string, string>;
 };
+
+
+/**
+ * @typedef UILayoutMetadata
+ * @memberOf module:ui-decorators
+ */
+export type UILayoutMetadata = {
+  props: {
+    cols?: number | string[];
+    rows?: number;
+    props?: Record<string, any>;
+  }
+}
+
+/**
+ * @typedef UIClassMetadata
+ * @memberOf module:ui-decorators
+ */
+export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListItemModelMetadata;
+
+/**
+ * @typedef UILayoutItemMetadata
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UILayoutItemMetadata ={
+  name: string;
+  props: Record<string, any>;
+  col: number | string[];
+  row: number | string[];
+};
+
+/**
+ * @typedef UIMediaBreakPoints
+ * @memberOf module:ui-decorators
+ */
+export type UIMediaBreakPoints = 'xl' | 'l' | 'm' | 's' | 'medium' | 'large' | 'small' | 'xlarge';

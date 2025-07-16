@@ -19,6 +19,8 @@ export function formatByType(
   ...args: unknown[]
 ): string | number {
   if (type === UIKeys.DATE) {
+    if(!value)
+        return "";
     const format: string = (args.shift() as string) || HTML5DateFormat;
     return formatDate(new Date(value), format);
   }
@@ -37,14 +39,16 @@ export function parseValueByType(
       break;
     case HTML5InputTypes.DATE: {
       const format: string | undefined = fieldProps.format;
-      result =
-        typeof value === ReservedModels.NUMBER
-          ? new Date(value)
-          : value
-            ? format
-              ? parseDate(format, value)
-              : new Date(value)
-            : undefined;
+      if(value) {
+        result =
+          typeof value === ReservedModels.NUMBER
+            ? new Date(value)
+            : value
+              ? format
+                ? parseDate(format, value)
+                : new Date(value)
+              : undefined;
+      }
       break;
     }
     default:

@@ -4,6 +4,7 @@ import { propMetadata } from "@decaf-ts/decorator-validation";
 import {
   CrudOperationKeys,
   UIElementMetadata,
+  UILayoutItemMetadata,
   UIListPropMetadata,
   UIPropMetadata,
 } from "./types";
@@ -353,6 +354,74 @@ export function uilistprop(
       props: props || {},
     };
     propMetadata(RenderingEngine.key(UIKeys.UILISTPROP), metadata)(
+      target,
+      propertyKey
+    );
+  };
+}
+
+/**
+ * @description Decorator that positions a property in a specific grid layout position
+ * @summary Specifies the column and row position for a property in a UI layout grid
+ * This decorator allows you to define the specific position of a property within
+ * a grid-based layout system. It specifies which column and row the property
+ * should occupy when rendered in the UI.
+ *
+ * @param {number} col The column position in the grid layout
+ * @param {number} [row=1] The row position in the grid layout (defaults to 1)
+ * @param {Record<string, any>} [props={}] Additional properties to pass to the layout item
+ * @return {Function} A property decorator function
+ *
+ * @function uilayoutitem
+ * @category Property Decorators
+ *
+ * @example
+ * // Position properties in a grid layout
+ * @uimodel('user-form')
+ * class UserForm {
+ *   @attribute()
+ *   @uilayoutitem(1, 1) // First column, first row
+ *   firstName: string;
+ *
+ *   @attribute()
+ *   @uilayoutitem(2, 1) // Second column, first row
+ *   lastName: string;
+ *
+ *   @attribute()
+ *   @uilayoutitem(1, 2, { colspan: 2 }) // First column, second row, spans 2 columns
+ *   email: string;
+ *
+ *   @attribute()
+ *   @uilayoutitem(1, 3, { class: 'full-width' }) // First column, third row with custom class
+ *   bio: string;
+ * }
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant Model
+ *   participant uilayoutitem
+ *   participant RenderingEngine
+ *   participant LayoutContainer
+ *   Model->>uilayoutitem: Apply to property
+ *   uilayoutitem->>Model: Add layout item metadata
+ *   RenderingEngine->>Model: Get layout item metadata
+ *   Model->>RenderingEngine: Return column, row, and props
+ *   RenderingEngine->>LayoutContainer: Position element at grid coordinates
+ *   LayoutContainer->>RenderingEngine: Return positioned element
+ */
+export function uilayoutitem(
+  col: number,
+  row: number = 1,
+  props: Record<string, any> = {},
+) {
+  return (target: any, propertyKey: string) => {
+    const metadata: UILayoutItemMetadata = {
+      name:  propertyKey,
+      col,
+      row,
+      props: Object.assign({}, props),
+    };  
+    propMetadata(RenderingEngine.key(UIKeys.UILAYOUTITEM), metadata)(
       target,
       propertyKey
     );
