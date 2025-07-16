@@ -17,9 +17,10 @@ import {
 import {
   FieldDefinition,
   FieldProperties,
+  UIClassMetadata,
   UIElementMetadata,
+  UILayoutItemMetadata,
   UIListItemElementMetadata,
-  UIListItemModelMetadata,
   UIModelMetadata,
   UIPropMetadata,
 } from "./types";
@@ -126,6 +127,55 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
   }
 
   /**
+   * @description Retrieves class decorator metadata for a model instance
+   * @summary Extracts UI-related class decorators from a model and returns them as an array
+   * This method collects metadata from various UI class decorators including @uimodel,
+   * @uilistitem, @uihandlers, and @uilayout applied to the model class.
+   *
+   * @template M Type extending Model
+   * @param {M} model - The model instance to extract metadata from
+   * @returns {UIClassMetadata[]} Array of UI class metadata objects
+   *
+   * @private
+   */
+  private getClassDecoratorsMetadata<M extends Model>(model: M): UIClassMetadata[]  {
+    return [
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UIMODEL),
+        model.constructor
+      ) ||
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UIMODEL),
+        Model.get(model.constructor.name) as any
+      ),
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UILISTITEM),
+        model.constructor
+      ) ||
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UILISTITEM),
+        Model.get(model.constructor.name) as any
+      ),
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.HANDLERS),
+        model.constructor
+      ) ||
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.HANDLERS),
+        Model.get(model.constructor.name) as any
+      ),
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UILAYOUT),
+        model.constructor
+      ) ||
+      Reflect.getMetadata(
+        RenderingEngine.key(UIKeys.UILAYOUT),
+        Model.get(model.constructor.name) as any
+      ),
+    ].filter(Boolean);;
+  }
+
+  /**
    * @description Checks if a type is validatable by its nature.
    * @summary Determines if a given UI key represents a type that is inherently validatable.
    *
@@ -204,35 +254,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
+    
     const { inheritProps, ...globalPropsWithoutInherits } = globalProps;
     globalProps = globalPropsWithoutInherits;
 
-    const classDecorators: UIModelMetadata[] | UIListItemModelMetadata[] = [
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UIMODEL),
-        model.constructor
-      ) ||
-        Reflect.getMetadata(
-          RenderingEngine.key(UIKeys.UIMODEL),
-          Model.get(model.constructor.name) as any
-        ),
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILISTITEM),
-        model.constructor
-      ) ||
-        Reflect.getMetadata(
-          RenderingEngine.key(UIKeys.UILISTITEM),
-          Model.get(model.constructor.name) as any
-        ),
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.HANDLERS),
-        model.constructor
-      ) ||
-        Reflect.getMetadata(
-          RenderingEngine.key(UIKeys.HANDLERS),
-          Model.get(model.constructor.name) as any
-        ),
-    ].filter(Boolean);
+    const classDecorators = this.getClassDecoratorsMetadata<M>(model);
 
     if (!classDecorators.length)
       throw new RenderingError(
@@ -266,7 +292,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         model,
         ValidationKeys.REFLECT
       ) as Record<string, DecoratorMetadata<ValidationMetadata>[]>;
-
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
         const types = Object.values(decs).filter(
@@ -396,6 +421,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               children.push(childDefinition);
               break;
             }
+            case UIKeys.UILAYOUTITEM: 
+            break;
             default:
               throw new RenderingError(`Invalid key: ${dec.key}`);
           }
@@ -403,18 +430,62 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       }
     }
 
+    globalProps = Object.assign({}, props, globalProps, {
+      handlers: handlers || {},
+    });
     const result: FieldDefinition<T> = {
       tag: tag,
       item: childProps as UIListItemElementMetadata,
-      props: Object.assign({}, props, globalProps, {
-        handlers: handlers || {},
-      }) as T & FieldProperties,
-      children: children as FieldDefinition<any>[],
+      props: globalProps as T & FieldProperties,
+      children: ((Object.keys(uiDecorators)?.length && children?.length) ? 
+        this.getLayoutItems(children, uiDecorators) : children),
+    
     };
 
     if (generateId) result.rendererId = generateUIModelID(model);
-
     return result;
+  }
+
+  /**
+   * @description Processes layout items for grid positioning
+   * @summary Maps child field definitions to their corresponding layout positions
+   * This method iterates through child field definitions and applies layout metadata
+   * from @uilayoutitem decorators to position them correctly in a grid layout.
+   *
+   * @param {FieldDefinition[]} children - Array of child field definitions to process
+   * @param {Record<string, any>} uiDecorators - UI decorator metadata keyed by property name
+   * @returns {FieldDefinition[]} Array of field definitions with layout positioning applied
+   *
+   * @example
+   * // Internal usage - positions children in grid layout
+   * const layoutChildren = this.getLayoutItems(childDefinitions, decoratorMetadata);
+   */
+  getLayoutItems(children: FieldDefinition<any>[], uiDecorators: Record<string, any>): FieldDefinition<any>[] {
+    return children.map((child) => {
+      let updatedChild = child;
+      for (const key in uiDecorators) {
+        const decs = uiDecorators[key];
+        for (const dec of decs) {
+          if (
+            dec.key === UIKeys.UILAYOUTITEM &&
+            (dec.props?.name === child.props?.name || dec.props?.name === child.props?.childOf)
+          ) {
+            const { col, props, row } = dec.props as UILayoutItemMetadata;
+            updatedChild = {
+              row,
+              col,
+              ...child,
+              props: {
+                ...child.props,
+                ...props,
+              },
+            };
+            break;
+          }
+        }
+      }
+      return updatedChild;
+    });
   }
 
   /**
