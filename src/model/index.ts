@@ -1,7 +1,5 @@
-/**
- * @namespace model
- * @memberOf ui-decorators
- */
+import "./model";
 
-export * from './decorators';
-export * from './types';
+export * from "./decorators";
+export * from "./overrides";
+export * from "./Renderable";
