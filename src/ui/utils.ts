@@ -39,7 +39,7 @@ export function parseValueByType(
       break;
     case HTML5InputTypes.DATE: {
       const format: string | undefined = fieldProps.format;
-      if(value) {
+      if(value && `${value}`.trim().length) {
         result =
           typeof value === ReservedModels.NUMBER
             ? new Date(value)

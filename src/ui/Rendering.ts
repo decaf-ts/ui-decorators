@@ -112,6 +112,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         case HTML5InputTypes.PASSWORD:
         case HTML5InputTypes.TEL:
         case HTML5InputTypes.URL:
+        case HTML5InputTypes.SEARCH:
+        case HTML5InputTypes.HIDDEN:
+        case HTML5InputTypes.TEXTAREA:
           return ReservedModels.STRING;
         case HTML5InputTypes.NUMBER:
           return ReservedModels.NUMBER;
@@ -294,9 +297,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       ) as Record<string, DecoratorMetadata<ValidationMetadata>[]>;
       for (const key in uiDecorators) {
         const decs = uiDecorators[key];
-        const types = Object.values(decs).filter(
-          (item) => item.key === UIKeys.PROP || item.key === UIKeys.ELEMENT
-        );
+        const types = Object.values(decs).filter(({key}) => [UIKeys.PROP, UIKeys.ELEMENT].includes(key));
         if (types?.length > 1)
           throw new RenderingError(
             `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
@@ -328,7 +329,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               }
 
               children = children || [];
-              const childrenGlobalProps = Object.assign({}, globalProps || {}, {
+              const childrenGlobalProps = Object.assign({}, globalProps || {}, {"model": Clazz} ,{
                 inheritProps: dec.props as UIModelMetadata,
                 childOf: getPath(globalProps?.childOf as string, key),
               });
@@ -342,9 +343,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               );
               break;
             }
+            case UIKeys.HIDDEN: 
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
-              mapper[dec.props?.name as string] = key;
+              if(dec.props?.name)
+                mapper[dec.props?.name as string] = key;
               const props = Object.assign(
                 {},
                 classDecorator.props?.item || {},
@@ -354,7 +357,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               );
               childProps = {
                 tag: item?.tag || props.render || "",
-                props: Object.assign({}, childProps?.props, { mapper }, props),
+                props: Object.assign(
+                  {}, 
+                  childProps?.props, 
+                  dec.key === UIKeys.UILISTPROP ? { mapper } : {[dec.key]: dec.props}, 
+                  props),
               };
 
               break;
@@ -373,6 +380,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                   ),
                   childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
                 },
+                childProps?.props,
                 globalProps
               );
 

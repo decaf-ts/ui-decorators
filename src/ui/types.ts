@@ -74,7 +74,7 @@ export interface FieldProperties {
   childOf?: string;
   type: string;
   value: string | number | Date;
-  hidden?: boolean;
+  hidden?: boolean | CrudOperationKeys[];
   disabled?: boolean;
   // Validation
   required?: boolean;
