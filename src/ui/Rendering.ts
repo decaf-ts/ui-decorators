@@ -300,7 +300,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         const types = Object.values(decs).filter(({key}) => [UIKeys.PROP, UIKeys.ELEMENT, UIKeys.CHILD].includes(key));
         if (types?.length > 1)
           throw new RenderingError(
-            `Only one type of decoration is allowed. Please choose between @uiprop, @uichild and @uielement`
+            `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
           );
         decs.shift();
         decs.forEach((dec) => {
