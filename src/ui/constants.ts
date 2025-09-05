@@ -252,6 +252,7 @@ export const HTML5InputTypes = {
   SUBMIT: "submit",
   TEL: "tel",
   TEXT: "text",
+  TEXTAREA: 'textarea',
   TIME: "time",
   URL: UIKeys.URL,
   WEEK: "week",

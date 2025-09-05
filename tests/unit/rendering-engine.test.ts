@@ -192,17 +192,21 @@ describe("Rendering Engine", () => {
     });
 
     it("should call toFieldDefinition for submodel if it is constructable", () => {
+      const neighbor = new NeighborModel({
+        name: "neighbor.name",
+        address: new AddressModel({
+          street: "address.street",
+          zipcode: Math.floor(Math.random() * 100000) + 100000,
+        }),
+      });
       const model = new ParentModel({
         name: "parent.name",
         neighbor: new NeighborModel({
           name: "neighbor.name",
-          address: new AddressModel({
-            street: "address.street",
-            zipcode: Math.floor(Math.random() * 100000) + 100000,
-          }),
+          address: neighbor,
         }),
       });
-      const globalProps = { operation: "create", dummy: "prop", handlers: {} };
+      const globalProps = { operation: "create", dummy: "prop", handlers: {}, multiple: false };
       const def = engine["toFieldDefinition"](model, globalProps);
 
       expect(def.tag).toEqual("decaf-crud-form");
@@ -213,10 +217,11 @@ describe("Rendering Engine", () => {
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
-      expect(neighborDef.props).toEqual({
+      expect(neighborDef.props).toEqual({ 
         ...globalProps,
         name: "NeighborModel",
         childOf: "neighbor",
+        model: undefined,
       });
       expect(neighborDef.children).toHaveLength(
         Object.keys(model.neighbor).length
@@ -241,7 +246,7 @@ describe("Rendering Engine", () => {
       expect(model.neighbor).toBeUndefined();
       expect(Model.isPropertyModel(model, "neighbor")).toBeTruthy();
 
-      const globalProps = { operation: "update", handlers: {} };
+      const globalProps = { operation: "update", handlers: {}, multiple: false };
       const def = engine["toFieldDefinition"](model, globalProps);
 
       expect(def.tag).toEqual("decaf-crud-form");
@@ -251,11 +256,13 @@ describe("Rendering Engine", () => {
       const neighborDef = (
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
+      const nModel = neighborDef.props?.['model'];
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
         name: "NeighborModel",
         childOf: "neighbor",
+        model: nModel
       });
       expect(neighborDef.children).toHaveLength(
         Object.keys(new NeighborModel({})).length
@@ -269,6 +276,7 @@ describe("Rendering Engine", () => {
         ...globalProps,
         name: "AddressModel",
         childOf: "neighbor.address",
+        model: nModel
       });
       expect(addressDef.children).toHaveLength(
         Object.keys(new AddressModel({})).length
@@ -313,7 +321,7 @@ describe("Rendering Engine", () => {
       expect(() =>
         engine["toFieldDefinition"](new TestModel({}), {})
       ).toThrowError(
-        `Only one type of decoration is allowed. Please choose between @uiprop and @uielement`
+        `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
       );
     });
 

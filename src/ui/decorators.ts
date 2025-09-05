@@ -277,6 +277,7 @@ export function uichild(
   clazz: string,
   tag: string,
   props: Record<string, any> = {},
+  isArray: boolean = false,
   serialize: boolean = false
 ) {
   return (target: any, propertyKey: string) => {
@@ -285,7 +286,7 @@ export function uichild(
       serialize: serialize,
       props: Object.assign({}, props || {}, {
         name: clazz || propertyKey,
-      }),
+      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: false}),
     };
 
     propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
