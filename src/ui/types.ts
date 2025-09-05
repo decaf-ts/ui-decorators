@@ -86,6 +86,10 @@ export interface FieldProperties {
   pattern?: string;
   step?: number;
   format?: string;
+  pk?: string;
+  multiple?: boolean;
+  customTypes?: string | string[];
+  activeFormGroup?: number;
   [UIKeys.EQUALS]?: string;
   [UIKeys.DIFF]?: string;
   [UIKeys.LESS_THAN]?: string;

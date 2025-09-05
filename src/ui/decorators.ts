@@ -286,7 +286,7 @@ export function uichild(
       serialize: serialize,
       props: Object.assign({}, props || {}, {
         name: clazz || propertyKey,
-      }, isArray ? {type: 'Array'} : {}),
+      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: false}),
     };
 
     propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
