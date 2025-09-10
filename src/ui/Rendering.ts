@@ -106,6 +106,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       }
     } else {
       switch (key) {
+        case HTML5InputTypes.SELECT:
         case HTML5InputTypes.TEXT:
         case HTML5InputTypes.EMAIL:
         case HTML5InputTypes.COLOR:
