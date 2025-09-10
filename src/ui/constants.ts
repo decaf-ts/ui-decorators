@@ -253,7 +253,7 @@ export const HTML5InputTypes = {
   TEL: "tel",
   TEXT: "text",
   TEXTAREA: 'textarea',
-  SELECT: 'textarea',
+  SELECT: 'select',
   TIME: "time",
   URL: UIKeys.URL,
   WEEK: "week",
