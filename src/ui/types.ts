@@ -90,6 +90,8 @@ export interface FieldProperties {
   multiple?: boolean;
   customTypes?: string | string[];
   activeFormGroup?: number;
+  pages?: number; 
+  page?: number; 
   [UIKeys.EQUALS]?: string;
   [UIKeys.DIFF]?: string;
   [UIKeys.LESS_THAN]?: string;

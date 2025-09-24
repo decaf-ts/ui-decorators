@@ -53,9 +53,9 @@ export function parseValueByType(
     }
     default:
       result =
-        typeof value === ReservedModels.STRING
-          ? escapeHtml(value as string)
-          : result;
+        typeof value === ReservedModels.BOOLEAN ?
+          value : typeof value === ReservedModels.STRING ? 
+          escapeHtml(value as string) : result;
   }
   if (typeof result === "undefined") {
     throw new InternalError(
