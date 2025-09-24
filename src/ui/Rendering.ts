@@ -116,6 +116,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         case HTML5InputTypes.SEARCH:
         case HTML5InputTypes.HIDDEN:
         case HTML5InputTypes.TEXTAREA:
+        case HTML5InputTypes.RADIO:
           return ReservedModels.STRING;
         case HTML5InputTypes.NUMBER:
           return ReservedModels.NUMBER;
