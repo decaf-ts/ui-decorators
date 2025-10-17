@@ -34,6 +34,13 @@ export function parseValueByType(
 ): string | number | Date {
   let result: string | number | Date | undefined = undefined;
   switch (type) {
+    case Array.name: {
+      const parsed = Array.isArray(value) ?  value.map(v => parseValueByType(
+        ReservedModels.STRING, v, fieldProps
+      )) : [value];
+      result = parsed.join(",");
+      break;
+    }
     case HTML5InputTypes.NUMBER:
       result = parseToNumber(value);
       break;
@@ -52,10 +59,12 @@ export function parseValueByType(
       break;
     }
     default:
-      result =
-        typeof value === ReservedModels.STRING
-          ? escapeHtml(value as string)
-          : result;
+      result = 
+      typeof value === ReservedModels.OBJECT ? 
+        (Array.isArray(value) ? value.join(",") : JSON.stringify(value)) :
+          typeof value === ReservedModels.BOOLEAN ?
+            value : typeof value === ReservedModels.STRING ? 
+              escapeHtml(value as string) : result;
   }
   if (typeof result === "undefined") {
     throw new InternalError(

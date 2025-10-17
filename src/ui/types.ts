@@ -73,7 +73,7 @@ export interface FieldProperties {
   path: string;
   childOf?: string;
   type: string;
-  value: string | number | Date;
+  value: string | number | Date | string[] | number[] | Date[];
   hidden?: boolean | CrudOperationKeys[];
   disabled?: boolean;
   // Validation
@@ -89,6 +89,7 @@ export interface FieldProperties {
   pk?: string;
   multiple?: boolean;
   customTypes?: string | string[];
+  options?: Record<string, unknown>[];
   activeFormGroup?: number;
   [UIKeys.EQUALS]?: string;
   [UIKeys.DIFF]?: string;
