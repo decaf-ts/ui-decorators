@@ -120,7 +120,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           return ReservedModels.STRING;
         case HTML5InputTypes.NUMBER:
           return ReservedModels.NUMBER;
-        case HTML5InputTypes.CHECKBOX:
+        case HTML5InputTypes.CHECKBOX: 
           return ReservedModels.BOOLEAN;
         case HTML5InputTypes.DATE:
         case HTML5InputTypes.DATETIME_LOCAL:
