@@ -15,6 +15,7 @@ import {
   ValidatableByType,
 } from "./constants";
 import {
+  CrudOperationKeys,
   FieldDefinition,
   FieldProperties,
   UIClassMetadata,
@@ -305,7 +306,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
           );
         decs.shift();
-        const sorted = decs.sort((a, b) => {
+        const sorted = decs.sort((a) => {
           return a.key === UIKeys.ELEMENT ? -1 : 1;
         });
         sorted.forEach((dec) => {
@@ -371,6 +372,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               break;
             }
             case UIKeys.HIDDEN: 
+            case UIKeys.ORDER: 
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
@@ -387,9 +389,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                   } : {}),
                   globalProps
                 );
-                const tag = uiProps.tag || childProps?.tag;
                 const childDefinition: FieldDefinition<Record<string, any>> = {
-                  tag,
+                  tag:  uiProps.tag || childProps?.tag || tag || "",
                   props,
                 };
               if(dec.key === UIKeys.ELEMENT) {
@@ -424,8 +425,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 );
                 children.push(childDefinition);
               }
-              if(dec.key === UIKeys.HIDDEN) {
-                const child = children.find(c => c.props?.name === key);
+              else {
+                const child = children.find(c => c.props?.name === key || dec.props?.name === c.props?.childOf);
                 if (child) {
                   child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
                 } else {
@@ -446,12 +447,24 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps = Object.assign({}, props, globalProps, {
       handlers: handlers || {},
     });
+    children = ((Object.keys(uiDecorators)?.length && children?.length) ?
+            this.getLayoutItems(children, uiDecorators) : children);
+    const operation = globalProps?.operation;
+    children = children?.sort((a, b) => ((a?.props?.order ?? 0) - (b?.props?.order ?? 0)))
+      .filter((item) => {
+        if(item.tag) {
+           const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
+          if(!hiddenOn?.length)
+            return item;
+          if(!hiddenOn.includes(operation as CrudOperationKeys))
+            return item;
+        }
+      });
     const result: FieldDefinition<T> = {
       tag: tag,
       item: childProps as UIListItemElementMetadata,
       props: globalProps as T & FieldProperties,
-      children: ((Object.keys(uiDecorators)?.length && children?.length) ? 
-        this.getLayoutItems(children, uiDecorators) : children),
+      children: children as FieldDefinition<any>[],
     
     };
 

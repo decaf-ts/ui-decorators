@@ -98,6 +98,7 @@ export const UIKeys = {
 
   HIDDEN: "hidden",
   FORMAT: "format",
+  ORDER: "order",
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,
