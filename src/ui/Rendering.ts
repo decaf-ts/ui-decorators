@@ -374,7 +374,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
               const props = Object.assign(
                 {},
-                uiProps.props as any,
+                childProps?.props,
+                uiProps.props || {},
                 {
                   path: getPath(
                     globalProps?.childOf as string,
@@ -382,7 +383,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                   ),
                   childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
                 },
-                childProps?.props,
                 globalProps
               );
 
