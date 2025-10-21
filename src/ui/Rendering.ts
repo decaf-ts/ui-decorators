@@ -345,7 +345,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               );
               break;
             }
-            case UIKeys.HIDDEN: 
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
               if(dec.props?.name)
@@ -362,73 +361,71 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 props: Object.assign(
                   {}, 
                   childProps?.props, 
-                  dec.key === UIKeys.UILISTPROP ? { mapper } : {[dec.key]: dec.props}, 
+                  { mapper }, 
                   props),
               };
 
               break;
             }
+            case UIKeys.HIDDEN: 
             case UIKeys.ELEMENT: {
               children = children || [];
-
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
-              const props = Object.assign(
-                {},
-                childProps?.props,
-                uiProps.props || {},
-                {
-                  path: getPath(
-                    globalProps?.childOf as string,
-                    uiProps.props!.name
-                  ),
-                  childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
-                },
-                globalProps
-              );
-
-              const childDefinition: FieldDefinition<Record<string, any>> = {
-                tag: uiProps.tag,
-                props,
-              };
-
-              const validationDecs: DecoratorMetadata<ValidationMetadata>[] =
-                validationDecorators[
-                  key
-                ] as DecoratorMetadata<ValidationMetadata>[];
-
-              const typeDec: DecoratorMetadataObject =
-                validationDecs.shift() as DecoratorMetadata;
-              for (const dec of validationDecs) {
-                if (this.isValidatableByAttribute(dec.key)) {
-                  childDefinition.props[this.translate(dec.key)] =
-                    this.toAttributeValue(dec.key, dec.props);
-                  continue;
-                }
-                if (this.isValidatableByType(dec.key)) {
-                  if (dec.key === HTML5InputTypes.DATE) {
-                    childDefinition.props[UIKeys.FORMAT] =
-                      dec.props.format || HTML5DateFormat;
-                  }
-                  childDefinition.props[UIKeys.TYPE] = dec.key;
-                  continue;
-                }
-              }
-
-              if (!childDefinition.props[UIKeys.TYPE]) {
-                const basicType = (typeDec.props as { name: string }).name;
-                childDefinition.props[UIKeys.TYPE] = this.translate(
-                  basicType.toLowerCase(),
-                  true
+             
+              if(dec.key === UIKeys.ELEMENT) {
+                  const props = Object.assign(
+                  {},
+                  childProps?.props,
+                  uiProps.props || {},
+                  {
+                    path: getPath(
+                      globalProps?.childOf as string,
+                      uiProps.props!.name
+                    ),
+                    childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
+                  },
+                  globalProps
                 );
+                const childDefinition: FieldDefinition<Record<string, any>> = {
+                  tag: uiProps.tag,
+                  props,
+                };
+                const validationDecs = validationDecorators[key] as DecoratorMetadata<ValidationMetadata>[];
+                const typeDec = validationDecs.shift() as DecoratorMetadata;
+                for (const dec of validationDecs) {
+                  if (this.isValidatableByAttribute(dec.key)) {
+                    childDefinition.props[this.translate(dec.key)] = this.toAttributeValue(dec.key, dec.props);
+                    continue;
+                  }
+                  if (this.isValidatableByType(dec.key)) {
+                    if (dec.key === HTML5InputTypes.DATE) {
+                      childDefinition.props[UIKeys.FORMAT] = dec.props.format || HTML5DateFormat;
+                    }
+                    childDefinition.props[UIKeys.TYPE] = dec.key;
+                    continue;
+                  }
+                }
+
+                if (!childDefinition.props[UIKeys.TYPE]) {
+                  const basicType = (typeDec.props as { name: string }).name;
+                  childDefinition.props[UIKeys.TYPE] = this.translate(
+                    basicType.toLowerCase(),
+                    true
+                  );
+                }
+
+                childDefinition.props.value = formatByType(
+                  childDefinition.props[UIKeys.TYPE],
+                  model[key as keyof M],
+                  childDefinition.props[UIKeys.FORMAT]
+                );
+                children.push(childDefinition);
               }
-
-              childDefinition.props.value = formatByType(
-                childDefinition.props[UIKeys.TYPE],
-                model[key as keyof M],
-                childDefinition.props[UIKeys.FORMAT]
-              );
-
-              children.push(childDefinition);
+              if(dec.key === UIKeys.HIDDEN) {
+                const child = children[children.length - 1];
+                if (child) 
+                  child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
+              }
               break;
             }
             case UIKeys.UILAYOUTITEM: 
