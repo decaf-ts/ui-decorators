@@ -305,7 +305,10 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
           );
         decs.shift();
-        decs.forEach((dec) => {
+        const sorted = decs.sort((a, b) => {
+          return a.key === UIKeys.ELEMENT ? -1 : 1;
+        });
+        sorted.forEach((dec) => {
           if (!dec) throw new RenderingError(`No decorator found`);
 
           switch (dec.key) {
@@ -371,25 +374,25 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
-             
-              if(dec.key === UIKeys.ELEMENT) {
-                  const props = Object.assign(
+              const props = Object.assign(
                   {},
                   childProps?.props,
                   uiProps.props || {},
-                  {
+                  (uiProps?.props?.name ? {
                     path: getPath(
                       globalProps?.childOf as string,
                       uiProps.props!.name
                     ),
                     childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
-                  },
+                  } : {}),
                   globalProps
                 );
+                const tag = uiProps.tag || childProps?.tag;
                 const childDefinition: FieldDefinition<Record<string, any>> = {
-                  tag: uiProps.tag,
+                  tag,
                   props,
                 };
+              if(dec.key === UIKeys.ELEMENT) {
                 const validationDecs = validationDecorators[key] as DecoratorMetadata<ValidationMetadata>[];
                 const typeDec = validationDecs.shift() as DecoratorMetadata;
                 for (const dec of validationDecs) {
@@ -422,9 +425,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 children.push(childDefinition);
               }
               if(dec.key === UIKeys.HIDDEN) {
-                const child = children[children.length - 1];
-                if (child) 
+                const child = children.find(c => c.props?.name === key);
+                if (child) {
                   child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
+                } else {
+                  children.push(childDefinition);
+                }
               }
               break;
             }
