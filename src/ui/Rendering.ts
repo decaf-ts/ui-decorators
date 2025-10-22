@@ -305,6 +305,13 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           throw new RenderingError(
             `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
           );
+        const hasHideOnDecorator = decs.find(({ key }) => key === UIKeys.HIDDEN);
+        if(hasHideOnDecorator) {
+          const hasUiElementDecorator = decs.find(({ key }) => key === UIKeys.ELEMENT);
+          if(!hasUiElementDecorator)
+            throw new RenderingError(`@uielement no found in "${key}". It is required to use hiddenOn decorator.`);
+
+        }
         decs.shift();
         const sorted = decs.sort((a) => {
           return a.key === UIKeys.ELEMENT ? -1 : 1;
@@ -452,13 +459,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     const operation = globalProps?.operation;
     children = children?.sort((a, b) => ((a?.props?.order ?? 0) - (b?.props?.order ?? 0)))
       .filter((item) => {
-        if(item.tag) {
-           const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
-          if(!hiddenOn?.length)
-            return item;
-          if(!hiddenOn.includes(operation as CrudOperationKeys))
-            return item;
-        }
+        const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
+        if(!hiddenOn?.length)
+          return item;
+        if(!hiddenOn.includes(operation as CrudOperationKeys))
+          return item;
       });
     const result: FieldDefinition<T> = {
       tag: tag,
