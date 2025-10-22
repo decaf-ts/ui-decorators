@@ -1,4 +1,4 @@
-import { BaseError } from "@decaf-ts/db-decorators";
+import { InternalError } from "@decaf-ts/db-decorators";
 
 /**
  * @description Error thrown when a rendering operation fails
@@ -23,13 +23,13 @@ import { BaseError } from "@decaf-ts/db-decorators";
  *   console.error('Rendering failed:', error.message);
  * }
  */
-export class RenderingError extends BaseError {
+export class RenderingError extends InternalError {
   /**
    * @description Creates a new RenderingError instance
    * @summary Initializes the error with a message or original error
    * @param {string|Error} msg The error message or original error
    */
   constructor(msg: string | Error) {
-    super(RenderingError.name, msg);
+    super(msg, RenderingError.name);
   }
 }
