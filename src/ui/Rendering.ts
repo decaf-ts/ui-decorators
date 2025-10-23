@@ -433,7 +433,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 children.push(childDefinition);
               }
               else {
-                const child = children.find(c => c.props?.name === key || dec.props?.name === c.props?.childOf);
+                const child = children.find(c => c.props?.name === key);
                 if (child) {
                   child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
                 } else {
