@@ -20,7 +20,6 @@ import {
   FieldProperties,
   UIClassMetadata,
   UIElementMetadata,
-  UILayoutItemMetadata,
   UIListItemElementMetadata,
   UIModelMetadata,
   UIPropMetadata,
@@ -178,7 +177,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         RenderingEngine.key(UIKeys.UILAYOUT),
         Model.get(model.constructor.name) as any
       ),
-    ].filter(Boolean);;
+    ].filter(Boolean);
   }
 
   /**
@@ -305,6 +304,13 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           throw new RenderingError(
             `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
           );
+        const hasHideOnDecorator = decs.find(({ key }) => key === UIKeys.HIDDEN);
+        if(hasHideOnDecorator) {
+          const hasUiElementDecorator = decs.find(({ key }) => key === UIKeys.ELEMENT);
+          if(!hasUiElementDecorator)
+            throw new RenderingError(`@uielement no found in "${key}". It is required to use hiddenOn decorator.`);
+
+        }
         decs.shift();
         const sorted = decs.sort((a) => {
           return a.key === UIKeys.ELEMENT ? -1 : 1;
@@ -373,6 +379,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.HIDDEN: 
             case UIKeys.ORDER: 
+            case UIKeys.UILAYOUTITEM: 
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
@@ -426,17 +433,26 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 children.push(childDefinition);
               }
               else {
-                const child = children.find(c => c.props?.name === key || dec.props?.name === c.props?.childOf);
+                const child = children.find(c => c.props?.name === key || dec.key === UIKeys.UILAYOUTITEM && c?.props?.childOf === key);
                 if (child) {
-                  child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
+                  if(dec.key !== UIKeys.UILAYOUTITEM) {
+                    child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
+                  } else {
+                    const {row, col, props} = dec.props;
+                      child.props = Object.assign(
+                      {}, 
+                      props || {},
+                      child.props,
+                      row,
+                      col
+                    );
+                  }
                 } else {
                   children.push(childDefinition);
                 }
               }
               break;
             }
-            case UIKeys.UILAYOUTITEM: 
-            break;
             default:
               throw new RenderingError(`Invalid key: ${dec.key}`);
           }
@@ -447,18 +463,15 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps = Object.assign({}, props, globalProps, {
       handlers: handlers || {},
     });
-    children = ((Object.keys(uiDecorators)?.length && children?.length) ?
-            this.getLayoutItems(children, uiDecorators) : children);
+
     const operation = globalProps?.operation;
     children = children?.sort((a, b) => ((a?.props?.order ?? 0) - (b?.props?.order ?? 0)))
       .filter((item) => {
-        if(item.tag) {
-           const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
-          if(!hiddenOn?.length)
-            return item;
-          if(!hiddenOn.includes(operation as CrudOperationKeys))
-            return item;
-        }
+        const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
+        if(!hiddenOn?.length)
+          return item;
+        if(!hiddenOn.includes(operation as CrudOperationKeys))
+          return item;
       });
     const result: FieldDefinition<T> = {
       tag: tag,
@@ -472,47 +485,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     return result;
   }
 
-  /**
-   * @description Processes layout items for grid positioning
-   * @summary Maps child field definitions to their corresponding layout positions
-   * This method iterates through child field definitions and applies layout metadata
-   * from @uilayoutitem decorators to position them correctly in a grid layout.
-   *
-   * @param {FieldDefinition[]} children - Array of child field definitions to process
-   * @param {Record<string, any>} uiDecorators - UI decorator metadata keyed by property name
-   * @returns {FieldDefinition[]} Array of field definitions with layout positioning applied
-   *
-   * @example
-   * // Internal usage - positions children in grid layout
-   * const layoutChildren = this.getLayoutItems(childDefinitions, decoratorMetadata);
-   */
-  getLayoutItems(children: FieldDefinition<any>[], uiDecorators: Record<string, any>): FieldDefinition<any>[] {
-    return children.map((child) => {
-      let updatedChild = child;
-      for (const key in uiDecorators) {
-        const decs = uiDecorators[key];
-        for (const dec of decs) {
-          if (
-            dec.key === UIKeys.UILAYOUTITEM &&
-            (dec.props?.name === child.props?.name || dec.props?.name === child.props?.childOf)
-          ) {
-            const { col, props, row } = dec.props as UILayoutItemMetadata;
-            updatedChild = {
-              row,
-              col,
-              ...child,
-              props: {
-                ...child.props,
-                ...props,
-              },
-            };
-            break;
-          }
-        }
-      }
-      return updatedChild;
-    });
-  }
 
   /**
    * @description Renders a model with global properties and additional arguments.

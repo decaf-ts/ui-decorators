@@ -8,7 +8,7 @@
  */
 
 import { OperationKeys } from "@decaf-ts/db-decorators";
-import { UIKeys } from "./constants";
+import { UIKeys, UIMediaBreakPoints } from "./constants";
 
 /**
  * @description Interface for defining a UI field or component
@@ -197,4 +197,8 @@ export type UILayoutItemMetadata ={
  * @typedef UIMediaBreakPoints
  * @memberOf module:ui-decorators
  */
-export type UIMediaBreakPoints = 'xl' | 'l' | 'm' | 's' | 'medium' | 'large' | 'small' | 'xlarge';
+export type UIMediaBreakPointsType = 
+  UIMediaBreakPoints.SMALL | 
+  UIMediaBreakPoints.MEDIUM | 
+  UIMediaBreakPoints.LARGE |
+  UIMediaBreakPoints.XLARGE;

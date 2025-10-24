@@ -324,7 +324,7 @@ export function uichild(
       serialize: serialize,
       props: Object.assign({}, props || {}, {
         name: clazz || propertyKey,
-      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: false}),
+      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: props?.multiple || false}),
     };
 
     propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
@@ -458,7 +458,7 @@ export function uilayoutitem(
       name:  propertyKey,
       col,
       row,
-      props: Object.assign({}, props),
+      props: Object.assign({}, props, {row: row ?? 1, col: col ?? 1}),
     };  
     propMetadata(RenderingEngine.key(UIKeys.UILAYOUTITEM), metadata)(
       target,
