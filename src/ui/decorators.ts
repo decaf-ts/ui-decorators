@@ -53,6 +53,44 @@ export function hideOn(...operations: CrudOperationKeys[]) {
   );
 }
 
+
+/**
+ * @description Decorator that sets the order of a UI element
+ * @summary Specifies the rendering order for UI components
+ * This decorator applies metadata to the property or class, indicating its order in the UI rendering sequence.
+ *
+ * @param {number} [order=1] The order value for the UI element (default is 1)
+ * @return {Function} A property or class decorator function
+ *
+ * @function uiorder
+ * @category Property Decorators
+ *
+ * @example
+ * // Set order for a field
+ * @uiorder(2)
+ * fieldName: string;
+ *
+ * // Set order for a class
+ * @uiorder(1)
+ * class UserProfile { ... }
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant System
+ *   participant uiorder
+ *   participant property
+ *   System->>uiorder:do(property)
+ *   uiorder->>property: sets order metadata
+ *   uiorder->>System: returns decorated property
+ */
+export function uiorder(order: number = 1) {
+  return propMetadata<number>(
+    RenderingEngine.key(UIKeys.ORDER),
+    order
+  );
+}
+
+
 /**
  * @description Decorator that completely hides a property in all UI operations
  * @summary Makes a property invisible in all CRUD operations
@@ -286,7 +324,7 @@ export function uichild(
       serialize: serialize,
       props: Object.assign({}, props || {}, {
         name: clazz || propertyKey,
-      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: false}),
+      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: props?.multiple || false}),
     };
 
     propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
@@ -420,7 +458,7 @@ export function uilayoutitem(
       name:  propertyKey,
       col,
       row,
-      props: Object.assign({}, props),
+      props: Object.assign({}, props, {row: row ?? 1, col: col ?? 1}),
     };  
     propMetadata(RenderingEngine.key(UIKeys.UILAYOUTITEM), metadata)(
       target,

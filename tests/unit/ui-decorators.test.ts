@@ -19,12 +19,12 @@ describe(`UI decorators Test`, function () {
     );
 
     expect(decorators).toBeDefined();
-    expect(decorators.length).toBe(2);
-    expect(decorators[1].key).toEqual(ModelKeys.MODEL);
+    expect(decorators.length).toBe(5);
+    expect(decorators[decorators.length - 1].key).toEqual(ModelKeys.MODEL);
 
     decorators = Reflection.getClassDecorators(UIKeys.REFLECT, testModel);
     expect(decorators).toBeDefined();
-    expect(decorators.length).toBe(1);
+    expect(decorators.length).toBe(4);
     expect(decorators[0].key).toEqual(UIKeys.UIMODEL);
   });
 
@@ -35,10 +35,10 @@ describe(`UI decorators Test`, function () {
         testModel,
         "name",
         false
-      );
+      );  
 
     expect(propertyDecorators).toBeDefined();
-    expect(propertyDecorators.decorators.length).toEqual(2);
+    expect(propertyDecorators.decorators.length).toEqual(5);
     expect(propertyDecorators.decorators[1].key).toEqual(UIKeys.ELEMENT);
 
     const { tag, props } = propertyDecorators.decorators[1].props;
@@ -46,7 +46,28 @@ describe(`UI decorators Test`, function () {
     expect(tag).toEqual("input-element");
     expect(props).toBeDefined();
     expect(props.subtype).toEqual("OtherTest");
-  });
+  }); 
+
+  it("Must be hidden property on create", function () {
+    const propertyDecorators: { [indexer: string]: any } =
+        Reflection.getPropertyDecorators(
+          UIKeys.REFLECT,
+          testModel,
+          "hiddenProp",
+          false
+        );
+      
+      expect(propertyDecorators).toBeDefined();
+      expect(propertyDecorators.decorators.length).toEqual(3);
+      expect(propertyDecorators.decorators[1].key).toEqual(UIKeys.ELEMENT);
+
+      const { tag, props } = propertyDecorators.decorators[1].props;
+
+      expect(tag).toEqual("input-element");
+      expect(props).toBeDefined();
+      expect(Object.values(propertyDecorators.decorators).some(d => (d as Record<string, string>).key === UIKeys.HIDDEN)).toBeTruthy();
+    });
+
 
   it("Adds the render method properly", function () {
     expect(testModel.render).toBeDefined();

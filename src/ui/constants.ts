@@ -31,6 +31,15 @@ import {
   Validator,
 } from "@decaf-ts/decorator-validation";
 
+
+
+export enum UIMediaBreakPoints  {
+  SMALL = 's',
+  MEDIUM = 'm',
+  LARGE = 'l',
+  XLARGE = 'xl',
+};
+
 /**
  * @description Key constants used for UI metadata and rendering
  * @summary Collection of string constants used as keys for UI-related metadata
@@ -98,6 +107,7 @@ export const UIKeys = {
 
   HIDDEN: "hidden",
   FORMAT: "format",
+  ORDER: "order",
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,
@@ -118,6 +128,9 @@ export const UIKeys = {
   GREATER_THAN: ValidationKeys.GREATER_THAN,
   GREATER_THAN_OR_EQUAL: ValidationKeys.GREATER_THAN_OR_EQUAL,
 };
+
+
+
 
 /**
  * @description Mapping of input types to their corresponding validators

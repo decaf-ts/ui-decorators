@@ -11,19 +11,34 @@ import {
   required,
   url,
 } from "@decaf-ts/decorator-validation";
-import { uichild, uielement, uimodel } from "../../src";
-import { id } from "@decaf-ts/db-decorators";
+import { hideOn, renderedBy, uichild, uielement, uihandlers, uilayout, uilayoutitem, uilistitem, uilistprop, uimodel, uiorder } from "../../src";
+import { id, OperationKeys } from "@decaf-ts/db-decorators";
 
 export const usedDateFormat = "yyyy/MM/dd";
 
+
 @model()
 @uimodel()
+@renderedBy('angular')
+@uilistitem()
+@uihandlers({handler: () => null})
+@uilayout('layout-component')
+
 export class TestClass extends Model {
+ 
   @required()
   @minlength(5)
   @maxlength(15)
+  @uiorder(5)
+  @uilistprop('propName')
+  @uilayoutitem(1, 1)
   @uielement("input-element", { subtype: "OtherTest" })
   name!: string;
+
+  @hideOn(OperationKeys.CREATE)
+  @uielement("input-element", { subtype: "HiddenTest" })
+  hiddenProp!: string;
+  
 
   constructor(model?: ModelArg<TestClass>) {
     super(model);

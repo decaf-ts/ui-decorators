@@ -8,7 +8,7 @@
  */
 
 import { OperationKeys } from "@decaf-ts/db-decorators";
-import { UIKeys } from "./constants";
+import { UIKeys, UIMediaBreakPoints } from "./constants";
 
 /**
  * @description Interface for defining a UI field or component
@@ -73,7 +73,7 @@ export interface FieldProperties {
   path: string;
   childOf?: string;
   type: string;
-  value: string | number | Date;
+  value: string | number | Date | string[] | number[] | Date[];
   hidden?: boolean | CrudOperationKeys[];
   disabled?: boolean;
   // Validation
@@ -89,6 +89,7 @@ export interface FieldProperties {
   pk?: string;
   multiple?: boolean;
   customTypes?: string | string[];
+  options?: Record<string, unknown>[];
   activeFormGroup?: number;
   pages?: number; 
   page?: number; 
@@ -196,4 +197,8 @@ export type UILayoutItemMetadata ={
  * @typedef UIMediaBreakPoints
  * @memberOf module:ui-decorators
  */
-export type UIMediaBreakPoints = 'xl' | 'l' | 'm' | 's' | 'medium' | 'large' | 'small' | 'xlarge';
+export type UIMediaBreakPointsType = 
+  UIMediaBreakPoints.SMALL | 
+  UIMediaBreakPoints.MEDIUM | 
+  UIMediaBreakPoints.LARGE |
+  UIMediaBreakPoints.XLARGE;
