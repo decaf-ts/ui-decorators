@@ -458,7 +458,7 @@ export function uilayoutitem(
       name:  propertyKey,
       col,
       row,
-      props: Object.assign({}, props),
+      props: Object.assign({}, props, {row: row ?? 1, col: col ?? 1}),
     };  
     propMetadata(RenderingEngine.key(UIKeys.UILAYOUTITEM), metadata)(
       target,

@@ -1,7 +1,8 @@
 import { UIKeys } from "../ui/constants";
 import { apply, metadata } from "@decaf-ts/reflection";
 import { RenderingEngine } from "../ui/Rendering";
-import { UIListItemModelMetadata, UIMediaBreakPoints, UIModelMetadata } from "../ui/types";
+import { UIListItemModelMetadata, UIMediaBreakPointsType, UIModelMetadata } from "../ui/types";
+import { UIMediaBreakPoints } from "../ui/constants";
 
 /**
  * @description Decorator that tags a class as a UI model
@@ -271,7 +272,7 @@ export function uihandlers(props?: Record<string, any>) {
  *   Model->>RenderingEngine: requests rendering as layout container
  *   RenderingEngine->>System: renders grid layout with specified dimensions
  */
-export function uilayout(tag: string, cols: number = 1, rows: number | string[] = 1, breakpoint: UIMediaBreakPoints = 'm') {
+export function uilayout(tag: string, cols: number = 1, rows: number | string[] = 1, breakpoint: UIMediaBreakPointsType = UIMediaBreakPoints.MEDIUM) {
   return (original: any, propertyKey?: any) => {
     return uimodel(tag, {cols, rows, breakpoint})(original, propertyKey);
   };
