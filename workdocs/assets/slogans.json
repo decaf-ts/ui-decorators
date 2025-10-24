@@ -1,185 +1,186 @@
-{
-  "ui‑decorators": [
-    {
-      "Slogan": "UI‑Decorators: Where your models dress up for the interface, decaf style.",
-      "Tags": "UI, Coffee‑themed, Decorators"
-    },
-    {
-      "Slogan": "Define UI behaviour in your model. Sip decaf while your interface renders.",
-      "Tags": "UI, Productivity, Coffee‑themed"
-    },
-    {
-      "Slogan": "Decorators that map your data to UI components, not caffeine buzz.",
-      "Tags": "Decorators, UI, Calm"
-    },
-    {
-      "Slogan": "From model class to rendered page without heart palpitations.",
-      "Tags": "Rendering, Calm, UI"
-    },
-    {
-      "Slogan": "When your UI code chills, your users don’t notice the backend freak‑out.",
-      "Tags": "UI, DeepStack, Calm"
-    },
-    {
-      "Slogan": "UI fields that feel like espresso foam—smooth, rich, decaf.",
-      "Tags": "UI, Coffee‑themed, Fun"
-    },
-    {
-      "Slogan": "Render your forms while your coffee cools down.",
-      "Tags": "Forms, Workflow, Coffee‑themed"
-    },
-    {
-      "Slogan": "Hidden props, dynamic layouts — no caffeine required.",
-      "Tags": "Layout, Technical, Calm"
-    },
-    {
-      "Slogan": "ui‑decorators: because your UI should sip, not sprint.",
-      "Tags": "UI, Branding, Calm"
-    },
-    {
-      "Slogan": "Automatic rendering = your hot coffee stays the only hot thing.",
-      "Tags": "Rendering, Humorous, UI"
-    },
-    {
-      "Slogan": "Hide, show, layout — orchestrated like a barista at work.",
-      "Tags": "UI, Metaphor, Coffee‑themed"
-    },
-    {
-      "Slogan": "Your model knows how to render itself—so you don’t have to chug an energy drink.",
-      "Tags": "ModelDriven, UI, Calm"
-    },
-    {
-      "Slogan": "One decorator to rule your interface, one calm dev to brew it.",
-      "Tags": "Decorators, Workflow, Fun"
-    },
-    {
-      "Slogan": "UI‑Adapters optional. Decaf‑calm mandatory.",
-      "Tags": "UI, Branding, Coffee‑themed"
-    },
-    {
-      "Slogan": "Render a list of models while your heartbeat stays unchanged.",
-      "Tags": "ListRendering, Calm, UI"
-    },
-    {
-      "Slogan": "When UI metadata glows, your bugs stay in the shadows.",
-      "Tags": "Metadata, UI, Calm"
-    },
-    {
-      "Slogan": "Let your UI behave like a café lounge, not a nightclub.",
-      "Tags": "UI, Metaphor, Chill"
-    },
-    {
-      "Slogan": "Render engines ready. Coffee in hand. Code in zen.",
-      "Tags": "Rendering, Coffee‑themed, Developer"
-    },
-    {
-      "Slogan": "UI‑decorators: because forms shouldn’t require espresso shots.",
-      "Tags": "Forms, Humor, UI"
-    },
-    {
-      "Slogan": "From class to component without the code sprint.",
-      "Tags": "Components, UI, Calm"
-    },
-    {
-      "Slogan": "Automatically apply validation rules to UI — while you sip your decaf.",
-      "Tags": "Validation, UI, Coffee‑themed"
-    },
-    {
-      "Slogan": "Your model‑based UI stack’s decaf shot.",
-      "Tags": "UI, Branding, Technical"
-    },
-    {
-      "Slogan": "UI elements that pop gently, not explosively.",
-      "Tags": "UI, UserExperience, Calm"
-    },
-    {
-      "Slogan": "Hiding internals on READ. Showing fields on CREATE. All in decaf mode.",
-      "Tags": "CRUD, UI, Calm"
-    },
-    {
-      "Slogan": "Define your UI in metadata. Real devs relax. Real users click.",
-      "Tags": "Metadata, UI, Developer"
-    },
-    {
-      "Slogan": "Make your UI reflect your data — and your coffee cup reflect your peace.",
-      "Tags": "UI, Coffee‑themed, Metaphor"
-    },
-    {
-      "Slogan": "Automatic validation + UI mapping = fewer bugs, fewer heartbeats.",
-      "Tags": "Validation, UI, Calm"
-    },
-    {
-      "Slogan": "Decorators for UI: because HTML should feel like latte art, not static code.",
-      "Tags": "UI, Coffee‑themed, Fun"
-    },
-    {
-      "Slogan": "From model to view with zero adrenaline shot.",
-      "Tags": "MVC, Calm, UI"
-    },
-    {
-      "Slogan": "UI behaviour defined inline. Your developers defined. Your heart rate declined.",
-      "Tags": "DeveloperDX, UI, Calm"
-    },
-    {
-      "Slogan": "Your UI stack’s decaf lounge—no jitters, just features.",
-      "Tags": "UI, Coffee‑themed, Branding"
-    },
-    {
-      "Slogan": "Render engine agnostic. Your code caffeinated? Never.",
-      "Tags": "Rendering, Technical, Calm"
-    },
-    {
-      "Slogan": "Use decorators to define UI fields. Use your latte to define your peace.",
-      "Tags": "Decorators, Coffee‑themed, Developer"
-    },
-    {
-      "Slogan": "UI‑decorators: turning your data models into UI experiences—minus the crash.",
-      "Tags": "UI, LargeScale, Calm"
-    },
-    { "Slogan": "When CRUD meets lounge mode.", "Tags": "CRUD, UI, Chill" },
-    {
-      "Slogan": "Your UI elements should animate like steam, not like an energy spike.",
-      "Tags": "Animations, UI, Calm"
-    },
-    {
-      "Slogan": "Auto‑render your model lists while you sip your morning brew.",
-      "Tags": "Lists, UI, Coffee‑themed"
-    },
-    {
-      "Slogan": "HideOn READ, hidden always—because your UI knows how to chill.",
-      "Tags": "UI, ConditionalRendering, Calm"
-    },
-    {
-      "Slogan": "UI‑Adapters: optional. Relaxation: built‑in.",
-      "Tags": "UI, Developer, Branding"
-    },
-    {
-      "Slogan": "Your UI stack just got a decaf upgrade.",
-      "Tags": "UI, Branding, Fun"
-    },
-    {
-      "Slogan": "Decorators that bridge data to UI while your caffeine bridge is absent.",
-      "Tags": "Decorators, Coffee‑themed, Developer"
-    },
-    {
-      "Slogan": "UI meta‑programming so your code can brew ideas, not headaches.",
-      "Tags": "MetaProgramming, UI, Calm"
-    },
-    {
-      "Slogan": "When the UI knows the data and the developer knows the coffee, harmony follows.",
-      "Tags": "UI, Coffee‑themed, Calm"
-    },
-    {
-      "Slogan": "Model‑Driven UI rendering: decaf edition.",
-      "Tags": "UI, Coffee‑themed, Technical"
-    },
-    {
-      "Slogan": "Let your UI reflect your domain, not your blood pressure.",
-      "Tags": "DomainDriven, UI, Calm"
-    },
-    {
-      "Slogan": "UI‑Decorators: Because you’ve had enough coffee. Your code hasn’t.",
-      "Tags": "UI, Humor, Branding"
-    }
-  ]
-}
+[
+  {
+    "Slogan": "UI‑Decorators: Where your models dress up for the interface, decaf style.",
+    "Tags": "UI, Coffee‑themed, Decorators"
+  },
+  {
+    "Slogan": "Define UI behaviour in your model. Sip decaf while your interface renders.",
+    "Tags": "UI, Productivity, Coffee‑themed"
+  },
+  {
+    "Slogan": "Decorators that map your data to UI components, not caffeine buzz.",
+    "Tags": "Decorators, UI, Calm"
+  },
+  {
+    "Slogan": "From model class to rendered page without heart palpitations.",
+    "Tags": "Rendering, Calm, UI"
+  },
+  {
+    "Slogan": "When your UI code chills, your users don’t notice the backend freak‑out.",
+    "Tags": "UI, DeepStack, Calm"
+  },
+  {
+    "Slogan": "UI fields that feel like espresso foam—smooth, rich, decaf.",
+    "Tags": "UI, Coffee‑themed, Fun"
+  },
+  {
+    "Slogan": "Render your forms while your coffee cools down.",
+    "Tags": "Forms, Workflow, Coffee‑themed"
+  },
+  {
+    "Slogan": "Hidden props, dynamic layouts — no caffeine required.",
+    "Tags": "Layout, Technical, Calm"
+  },
+  {
+    "Slogan": "ui‑decorators: because your UI should sip, not sprint.",
+    "Tags": "UI, Branding, Calm"
+  },
+  {
+    "Slogan": "Automatic rendering = your hot coffee stays the only hot thing.",
+    "Tags": "Rendering, Humorous, UI"
+  },
+  {
+    "Slogan": "Hide, show, layout — orchestrated like a barista at work.",
+    "Tags": "UI, Metaphor, Coffee‑themed"
+  },
+  {
+    "Slogan": "Your model knows how to render itself—so you don’t have to chug an energy drink.",
+    "Tags": "ModelDriven, UI, Calm"
+  },
+  {
+    "Slogan": "One decorator to rule your interface, one calm dev to brew it.",
+    "Tags": "Decorators, Workflow, Fun"
+  },
+  {
+    "Slogan": "UI‑Adapters optional. Decaf‑calm mandatory.",
+    "Tags": "UI, Branding, Coffee‑themed"
+  },
+  {
+    "Slogan": "Render a list of models while your heartbeat stays unchanged.",
+    "Tags": "ListRendering, Calm, UI"
+  },
+  {
+    "Slogan": "When UI metadata glows, your bugs stay in the shadows.",
+    "Tags": "Metadata, UI, Calm"
+  },
+  {
+    "Slogan": "Let your UI behave like a café lounge, not a nightclub.",
+    "Tags": "UI, Metaphor, Chill"
+  },
+  {
+    "Slogan": "Render engines ready. Coffee in hand. Code in zen.",
+    "Tags": "Rendering, Coffee‑themed, Developer"
+  },
+  {
+    "Slogan": "UI‑decorators: because forms shouldn’t require espresso shots.",
+    "Tags": "Forms, Humor, UI"
+  },
+  {
+    "Slogan": "From class to component without the code sprint.",
+    "Tags": "Components, UI, Calm"
+  },
+  {
+    "Slogan": "Automatically apply validation rules to UI — while you sip your decaf.",
+    "Tags": "Validation, UI, Coffee‑themed"
+  },
+  {
+    "Slogan": "Your model‑based UI stack’s decaf shot.",
+    "Tags": "UI, Branding, Technical"
+  },
+  {
+    "Slogan": "UI elements that pop gently, not explosively.",
+    "Tags": "UI, UserExperience, Calm"
+  },
+  {
+    "Slogan": "Hiding internals on READ. Showing fields on CREATE. All in decaf mode.",
+    "Tags": "CRUD, UI, Calm"
+  },
+  {
+    "Slogan": "Define your UI in metadata. Real devs relax. Real users click.",
+    "Tags": "Metadata, UI, Developer"
+  },
+  {
+    "Slogan": "Make your UI reflect your data — and your coffee cup reflect your peace.",
+    "Tags": "UI, Coffee‑themed, Metaphor"
+  },
+  {
+    "Slogan": "Automatic validation + UI mapping = fewer bugs, fewer heartbeats.",
+    "Tags": "Validation, UI, Calm"
+  },
+  {
+    "Slogan": "Decorators for UI: because HTML should feel like latte art, not static code.",
+    "Tags": "UI, Coffee‑themed, Fun"
+  },
+  {
+    "Slogan": "From model to view with zero adrenaline shot.",
+    "Tags": "MVC, Calm, UI"
+  },
+  {
+    "Slogan": "UI behaviour defined inline. Your developers defined. Your heart rate declined.",
+    "Tags": "DeveloperDX, UI, Calm"
+  },
+  {
+    "Slogan": "Your UI stack’s decaf lounge—no jitters, just features.",
+    "Tags": "UI, Coffee‑themed, Branding"
+  },
+  {
+    "Slogan": "Render engine agnostic. Your code caffeinated? Never.",
+    "Tags": "Rendering, Technical, Calm"
+  },
+  {
+    "Slogan": "Use decorators to define UI fields. Use your latte to define your peace.",
+    "Tags": "Decorators, Coffee‑themed, Developer"
+  },
+  {
+    "Slogan": "UI‑decorators: turning your data models into UI experiences—minus the crash.",
+    "Tags": "UI, LargeScale, Calm"
+  },
+  {
+    "Slogan": "When CRUD meets lounge mode.",
+    "Tags": "CRUD, UI, Chill"
+  },
+  {
+    "Slogan": "Your UI elements should animate like steam, not like an energy spike.",
+    "Tags": "Animations, UI, Calm"
+  },
+  {
+    "Slogan": "Auto‑render your model lists while you sip your morning brew.",
+    "Tags": "Lists, UI, Coffee‑themed"
+  },
+  {
+    "Slogan": "HideOn READ, hidden always—because your UI knows how to chill.",
+    "Tags": "UI, ConditionalRendering, Calm"
+  },
+  {
+    "Slogan": "UI‑Adapters: optional. Relaxation: built‑in.",
+    "Tags": "UI, Developer, Branding"
+  },
+  {
+    "Slogan": "Your UI stack just got a decaf upgrade.",
+    "Tags": "UI, Branding, Fun"
+  },
+  {
+    "Slogan": "Decorators that bridge data to UI while your caffeine bridge is absent.",
+    "Tags": "Decorators, Coffee‑themed, Developer"
+  },
+  {
+    "Slogan": "UI meta‑programming so your code can brew ideas, not headaches.",
+    "Tags": "MetaProgramming, UI, Calm"
+  },
+  {
+    "Slogan": "When the UI knows the data and the developer knows the coffee, harmony follows.",
+    "Tags": "UI, Coffee‑themed, Calm"
+  },
+  {
+    "Slogan": "Model‑Driven UI rendering: decaf edition.",
+    "Tags": "UI, Coffee‑themed, Technical"
+  },
+  {
+    "Slogan": "Let your UI reflect your domain, not your blood pressure.",
+    "Tags": "DomainDriven, UI, Calm"
+  },
+  {
+    "Slogan": "UI‑Decorators: Because you’ve had enough coffee. Your code hasn’t.",
+    "Tags": "UI, Humor, Branding"
+  }
+]
