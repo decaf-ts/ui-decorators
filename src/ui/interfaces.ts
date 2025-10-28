@@ -30,3 +30,37 @@ export interface CrudFormField extends FieldProperties {
    */
   operation: CrudOperations;
 }
+
+
+
+/**
+ * @description Interface for defining a page/step in a multi-step form or wizard
+ * @summary Provides metadata for individual pages in stepped model forms
+ * This interface represents a single page or step in a multi-step form workflow.
+ * It allows defining optional title and description metadata for each page,
+ * which can be used to display step indicators, progress bars, or navigation labels.
+ * Used in conjunction with the @uisteppedmodel decorator.
+ *
+ * @interface ISteppedModelPage
+ * @memberOf module:ui-decorators
+ *
+ * @property {string} [title] - Optional title for the page/step (e.g., "Personal Information")
+ * @property {string} [description] - Optional description providing additional context for the page
+ *
+ * @example
+ * // Define pages for a multi-step wizard
+ * const wizardPages: ISteppedModelPage[] = [
+ *   { title: 'Personal Info', description: 'Enter your basic details' },
+ *   { title: 'Contact', description: 'Provide your contact information' },
+ *   { title: 'Review', description: 'Review and confirm your information' }
+ * ];
+ *
+ * @uisteppedmodel('div', wizardPages, true)
+ * class RegistrationWizard extends Model {
+ *   // Properties with @uipageprop decorators
+ * }
+ */
+export interface ISteppedModelPage {
+  title?: string;
+  description?: string;
+}

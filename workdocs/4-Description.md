@@ -14,7 +14,7 @@ The UI Decorators library is an extension of `@decaf-ts/decorator-validation` an
 
 - **`@uimodel(tag?, props?)`**: Marks a class as a UI model and specifies how it should be rendered, including the HTML tag to use and additional properties
 - **`@renderedBy(engine)`**: Specifies which rendering engine implementation should be used for a particular model
-- **`@uilistitem(tag?, props?)`**: Defines how a model should be rendered when it appears as an item in a list
+- **`@uilistmodel(tag?, props?)`**: Defines how a model should be rendered when it appears as an item in a list
 
 #### Property Decorators
 

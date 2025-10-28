@@ -135,7 +135,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    * @description Retrieves class decorator metadata for a model instance
    * @summary Extracts UI-related class decorators from a model and returns them as an array
    * This method collects metadata from various UI class decorators including @uimodel,
-   * @uilistitem, @uihandlers, and @uilayout applied to the model class.
+   * @uilistmodel, @uihandlers, and @uilayout applied to the model class.
    *
    * @template M Type extending Model
    * @param {M} model - The model instance to extract metadata from
@@ -154,11 +154,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         Model.get(model.constructor.name) as any
       ),
       Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILISTITEM),
+        RenderingEngine.key(UIKeys.UILISTMODEL),
         model.constructor
       ) ||
       Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILISTITEM),
+        RenderingEngine.key(UIKeys.UILISTMODEL),
         Model.get(model.constructor.name) as any
       ),
       Reflect.getMetadata(
@@ -379,7 +379,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.HIDDEN: 
             case UIKeys.ORDER: 
-            case UIKeys.UILAYOUTITEM: 
+            case UIKeys.UILAYOUTPROP: 
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
@@ -433,9 +433,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 children.push(childDefinition);
               }
               else {
-                const child = children.find(c => c.props?.name === key || dec.key === UIKeys.UILAYOUTITEM && c?.props?.childOf === key);
+                const child = children.find(c => c.props?.name === key || dec.key === UIKeys.UILAYOUTPROP && c?.props?.childOf === key);
                 if (child) {
-                  if(dec.key !== UIKeys.UILAYOUTITEM) {
+                  if(dec.key !== UIKeys.UILAYOUTPROP) {
                     child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
                   } else {
                     const {row, col, props} = dec.props;

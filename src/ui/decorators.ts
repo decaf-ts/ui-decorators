@@ -4,7 +4,7 @@ import { propMetadata } from "@decaf-ts/decorator-validation";
 import {
   CrudOperationKeys,
   UIElementMetadata,
-  UILayoutItemMetadata,
+  UILayoutPropMetadata,
   UIListPropMetadata,
   UIPropMetadata,
 } from "./types";
@@ -338,7 +338,7 @@ export function uichild(
  * @description Decorator that maps a model property to a list item component
  * @summary Specifies how a property should be rendered in a list context
  * This decorator allows you to define how a model property containing a list
- * should be rendered. It requires the class to be decorated with @uilistitem.
+ * should be rendered. It requires the class to be decorated with @uilistmodel.
  *
  * @param {string} [propName] The name of the property to pass to the list component (defaults to the property key)
  * @param {Record<string, any>} [props] Additional properties to pass to the list container
@@ -359,7 +359,7 @@ export function uichild(
  *   items: TodoItem[];
  * }
  *
- * @uilistitem('li', { class: 'todo-item' })
+ * @uilistmodel('li', { class: 'todo-item' })
  * class TodoItem extends Model {
  *   @attribute()
  *   text: string;
@@ -380,7 +380,7 @@ export function uichild(
  *   RenderingEngine->>Model: Get list prop metadata
  *   Model->>RenderingEngine: Return prop name and container props
  *   RenderingEngine->>ListContainer: Create container with props
- *   RenderingEngine->>ListItems: Render each item using @uilistitem
+ *   RenderingEngine->>ListItems: Render each item using @uilistmodel
  *   ListContainer->>RenderingEngine: Return rendered list
  */
 export function uilistprop(
@@ -411,58 +411,129 @@ export function uilistprop(
  * @param {Record<string, any>} [props={}] Additional properties to pass to the layout item
  * @return {Function} A property decorator function
  *
- * @function uilayoutitem
+ * @function uilayoutprop
  * @category Property Decorators
  *
  * @example
  * // Position properties in a grid layout
- * @uimodel('user-form')
+ * @uilayout('user-form', 2, 3) // 2 columns, 3 rows
+ * @model()
  * class UserForm {
  *   @attribute()
- *   @uilayoutitem(1, 1) // First column, first row
+ *   @uilayoutprop(1, 1) // One column, first row
  *   firstName: string;
  *
  *   @attribute()
- *   @uilayoutitem(2, 1) // Second column, first row
+ *   @uilayoutprop(2, 1) // One column, first row
  *   lastName: string;
  *
  *   @attribute()
- *   @uilayoutitem(1, 2, { colspan: 2 }) // First column, second row, spans 2 columns
+ *   @uilayoutprop(1, 2) // One column, second row
  *   email: string;
  *
  *   @attribute()
- *   @uilayoutitem(1, 3, { class: 'full-width' }) // First column, third row with custom class
+ *   @uilayoutprop(2, 3) // All columns, third row
  *   bio: string;
  * }
  *
  * @mermaid
  * sequenceDiagram
  *   participant Model
- *   participant uilayoutitem
+ *   participant uilayoutprop
  *   participant RenderingEngine
  *   participant LayoutContainer
- *   Model->>uilayoutitem: Apply to property
- *   uilayoutitem->>Model: Add layout item metadata
+ *   Model->>uilayoutprop: Apply to property
+ *   uilayoutprop->>Model: Add layout item metadata
  *   RenderingEngine->>Model: Get layout item metadata
  *   Model->>RenderingEngine: Return column, row, and props
  *   RenderingEngine->>LayoutContainer: Position element at grid coordinates
  *   LayoutContainer->>RenderingEngine: Return positioned element
  */
-export function uilayoutitem(
-  col: number,
-  row: number = 1,
-  props: Record<string, any> = {},
+export function uilayoutprop(
+  col: number = 1,
+  row: number = 1
 ) {
   return (target: any, propertyKey: string) => {
-    const metadata: UILayoutItemMetadata = {
+    const metadata: UILayoutPropMetadata = {
       name:  propertyKey,
       col,
       row,
-      props: Object.assign({}, props, {row: row ?? 1, col: col ?? 1}),
+      props: Object.assign({}, {row: row ?? 1, col: col ?? 1}),
     };  
-    propMetadata(RenderingEngine.key(UIKeys.UILAYOUTITEM), metadata)(
+    propMetadata(RenderingEngine.key(UIKeys.UILAYOUTPROP), metadata)(
       target,
       propertyKey
     );
   };
+}
+
+
+/**
+ * @description Decorator that assigns a property to a specific page in multi-page forms
+ * @summary Specifies which page a property should appear on in paginated UI layouts
+ * This decorator applies metadata to the property, indicating which page number it belongs to
+ * in a multi-page form or wizard. Properties with the same page number are grouped together
+ * and rendered on the same page. This is typically used in conjunction with @uisteppedmodel to
+ * organize large forms into manageable sections.
+ *
+ * @param {number} [page=1] The page number where the property should appear (default is 1)
+ * @return {Function} A property decorator function
+ *
+ * @function uipageprop
+ * @category Property Decorators
+ *
+ * @example
+ * // Create a multi-step registration form with page-based layout
+ * @uisteppedmodel('registration-form', 2, true)
+ * @model()
+ * class RegistrationForm {
+ *   // Page 1: Personal Information
+ *   @attribute()
+ *   @uipageprop(1)
+ *   firstName: string;
+ *
+ *   @attribute()
+ *   @uipageprop(1)
+ *   lastName: string;
+ *
+ *   @attribute()
+ *   @uipageprop(1)
+ *   dateOfBirth: Date;
+ *
+ *   // Page 2: Contact Information
+ *   @attribute()
+ *   @uipageprop(2)
+ *   email: string;
+ *
+ *   @attribute()
+ *   @uipageprop(2)
+ *   phone: string;
+ *
+ *   // Page 3: Confirmation
+ *   @attribute()
+ *   @uipageprop(3)
+ *   acceptTerms: boolean;
+ * }
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant Model
+ *   participant uipageprop
+ *   participant RenderingEngine
+ *   participant PaginationController
+ *   participant UI
+ *   Model->>uipageprop: Apply to property
+ *   uipageprop->>Model: Add page metadata
+ *   RenderingEngine->>Model: Get page metadata
+ *   Model->>RenderingEngine: Return page number
+ *   RenderingEngine->>PaginationController: Group properties by page
+ *   PaginationController->>UI: Render current page properties
+ */
+export function uipageprop(
+  page: number = 1
+) {
+ return propMetadata<number>(
+    RenderingEngine.key(UIKeys.PAGE),
+    page
+  );
 }
