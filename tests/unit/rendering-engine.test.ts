@@ -82,7 +82,7 @@ describe("Rendering Engine", () => {
     });
     expect(definition.children).toBeDefined();
     if (!definition.children) throw new Error("Children not defined");
-    expect(definition.children?.length).toEqual(7);
+    expect(definition.children?.length).toEqual(8);
 
     function parseType(key: string): string {
       switch (key) {
@@ -97,6 +97,8 @@ describe("Rendering Engine", () => {
           return "email";
         case "website":
           return "url";
+        case "checkbox":
+          return "boolean";
         default:
           return "text";
       }
