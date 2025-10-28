@@ -55,7 +55,7 @@ export enum UIMediaBreakPoints  {
  * @property {string} NAME - Key for name attribute
  * @property {string} NAME_PREFIX - Prefix for input names
  * @property {string} CUSTOM_PROPS - Key for custom validation properties
- * @property {string} UILISTITEM - Key for list item metadata
+ * @property {string} UILISTMODEL - Key for list item metadata
  * @property {string} UILISTPROP - Key for list property metadata
  * @property {string} TYPE - Key for type metadata
  * @property {string} SUB_TYPE - Key for subtype metadata
@@ -96,10 +96,10 @@ export const UIKeys = {
   NAME_PREFIX: "input-",
   CUSTOM_PROPS: "customValidationProps",
 
-  UILISTITEM: "uilistitem",
+  UILISTMODEL: "uilistmodel",
   UILISTPROP: "listprop",
   UILAYOUT: "uilayout",
-  UILAYOUTITEM: "uilayoutitem",
+  UILAYOUTPROP: "uilayoutprop",
   HANDLERS: "handlers",
 
   TYPE: "type",
@@ -108,6 +108,8 @@ export const UIKeys = {
   HIDDEN: "hidden",
   FORMAT: "format",
   ORDER: "order",
+  PAGE: "page",
+
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,

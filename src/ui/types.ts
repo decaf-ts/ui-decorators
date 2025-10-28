@@ -90,8 +90,10 @@ export interface FieldProperties {
   multiple?: boolean;
   customTypes?: string | string[];
   options?: Record<string, unknown>[];
-  pages?: number; 
-  page?: number; 
+  row?: number;
+  col?: number;
+  page?: number;
+  pages?: number;
   [UIKeys.EQUALS]?: string;
   [UIKeys.DIFF]?: string;
   [UIKeys.LESS_THAN]?: string;
@@ -145,10 +147,10 @@ export type UIListPropMetadata = {
 };
 
 /**
- * @typedef UIListItemModelMetadata
+ * @typedef UIListModelMetadata
  * @memberOf module:ui-decorators
  */
-export type UIListItemModelMetadata = {
+export type UIListModelMetadata = {
   item: UIListItemElementMetadata;
 };
 
@@ -179,13 +181,13 @@ export type UILayoutMetadata = {
  * @typedef UIClassMetadata
  * @memberOf module:ui-decorators
  */
-export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListItemModelMetadata;
+export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListModelMetadata;
 
 /**
- * @typedef UILayoutItemMetadata
+ * @typedef UILayoutPropMetadata
  * @memberOf ui-decorators.ui.decorators
  */
-export type UILayoutItemMetadata ={
+export type UILayoutPropMetadata ={
   name: string;
   props: Record<string, any>;
   col: number | string[];

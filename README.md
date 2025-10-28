@@ -46,7 +46,7 @@ The UI Decorators library is an extension of `@decaf-ts/decorator-validation` an
 
 - **`@uimodel(tag?, props?)`**: Marks a class as a UI model and specifies how it should be rendered, including the HTML tag to use and additional properties
 - **`@renderedBy(engine)`**: Specifies which rendering engine implementation should be used for a particular model
-- **`@uilistitem(tag?, props?)`**: Defines how a model should be rendered when it appears as an item in a list
+- **`@uilistmodel(tag?, props?)`**: Defines how a model should be rendered when it appears as an item in a list
 
 #### Property Decorators
 
@@ -242,15 +242,15 @@ class User extends Model {
 
 ### Rendering Lists of Models
 
-You can render lists of models using the `@uilistitem` and `@uilistprop` decorators:
+You can render lists of models using the `@uilistmodel` and `@uilistprop` decorators:
 
 ```typescript
 import { Model, list } from '@decaf-ts/decorator-validation';
-import { uimodel, uilistitem, uilistprop, uielement } from '@decaf-ts/ui-decorators';
+import { uimodel, uilistmodel, uilistprop, uielement } from '@decaf-ts/ui-decorators';
 
 // Define a list item model
 @uimodel()
-@uilistitem('li', { class: 'todo-item' })
+@uilistmodel('li', { class: 'todo-item' })
 class TodoItem extends Model {
   @uielement('span', { class: 'todo-text' })
   text: string;

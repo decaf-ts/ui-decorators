@@ -38,7 +38,7 @@ describe(`UI decorators Test`, function () {
       );  
 
     expect(propertyDecorators).toBeDefined();
-    expect(propertyDecorators.decorators.length).toEqual(5);
+    expect(propertyDecorators.decorators.length).toEqual(6);
     expect(propertyDecorators.decorators[1].key).toEqual(UIKeys.ELEMENT);
 
     const { tag, props } = propertyDecorators.decorators[1].props;
@@ -58,7 +58,7 @@ describe(`UI decorators Test`, function () {
         );
       
       expect(propertyDecorators).toBeDefined();
-      expect(propertyDecorators.decorators.length).toEqual(3);
+      expect(propertyDecorators.decorators.length).toEqual(4);
       expect(propertyDecorators.decorators[1].key).toEqual(UIKeys.ELEMENT);
 
       const { tag, props } = propertyDecorators.decorators[1].props;
