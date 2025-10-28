@@ -316,7 +316,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           return a.key === UIKeys.ELEMENT ? -1 : 1;
         });
         sorted.forEach((dec) => {
-          if (!dec) throw new RenderingError(`No decorator found`);
+          if (!dec) throw new RenderingError(`No decorator found`); 
 
           switch (dec.key) {
             case UIKeys.PROP: {
@@ -378,6 +378,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               break;
             }
             case UIKeys.HIDDEN: 
+            case UIKeys.PAGE: 
             case UIKeys.ORDER: 
             case UIKeys.UILAYOUTPROP: 
             case UIKeys.ELEMENT: {
@@ -433,7 +434,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 children.push(childDefinition);
               }
               else {
-                const child = children.find(c => c.props?.name === key || dec.key === UIKeys.UILAYOUTPROP && c?.props?.childOf === key);
+                const child = children.find(c => c.props?.name === key || [UIKeys.UILAYOUTPROP, UIKeys.PAGE].includes(dec.key) && c?.props?.childOf === key);
                 if (child) {
                   if(dec.key !== UIKeys.UILAYOUTPROP) {
                     child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
