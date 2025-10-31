@@ -4,6 +4,7 @@ import { propMetadata } from "@decaf-ts/decorator-validation";
 import {
   CrudOperationKeys,
   UIElementMetadata,
+  UILayoutCol,
   UILayoutPropMetadata,
   UIListPropMetadata,
   UIPropMetadata,
@@ -450,15 +451,15 @@ export function uilistprop(
  *   LayoutContainer->>RenderingEngine: Return positioned element
  */
 export function uilayoutprop(
-  col: number = 1,
+  col: UILayoutCol = 1,
   row: number = 1
 ) {
   return (target: any, propertyKey: string) => {
     const metadata: UILayoutPropMetadata = {
       name:  propertyKey,
-      col,
-      row,
-      props: Object.assign({}, {row: row ?? 1, col: col ?? 1}),
+      // col,
+      // row,
+      props: Object.assign({}, {row, col}),
     };  
     propMetadata(RenderingEngine.key(UIKeys.UILAYOUTPROP), metadata)(
       target,

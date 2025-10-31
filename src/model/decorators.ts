@@ -3,7 +3,7 @@ import { apply, metadata } from "@decaf-ts/reflection";
 import { RenderingEngine } from "../ui/Rendering";
 import { UIListModelMetadata, UIMediaBreakPointsType, UIModelMetadata } from "../ui/types";
 import { UIMediaBreakPoints } from "../ui/constants";
-import { ISteppedModelPage } from "../ui/interfaces";
+import { IPagedComponentProperties } from "../ui/interfaces";
 import { ReservedModels } from "@decaf-ts/decorator-validation";
 
 /**
@@ -224,7 +224,7 @@ export function uihandlers(props?: Record<string, any>) {
  * @uimodel with layout-specific properties for responsive grid layouts.
  *
  * @param {string} tag The HTML tag to use for the layout container
- * @param {number} [cols=1] Number of columns in the grid layout
+ * @param {number|boolean} [colsMode=1] Number of columns in the grid layout or a boolean for flex mode
  * @param {number|string[]} [rows=1] Number of rows or array of row definitions
  * @param {UIMediaBreakPoints} [breakpoint='m'] Media breakpoint for responsive behavior
  * @return {Function} A class decorator function
@@ -250,7 +250,7 @@ export function uihandlers(props?: Record<string, any>) {
  * }
  *
  * // Create a responsive layout with custom breakpoint
- * @uilayout('section', 3, 2, 'l')
+ * @uilayout('section', true, 2, 'l')
  * class ResponsiveLayout extends Model {
  *   @attribute()
  *   @uilayoutprop(1, 1)
@@ -274,9 +274,22 @@ export function uihandlers(props?: Record<string, any>) {
  *   Model->>RenderingEngine: requests rendering as layout container
  *   RenderingEngine->>System: renders grid layout with specified dimensions
  */
-export function uilayout(tag: string, cols: number = 1, rows: number | string[] = 1, breakpoint: UIMediaBreakPointsType = UIMediaBreakPoints.MEDIUM) {
+export function uilayout(tag: string, colsMode: number | boolean = 1, rows: number | string[] = 1, breakpoint: UIMediaBreakPointsType = UIMediaBreakPoints.LARGE) {
   return (original: any, propertyKey?: any) => {
-    return uimodel(tag, {cols, rows, breakpoint})(original, propertyKey);
+    return uimodel(tag, {
+       ... 
+       (typeof colsMode === ReservedModels.BOOLEAN ? 
+       {
+        flexMode: colsMode,
+        cols: 1
+       } : 
+       {
+        flexMode: false,
+        cols: colsMode
+       }),
+      rows,
+      breakpoint
+    })(original, propertyKey);
   };
 }
 
@@ -284,14 +297,14 @@ export function uilayout(tag: string, cols: number = 1, rows: number | string[] 
  * @description Decorator that creates a multi-step form model with page navigation
  * @summary Combines UI model functionality with stepped/wizard form configuration
  * This decorator creates a UI model that acts as a multi-step container with page navigation
- * capabilities. It's designed for wizard-style forms or multi-page workflows where users
+ * capabilities. It is designed for wizard-style forms or multi-page workflows where users
  * progress through sequential steps. The decorator combines @uimodel with page-specific
  * properties and optional pagination controls.
  *
- * @param {string} tag The HTML tag to use for the stepped form container
- * @param {number|ISteppedModelPage[]} [pages=1] Number of pages or array of page definitions with metadata
- * @param {boolean} [paginated=false] Whether to show pagination controls (prev/next buttons)
- * @param {any} [props={}] Additional properties to pass to the container element
+ * @param {string} tag - The HTML tag to use for the stepped form container
+ * @param {number | IPagedComponentProperties[]} [pages=1] - Number of pages or an array of page definitions with metadata
+ * @param {boolean} [paginated=false] - Whether to show pagination controls (e.g., prev/next buttons)
+ * @param {any} [props={}] - Additional properties to pass to the container element
  * @return {Function} A class decorator function
  *
  * @function uisteppedmodel
@@ -360,18 +373,16 @@ export function uilayout(tag: string, cols: number = 1, rows: number | string[] 
  *   RenderingEngine->>PaginationController: initialize page navigation
  *   PaginationController->>System: renders current page with navigation controls
  */
-export function uisteppedmodel(tag: string, pages: number | ISteppedModelPage[] = 1, paginated: boolean = false, props: any = {}) {
-  return (original: any, propertyKey?: any) => {
-    let pageTitles: ISteppedModelPage[] = [];
-    if(typeof pages === ReservedModels.OBJECT) {
-      pageTitles = pages as ISteppedModelPage[];
-      pages = pageTitles.length;
-    } 
-    return uimodel(tag, { 
-      pages, 
-      paginated,
-      pageTitles, 
-      props 
-    })(original, propertyKey);
-  };
+export function uisteppedmodel(tag: string, pages: number | IPagedComponentProperties[] = 1, paginated: boolean = false, props: any = {}) {
+  let pageTitles: IPagedComponentProperties[] = [];
+  if (typeof pages === ReservedModels.OBJECT) {
+    pageTitles = pages as IPagedComponentProperties[];
+    pages = pageTitles.length;
+  }
+  return uimodel(tag, {
+    pages,
+    paginated,
+    pageTitles,
+    props
+  });
 }

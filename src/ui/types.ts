@@ -93,7 +93,7 @@ export interface FieldProperties {
   row?: number;
   col?: number;
   page?: number;
-  pages?: number;
+  // pages?: number | IPagedComponentProperties[];
   [UIKeys.EQUALS]?: string;
   [UIKeys.DIFF]?: string;
   [UIKeys.LESS_THAN]?: string;
@@ -171,8 +171,8 @@ export type UIListItemElementMetadata = {
  */
 export type UILayoutMetadata = {
   props: {
-    cols?: number | string[];
-    rows?: number;
+    cols?: number;
+    rows?: number | string[];
     props?: Record<string, any>;
   }
 }
@@ -184,15 +184,24 @@ export type UILayoutMetadata = {
 export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListModelMetadata;
 
 /**
+ * @typedef UILayoutCol
+ * @memberOf ui-decorators.ui.decorators
+ */
+export type UILayoutCol = number | 'half' | 'full' | 'auto' | 'expand';
+
+
+/**
  * @typedef UILayoutPropMetadata
  * @memberOf ui-decorators.ui.decorators
  */
-export type UILayoutPropMetadata ={
+export type UILayoutPropMetadata = {
   name: string;
-  props: Record<string, any>;
-  col: number | string[];
-  row: number | string[];
+  props: Record<string, any>  &{
+    col: UILayoutCol;
+    row: number | string[];
+  };
 };
+
 
 /**
  * @typedef UIMediaBreakPoints

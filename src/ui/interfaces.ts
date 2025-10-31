@@ -41,7 +41,7 @@ export interface CrudFormField extends FieldProperties {
  * which can be used to display step indicators, progress bars, or navigation labels.
  * Used in conjunction with the @uisteppedmodel decorator.
  *
- * @interface ISteppedModelPage
+ * @interface IPagedComponentProperties
  * @memberOf module:ui-decorators
  *
  * @property {string} [title] - Optional title for the page/step (e.g., "Personal Information")
@@ -49,7 +49,7 @@ export interface CrudFormField extends FieldProperties {
  *
  * @example
  * // Define pages for a multi-step wizard
- * const wizardPages: ISteppedModelPage[] = [
+ * const wizardPages: IPagedComponentProperties[] = [
  *   { title: 'Personal Info', description: 'Enter your basic details' },
  *   { title: 'Contact', description: 'Provide your contact information' },
  *   { title: 'Review', description: 'Review and confirm your information' }
@@ -60,7 +60,10 @@ export interface CrudFormField extends FieldProperties {
  *   // Properties with @uipageprop decorators
  * }
  */
-export interface ISteppedModelPage {
+export interface IPagedComponentProperties {
   title?: string;
   description?: string;
+  pages?: number | IPagedComponentProperties[];
+  rows?: number | string[];
+  cols?: number | string[];
 }
