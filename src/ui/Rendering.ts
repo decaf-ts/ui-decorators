@@ -27,6 +27,7 @@ import {
 import { RenderingError } from "./errors";
 import { DecoratorMetadata, Reflection } from "@decaf-ts/reflection";
 import { formatByType, generateUIModelID } from "./utils";
+import { IPagedComponentProperties } from "./interfaces";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -397,11 +398,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                   } : {}),
                   globalProps
                 );
+               
+              if(dec.key === UIKeys.ELEMENT) {
                 const childDefinition: FieldDefinition<Record<string, any>> = {
                   tag:  uiProps.tag || childProps?.tag || tag || "",
                   props,
                 };
-              if(dec.key === UIKeys.ELEMENT) {
                 const validationDecs = validationDecorators[key] as DecoratorMetadata<ValidationMetadata>[];
                 const typeDec = validationDecs.shift() as DecoratorMetadata;
                 for (const dec of validationDecs) {
@@ -448,8 +450,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                       col
                     );
                   }
-                } else {
-                  children.push(childDefinition);
                 }
               }
               break;
@@ -477,7 +477,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     const result: FieldDefinition<T> = {
       tag: tag,
       item: childProps as UIListItemElementMetadata,
-      props: globalProps as T & FieldProperties,
+      props: globalProps as T & FieldProperties & IPagedComponentProperties,
       children: children as FieldDefinition<any>[],
     
     };
