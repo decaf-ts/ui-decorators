@@ -82,6 +82,7 @@
   },
   "homepage": "https://github.com/decaf-ts/ui-decorators#readme",
   "devDependencies": {
+    "@decaf-ts/logging": "latest",
     "@decaf-ts/utils": "latest"
   },
   "dependencies": {
