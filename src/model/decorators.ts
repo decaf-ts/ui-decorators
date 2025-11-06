@@ -220,7 +220,7 @@ export function uihandlers(props?: Record<string, any>) {
  * @description Decorator that creates a layout container with grid specifications
  * @summary Combines UI model functionality with layout grid configuration
  * This decorator creates a UI model that acts as a layout container with specified
- * column and row configurations. It's a convenience decorator that combines
+ * column and row configurations. It's a convenience decorator that combines.
  * @uimodel with layout-specific properties for responsive grid layouts.
  *
  * @param {string} tag The HTML tag to use for the layout container
