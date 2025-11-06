@@ -314,7 +314,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         }
         decs.shift();
         const sorted = decs.sort((a) => {
-          return a.key === UIKeys.ELEMENT ? -1 : 1;
+          return [UIKeys.ELEMENT, UIKeys.CHILD].includes(a.key) ? -1 : 1;
         });
         sorted.forEach((dec) => {
           if (!dec) throw new RenderingError(`No decorator found`); 
