@@ -274,9 +274,9 @@ export function uihandlers(props?: Record<string, any>) {
  *   Model->>RenderingEngine: requests rendering as layout container
  *   RenderingEngine->>System: renders grid layout with specified dimensions
  */
-export function uilayout(tag: string, colsMode: number | boolean = 1, rows: number | string[] = 1, breakpoint: UIMediaBreakPointsType = UIMediaBreakPoints.LARGE) {
+export function uilayout(tag: string, colsMode: number | boolean = 1, rows: number | string[] = 1, props: any = {}) {
   return (original: any, propertyKey?: any) => {
-    return uimodel(tag, {
+    return uimodel(tag, Object.assign({
        ... 
        (typeof colsMode === ReservedModels.BOOLEAN ? 
        {
@@ -288,8 +288,8 @@ export function uilayout(tag: string, colsMode: number | boolean = 1, rows: numb
         cols: colsMode
        }),
       rows,
-      breakpoint
-    })(original, propertyKey);
+      ...Object.assign({breakpoint: UIMediaBreakPoints.LARGE }, props)
+    }))(original, propertyKey);
   };
 }
 

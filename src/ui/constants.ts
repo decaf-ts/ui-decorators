@@ -34,10 +34,10 @@ import {
 
 
 export enum UIMediaBreakPoints  {
-  SMALL = 's',
-  MEDIUM = 'm',
-  LARGE = 'l',
-  XLARGE = 'xl',
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large',
+  XLARGE = 'xlarge',
 };
 
 /**
