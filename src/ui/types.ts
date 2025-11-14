@@ -114,7 +114,7 @@ export type UIElementMetadata = {
 
 /**
  * @typedef UIElementMetadata
- * @memberOf ui-decorators.ui.decorators
+ * @memberOf module:ui-decorators
  */
 export type UIModelMetadata = Omit<UIElementMetadata, "serialize">;
 
@@ -185,14 +185,20 @@ export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListModelMe
 
 /**
  * @typedef UILayoutCol
- * @memberOf ui-decorators.ui.decorators
+ * @memberOf module:ui-decorators
  */
 export type UILayoutCol = number | 'half' | 'full' | 'auto' | 'expand';
+
+/**
+ * @typedef UIListItemPosition
+ * @memberOf module:ui-decorators
+ */
+export type UIListItemPosition =  'title' | 'description' | 'info' | 'subinfo';
 
 
 /**
  * @typedef UILayoutPropMetadata
- * @memberOf ui-decorators.ui.decorators
+ * @memberOf module:ui-decorators
  */
 export type UILayoutPropMetadata = {
   name: string;
