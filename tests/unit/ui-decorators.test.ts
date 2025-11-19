@@ -2,7 +2,6 @@ import { UIKeys } from "../../src";
 import { TestClass } from "./models";
 import { Metadata } from "@decaf-ts/decoration";
 import { Model } from "@decaf-ts/decorator-validation";
-import { Reflection } from "@decaf-ts/reflection";
 
 describe(`UI decorators Test`, function () {
   let testModel: TestClass;
