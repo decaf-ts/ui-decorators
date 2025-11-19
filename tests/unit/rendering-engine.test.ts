@@ -315,20 +315,20 @@ describe("Rendering Engine", () => {
     it("should throw if decorated with both @uielement and @uiprop", () => {
       @uimodel("ui-model-component")
       @model()
-      class TestModel extends Model {
+      class TestModel2 extends Model {
         @required()
         @minlength(3)
         @uielement("ngx-decaf-crud-field", { label: "Name" })
         @uiprop("ngx-decaf-crud-field")
         name!: string;
 
-        constructor(arg?: ModelArg<TestModel>) {
+        constructor(arg?: ModelArg<TestModel2>) {
           super(arg);
         }
       }
 
       expect(() =>
-        engine["toFieldDefinition"](new TestModel({}), {})
+        engine["toFieldDefinition"](new TestModel2({}), {})
       ).toThrowError(
         `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
       );

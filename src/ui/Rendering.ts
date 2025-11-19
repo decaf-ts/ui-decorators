@@ -419,25 +419,31 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 const validationDecs = validationDecorators[
                   key as any
                 ] as ValidationMetadata[];
-                const typeDec = validationDecs.shift() as DecoratorMetadata;
-                for (const dec of validationDecs) {
-                  if (this.isValidatableByAttribute(dec.key)) {
-                    childDefinition.props[this.translate(dec.key)] =
-                      this.toAttributeValue(dec.key, dec.props);
-                    continue;
-                  }
-                  if (this.isValidatableByType(dec.key)) {
-                    if (dec.key === HTML5InputTypes.DATE) {
-                      childDefinition.props[UIKeys.FORMAT] =
-                        dec.props.format || HTML5DateFormat;
+                if (validationDecs) {
+                  for (const dec of Object.entries(validationDecs).map(
+                    ([k, v]) => ({ key: k, props: v })
+                  )) {
+                    if (this.isValidatableByAttribute(dec.key)) {
+                      childDefinition.props[this.translate(dec.key)] =
+                        this.toAttributeValue(dec.key, dec.props);
+                      continue;
                     }
-                    childDefinition.props[UIKeys.TYPE] = dec.key;
-                    continue;
+                    if (this.isValidatableByType(dec.key)) {
+                      if (dec.key === HTML5InputTypes.DATE) {
+                        childDefinition.props[UIKeys.FORMAT] =
+                          dec.props.format || HTML5DateFormat;
+                      }
+                      childDefinition.props[UIKeys.TYPE] = dec.key;
+                      continue;
+                    }
                   }
                 }
 
                 if (!childDefinition.props[UIKeys.TYPE]) {
-                  const basicType = (typeDec?.props as { name: string }).name;
+                  const basicType = Metadata.type(
+                    model.constructor as Constructor,
+                    key as string
+                  ).name;
                   childDefinition.props[UIKeys.TYPE] = this.translate(
                     basicType.toLowerCase(),
                     true
