@@ -88,7 +88,6 @@
   "dependencies": {
     "@decaf-ts/db-decorators": "latest",
     "@decaf-ts/decoration": "latest",
-    "@decaf-ts/decorator-validation": "latest",
-    "@decaf-ts/reflection": "latest"
+    "@decaf-ts/decorator-validation": "latest"
   }
 }

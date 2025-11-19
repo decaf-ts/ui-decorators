@@ -1,10 +1,12 @@
 import { UIKeys } from "../ui/constants";
-import { apply, metadata } from "@decaf-ts/reflection";
-import { RenderingEngine } from "../ui/Rendering";
-import { UIListModelMetadata, UIMediaBreakPointsType, UIModelMetadata } from "../ui/types";
+import {
+  UIHandlerMetadata,
+  UIListModelMetadata,
+  UIModelMetadata,
+} from "../ui/types";
 import { UIMediaBreakPoints } from "../ui/constants";
 import { IPagedComponentProperties } from "../ui/interfaces";
-import { ReservedModels } from "@decaf-ts/decorator-validation";
+import { apply, Metadata, metadata } from "@decaf-ts/decoration";
 
 /**
  * @description Decorator that tags a class as a UI model
@@ -56,7 +58,10 @@ export function uimodel(tag?: string, props?: Record<string, any>) {
       tag: tag || original.name,
       props: props,
     };
-    return metadata(RenderingEngine.key(UIKeys.UIMODEL), meta)(original);
+    return metadata(
+      Metadata.key(UIKeys.REFLECT, UIKeys.UIMODEL),
+      meta
+    )(original);
   };
 }
 
@@ -93,7 +98,9 @@ export function uimodel(tag?: string, props?: Record<string, any>) {
  *   RenderingEngine->>System: renders with custom engine
  */
 export function renderedBy(engine: string) {
-  return apply(metadata(RenderingEngine.key(UIKeys.RENDERED_BY), engine));
+  return apply(
+    metadata(Metadata.key(UIKeys.REFLECT, UIKeys.RENDERED_BY), engine)
+  );
 }
 
 /**
@@ -150,7 +157,10 @@ export function uilistmodel(name?: string, props?: Record<string, any>) {
         props: props,
       },
     };
-    return metadata(RenderingEngine.key(UIKeys.UILISTMODEL), meta)(original);
+    return metadata(
+      Metadata.key(UIKeys.REFLECT, UIKeys.UILISTMODEL),
+      meta
+    )(original);
   };
 }
 
@@ -209,10 +219,13 @@ export function uilistmodel(name?: string, props?: Record<string, any>) {
  */
 export function uihandlers(props?: Record<string, any>) {
   return (original: any) => {
-    const meta = {
-      handlers: props
+    const meta: UIHandlerMetadata = {
+      handlers: props,
     };
-    return metadata(RenderingEngine.key(UIKeys.HANDLERS), meta)(original);
+    return metadata(
+      Metadata.key(UIKeys.REFLECT, UIKeys.HANDLERS),
+      meta
+    )(original);
   };
 }
 
@@ -274,22 +287,29 @@ export function uihandlers(props?: Record<string, any>) {
  *   Model->>RenderingEngine: requests rendering as layout container
  *   RenderingEngine->>System: renders grid layout with specified dimensions
  */
-export function uilayout(tag: string, colsMode: number | boolean = 1, rows: number | string[] = 1, props: any = {}) {
+export function uilayout(
+  tag: string,
+  colsMode: number | boolean = 1,
+  rows: number | string[] = 1,
+  props: any = {}
+) {
   return (original: any, propertyKey?: any) => {
-    return uimodel(tag, Object.assign({
-       ... 
-       (typeof colsMode === ReservedModels.BOOLEAN ? 
-       {
-        flexMode: colsMode,
-        cols: 1
-       } : 
-       {
-        flexMode: false,
-        cols: colsMode
-       }),
-      rows,
-      ...Object.assign({breakpoint: UIMediaBreakPoints.LARGE }, props)
-    }))(original, propertyKey);
+    return uimodel(
+      tag,
+      Object.assign({
+        ...(typeof colsMode === "boolean"
+          ? {
+              flexMode: colsMode,
+              cols: 1,
+            }
+          : {
+              flexMode: false,
+              cols: colsMode,
+            }),
+        rows,
+        ...Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props),
+      })
+    )(original, propertyKey);
   };
 }
 
@@ -373,9 +393,14 @@ export function uilayout(tag: string, colsMode: number | boolean = 1, rows: numb
  *   RenderingEngine->>PaginationController: initialize page navigation
  *   PaginationController->>System: renders current page with navigation controls
  */
-export function uisteppedmodel(tag: string, pages: number | IPagedComponentProperties[] = 1, paginated: boolean = false, props: any = {}) {
+export function uisteppedmodel(
+  tag: string,
+  pages: number | IPagedComponentProperties[] = 1,
+  paginated: boolean = false,
+  props: any = {}
+) {
   let pageTitles: IPagedComponentProperties[] = [];
-  if (typeof pages === ReservedModels.OBJECT) {
+  if (typeof pages === "object") {
     pageTitles = pages as IPagedComponentProperties[];
     pages = pageTitles.length;
   }
@@ -383,6 +408,6 @@ export function uisteppedmodel(tag: string, pages: number | IPagedComponentPrope
     pages,
     paginated,
     pageTitles,
-    props
+    props,
   });
 }
