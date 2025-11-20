@@ -19,6 +19,7 @@ import {
   UIModelMetadata,
 } from "../ui/index";
 import "./model";
+import { NotFoundError } from "@decaf-ts/db-decorators";
 
 /**
  * @description Renders the model using the appropriate rendering engine
@@ -123,14 +124,14 @@ Model.prototype.render = function <M extends Model>(this: M, ...args: any[]) {
     Metadata.key(UIKeys.REFLECT, DecorationKeys.PROPERTIES, prop)
   );
   if (!meta)
-    throw new RenderingError(
+    throw new NotFoundError(
       `No metadata found for property '${prop}' on model '${model.name}'`
     );
   const keys = Object.keys(meta).filter((k) =>
     [UIKeys.PROP, UIKeys.ELEMENT, UIKeys.CHILD].includes(k)
   );
   if (keys.length === 0)
-    throw new RenderingError(
+    throw new NotFoundError(
       `No UI type metadata found for property '${prop}' on model '${model.name}'`
     );
   if (keys.length > 1)

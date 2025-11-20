@@ -1,11 +1,9 @@
-import { InternalError } from "@decaf-ts/db-decorators";
 import {
-  Model,
-  ModelConstructor,
-  ReservedModels,
-  ValidationKeys,
-  ValidationMetadata,
-} from "@decaf-ts/decorator-validation";
+  DBKeys,
+  InternalError,
+  NotFoundError,
+  OperationKeys,
+} from "@decaf-ts/db-decorators";
 import {
   HTML5DateFormat,
   HTML5InputTypes,
@@ -27,7 +25,15 @@ import {
 import { RenderingError } from "./errors";
 import { formatByType, generateUIModelID } from "./utils";
 import { IPagedComponentProperties } from "./interfaces";
-import { Constructor, Metadata } from "@decaf-ts/decoration";
+import { Constructor, Decoration, Metadata } from "@decaf-ts/decoration";
+import { hideOn } from "./decorators";
+import {
+  Model,
+  ModelConstructor,
+  ReservedModels,
+  ValidationKeys,
+  ValidationMetadata,
+} from "@decaf-ts/decorator-validation";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -285,14 +291,19 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
           model.constructor as Constructor<M>,
           key
         );
-        const type = Model.uiTypeOf(model.constructor as Constructor<M>, key);
+        let type: any;
+        try {
+          type = Model.uiTypeOf(model.constructor as Constructor<M>, key);
+        } catch (e: unknown) {
+          if (!(e instanceof NotFoundError)) throw e;
+        }
         // const types = Object.values(decs).filter(({ key }) =>
         //   [UIKeys.PROP, UIKeys.ELEMENT, UIKeys.CHILD].includes(key)
         // );
-        if (!type)
-          throw new RenderingError(
-            `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
-          );
+        // if (!type)
+        //   throw new RenderingError(
+        //     `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
+        //   );
         const hasHideOnDecorator = Model.uiIsHidden(
           model.constructor as Constructor<M>,
           key
@@ -618,3 +629,49 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     return RenderingEngine.get(flavour).render(model, ...args);
   }
 }
+//
+// Decoration.for(DBKeys.ID)
+//   .extend({
+//     decorator: function pk(options: { generated: boolean }) {
+//       return function innerPk(target: object, propertyKey?: any) {
+//         if (options.generated)
+//           hideOn(OperationKeys.CREATE, OperationKeys.UPDATE)(
+//             target,
+//             propertyKey
+//           );
+//       };
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for(DBKeys.TIMESTAMP)
+//   .extend({
+//     decorator: function timestamp(ops: OperationKeys[]) {
+//       return hideOn(...(ops as any[]));
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for(DBKeys.COMPOSED)
+//   .extend({
+//     decorator: function composed() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for("createdBy")
+//   .extend({
+//     decorator: function createdBy() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for("updatedBy")
+//   .extend({
+//     decorator: function createdBy() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();
