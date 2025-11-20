@@ -1,9 +1,4 @@
-import {
-  DBKeys,
-  InternalError,
-  NotFoundError,
-  OperationKeys,
-} from "@decaf-ts/db-decorators";
+import { InternalError, NotFoundError } from "@decaf-ts/db-decorators";
 import {
   HTML5DateFormat,
   HTML5InputTypes,
@@ -25,8 +20,7 @@ import {
 import { RenderingError } from "./errors";
 import { formatByType, generateUIModelID } from "./utils";
 import { IPagedComponentProperties } from "./interfaces";
-import { Constructor, Decoration, Metadata } from "@decaf-ts/decoration";
-import { hideOn } from "./decorators";
+import { Constructor, Metadata } from "@decaf-ts/decoration";
 import {
   Model,
   ModelConstructor,
@@ -293,6 +287,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         );
         let type: any;
         try {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           type = Model.uiTypeOf(model.constructor as Constructor<M>, key);
         } catch (e: unknown) {
           if (!(e instanceof NotFoundError)) throw e;
