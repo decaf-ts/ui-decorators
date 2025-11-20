@@ -8,7 +8,6 @@
  */
 
 import {
-  Constructor,
   DateValidator,
   DiffValidator,
   EmailValidator,
@@ -21,7 +20,6 @@ import {
   MaxValidator,
   MinLengthValidator,
   MinValidator,
-  ModelKeys,
   PasswordValidator,
   PatternValidator,
   RequiredValidator,
@@ -30,15 +28,14 @@ import {
   ValidationKeys,
   Validator,
 } from "@decaf-ts/decorator-validation";
+import { Constructor } from "@decaf-ts/decoration";
 
-
-
-export enum UIMediaBreakPoints  {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large',
-  XLARGE = 'xlarge',
-};
+export enum UIMediaBreakPoints {
+  SMALL = "small",
+  MEDIUM = "medium",
+  LARGE = "large",
+  XLARGE = "xlarge",
+}
 
 /**
  * @description Key constants used for UI metadata and rendering
@@ -86,21 +83,21 @@ export enum UIMediaBreakPoints  {
  * @memberOf module:ui-decorators
  */
 export const UIKeys = {
-  REFLECT: `${ModelKeys.REFLECT}.ui.`,
+  REFLECT: `ui`,
   UIMODEL: "uimodel",
   RENDERED_BY: "rendered-by",
-  ELEMENT: "element",
-  PROP: "prop",
-  CHILD: "child",
+  ELEMENT: "uielement",
+  PROP: "uiprop",
+  CHILD: "uichild",
   NAME: "name",
   NAME_PREFIX: "input-",
   CUSTOM_PROPS: "customValidationProps",
 
   UILISTMODEL: "uilistmodel",
-  UILISTPROP: "listprop",
+  UILISTPROP: "uilistprop",
   UILAYOUT: "uilayout",
   UILAYOUTPROP: "uilayoutprop",
-  HANDLERS: "handlers",
+  HANDLERS: "uihandlers",
 
   TYPE: "type",
   SUB_TYPE: "subtype",
@@ -109,7 +106,6 @@ export const UIKeys = {
   FORMAT: "format",
   ORDER: "order",
   PAGE: "page",
-
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,
@@ -130,9 +126,6 @@ export const UIKeys = {
   GREATER_THAN: ValidationKeys.GREATER_THAN,
   GREATER_THAN_OR_EQUAL: ValidationKeys.GREATER_THAN_OR_EQUAL,
 };
-
-
-
 
 /**
  * @description Mapping of input types to their corresponding validators
@@ -267,8 +260,8 @@ export const HTML5InputTypes = {
   SUBMIT: "submit",
   TEL: "tel",
   TEXT: "text",
-  TEXTAREA: 'textarea',
-  SELECT: 'select',
+  TEXTAREA: "textarea",
+  SELECT: "select",
   TIME: "time",
   URL: UIKeys.URL,
   WEEK: "week",

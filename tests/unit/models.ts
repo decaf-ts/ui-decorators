@@ -11,31 +11,43 @@ import {
   required,
   url,
 } from "@decaf-ts/decorator-validation";
-import { hideOn, renderedBy, uichild, uielement, uihandlers, uilayout, uilayoutprop, uilistmodel, uilistprop, uimodel, uiorder, uipageprop, uisteppedmodel } from "../../src";
+import {
+  hideOn,
+  renderedBy,
+  uichild,
+  uielement,
+  uihandlers,
+  uilayout,
+  uilayoutprop,
+  uilistmodel,
+  uilistprop,
+  uimodel,
+  uiorder,
+  uipageprop,
+  uisteppedmodel,
+} from "../../src";
 import { id, OperationKeys } from "@decaf-ts/db-decorators";
 
 export const usedDateFormat = "yyyy/MM/dd";
 
 export class BaseTestClass extends Model {
- constructor(model?: ModelArg<BaseTestClass>) {
+  constructor(model?: ModelArg<BaseTestClass>) {
     super(model);
   }
 }
 
 @model()
-@uisteppedmodel('component', 1, true)
-@renderedBy('angular')
+@uisteppedmodel("component", 1, true)
+@renderedBy("angular")
 @uilistmodel()
-@uihandlers({handler: () => null})
-@uilayout('layout-component')
-
+@uihandlers({ handler: () => null })
+@uilayout("layout-component")
 export class TestClass extends Model {
- 
   @required()
   @minlength(5)
   @maxlength(15)
   @uiorder(5)
-  @uilistprop('propName')
+  @uilistprop("propName")
   @uilayoutprop(1, 1)
   @uipageprop(1)
   @uielement("input-element", { subtype: "OtherTest" })
@@ -45,7 +57,6 @@ export class TestClass extends Model {
   @uipageprop(1)
   @uielement("input-element", { subtype: "HiddenTest" })
   hiddenProp!: string;
-  
 
   constructor(model?: ModelArg<TestClass>) {
     super(model);
@@ -53,7 +64,7 @@ export class TestClass extends Model {
 }
 
 @uimodel("decaf-crud-form", { test: "1" })
-@uilistmodel('ngx-decaf-list-item', { icon: 'cafe-outline' })
+@uilistmodel("ngx-decaf-list-item", { icon: "cafe-outline" })
 @model()
 export class DemoModel extends Model {
   @id()
@@ -94,9 +105,9 @@ export class DemoModel extends Model {
   password!: string;
 
   @required()
-  @uielement('ngx-decaf-crud-field', {
-    label: 'demo.agree.label',
-    type: 'checkbox',
+  @uielement("ngx-decaf-crud-field", {
+    label: "demo.agree.label",
+    type: "checkbox",
   })
   @hideOn(OperationKeys.DELETE, OperationKeys.UPDATE, OperationKeys.READ)
   agree!: string;

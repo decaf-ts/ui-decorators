@@ -1,12 +1,9 @@
-import { InternalError } from "@decaf-ts/db-decorators";
 import {
-  Constructor,
-  Model,
-  ModelConstructor,
-  ReservedModels,
-  ValidationKeys,
-  ValidationMetadata,
-} from "@decaf-ts/decorator-validation";
+  DBKeys,
+  InternalError,
+  NotFoundError,
+  OperationKeys,
+} from "@decaf-ts/db-decorators";
 import {
   HTML5DateFormat,
   HTML5InputTypes,
@@ -21,13 +18,22 @@ import {
   UIClassMetadata,
   UIElementMetadata,
   UIListItemElementMetadata,
+  UIListPropMetadata,
   UIModelMetadata,
   UIPropMetadata,
 } from "./types";
 import { RenderingError } from "./errors";
-import { DecoratorMetadata, Reflection } from "@decaf-ts/reflection";
 import { formatByType, generateUIModelID } from "./utils";
 import { IPagedComponentProperties } from "./interfaces";
+import { Constructor, Decoration, Metadata } from "@decaf-ts/decoration";
+import { hideOn } from "./decorators";
+import {
+  Model,
+  ModelConstructor,
+  ReservedModels,
+  ValidationKeys,
+  ValidationMetadata,
+} from "@decaf-ts/decorator-validation";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -95,14 +101,14 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
   translate(key: string, toView: boolean = true): string {
     if (toView) {
       switch (key) {
-        case ReservedModels.STRING:
+        case ReservedModels.STRING.name.toLowerCase():
           return HTML5InputTypes.TEXT;
-        case ReservedModels.NUMBER:
-        case ReservedModels.BIGINT:
+        case ReservedModels.NUMBER.name.toLowerCase():
+        case ReservedModels.BIGINT.name.toLowerCase():
           return HTML5InputTypes.NUMBER;
-        case ReservedModels.BOOLEAN:
+        case ReservedModels.BOOLEAN.name.toLowerCase():
           return HTML5InputTypes.CHECKBOX;
-        case ReservedModels.DATE:
+        case ReservedModels.DATE.name.toLowerCase():
           return HTML5InputTypes.DATE;
       }
     } else {
@@ -118,15 +124,15 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
         case HTML5InputTypes.HIDDEN:
         case HTML5InputTypes.TEXTAREA:
         case HTML5InputTypes.RADIO:
-          return ReservedModels.STRING;
+          return ReservedModels.STRING.name.toLowerCase();
         case HTML5InputTypes.NUMBER:
-          return ReservedModels.NUMBER;
-        case HTML5InputTypes.CHECKBOX: 
-          return ReservedModels.BOOLEAN;
+          return ReservedModels.NUMBER.name.toLowerCase();
+        case HTML5InputTypes.CHECKBOX:
+          return ReservedModels.BOOLEAN.name.toLowerCase();
         case HTML5InputTypes.DATE:
         case HTML5InputTypes.DATETIME_LOCAL:
         case HTML5InputTypes.TIME:
-          return ReservedModels.DATE;
+          return ReservedModels.DATE.name.toLowerCase();
       }
     }
     return key;
@@ -144,41 +150,15 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
    *
    * @private
    */
-  private getClassDecoratorsMetadata<M extends Model>(model: M): UIClassMetadata[]  {
+  private getClassDecoratorsMetadata<M extends Model>(
+    model: M
+  ): UIClassMetadata[] {
     return [
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UIMODEL),
-        model.constructor
-      ) ||
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UIMODEL),
-        Model.get(model.constructor.name) as any
-      ),
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILISTMODEL),
-        model.constructor
-      ) ||
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILISTMODEL),
-        Model.get(model.constructor.name) as any
-      ),
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.HANDLERS),
-        model.constructor
-      ) ||
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.HANDLERS),
-        Model.get(model.constructor.name) as any
-      ),
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILAYOUT),
-        model.constructor
-      ) ||
-      Reflect.getMetadata(
-        RenderingEngine.key(UIKeys.UILAYOUT),
-        Model.get(model.constructor.name) as any
-      ),
-    ].filter(Boolean);
+      Model.uiModelOf(model.constructor as Constructor<M>),
+      Model.uiListModelOf(model.constructor as Constructor<M>),
+      Model.uiHandlersFor(model.constructor as Constructor<M>),
+      Model.uiLayoutOf(model.constructor as Constructor<M>),
+    ].filter(Boolean) as UIClassMetadata[];
   }
 
   /**
@@ -260,7 +240,6 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     globalProps: Record<string, unknown> = {},
     generateId: boolean = true
   ): FieldDefinition<T> {
-    
     const { inheritProps, ...globalPropsWithoutInherits } = globalProps;
     globalProps = globalPropsWithoutInherits;
 
@@ -278,74 +257,118 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     );
     const { tag, props, item, handlers } = classDecorator;
 
-    const uiDecorators: Record<string, DecoratorMetadata[]> =
-      Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
-        string,
-        DecoratorMetadata[]
-      >;
+    const uiDecorators = Model.uiPropertiesOf(
+      model.constructor as Constructor<M>
+    ) as (keyof M)[];
+
+    // const uiDecorators: Record<string, DecoratorMetadata[]> =
+    //   Reflection.getAllPropertyDecorators(model, UIKeys.REFLECT) as Record<
+    //     string,
+    //     DecoratorMetadata[]
+    //   >;
     let children: FieldDefinition<Record<string, any>>[] | undefined;
     let childProps: Record<string, any> = item?.props || {};
-    let mapper: Record<string, string> = {};
+    let mapper: Record<string, any> = {};
     const getPath = (parent: string | undefined, prop: string) => {
       return parent ? [parent, prop].join(".") : prop;
     };
 
     if (uiDecorators) {
-      const validationDecorators: Record<
-        string,
-        DecoratorMetadata<ValidationMetadata>[]
-      > = Reflection.getAllPropertyDecorators(
-        model,
-        ValidationKeys.REFLECT
-      ) as Record<string, DecoratorMetadata<ValidationMetadata>[]>;
-      for (const key in uiDecorators) {
-        const decs = uiDecorators[key];
-        const types = Object.values(decs).filter(({key}) => [UIKeys.PROP, UIKeys.ELEMENT, UIKeys.CHILD].includes(key));
-        if (types?.length > 1)
-          throw new RenderingError(
-            `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
-          );
-        const hasHideOnDecorator = decs.find(({ key }) => key === UIKeys.HIDDEN);
-        if(hasHideOnDecorator) {
-          const hasUiElementDecorator = decs.find(({ key }) => key === UIKeys.ELEMENT);
-          if(!hasUiElementDecorator)
-            throw new RenderingError(`@uielement no found in "${key}". It is required to use hiddenOn decorator.`);
-
+      const validationDecorators: Record<string, any> =
+        Metadata.get(
+          model.constructor as Constructor,
+          ValidationKeys.REFLECT
+        ) || {};
+      // const validationDecorators: Record<
+      //   string,
+      //   DecoratorMetadata<ValidationMetadata>[]
+      // > = Reflection.getAllPropertyDecorators(
+      //   model,
+      //   ValidationKeys.REFLECT
+      // ) as Record<string, DecoratorMetadata<ValidationMetadata>[]>;
+      for (const key of uiDecorators) {
+        const decs = Model.uiDecorationOf(
+          model.constructor as Constructor<M>,
+          key
+        );
+        let type: any;
+        try {
+          type = Model.uiTypeOf(model.constructor as Constructor<M>, key);
+        } catch (e: unknown) {
+          if (!(e instanceof NotFoundError)) throw e;
         }
-        decs.shift();
-        const sorted = decs.sort((a) => {
-          return [UIKeys.ELEMENT, UIKeys.CHILD].includes(a.key) ? -1 : 1;
-        });
+        // const types = Object.values(decs).filter(({ key }) =>
+        //   [UIKeys.PROP, UIKeys.ELEMENT, UIKeys.CHILD].includes(key)
+        // );
+        // if (!type)
+        //   throw new RenderingError(
+        //     `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
+        //   );
+        const hasHideOnDecorator = Model.uiIsHidden(
+          model.constructor as Constructor<M>,
+          key
+        );
+        if (hasHideOnDecorator) {
+          const hasUiElementDecorator = Model.uiElementOf(
+            model.constructor as Constructor<M>,
+            key
+          );
+          if (!hasUiElementDecorator)
+            throw new RenderingError(
+              `@uielement no found in "${key as string}". It is required to use hiddenOn decorator.`
+            );
+        }
+        const sorted = Object.entries(decs)
+          .map(([k, v]) => ({
+            key: k,
+            props: v,
+          }))
+          .sort((a) => {
+            return [UIKeys.ELEMENT, UIKeys.CHILD].includes(a.key) ? -1 : 1;
+          });
         sorted.forEach((dec) => {
-          if (!dec) throw new RenderingError(`No decorator found`); 
+          if (!dec) throw new RenderingError(`No decorator found`);
 
           switch (dec.key) {
             case UIKeys.PROP: {
-              childProps[key] = dec.props as UIPropMetadata;
+              childProps[key as any] = dec.props as UIPropMetadata;
               break;
             }
             case UIKeys.CHILD: {
-              if (!Model.isPropertyModel(model, key))
-                throw new RenderingError(`Child "${key}" must be a model.`);
+              if (!Model.isPropertyModel(model, key as string))
+                throw new RenderingError(
+                  `Child "${key as string}" must be a model.`
+                );
 
               let Clazz;
-              const submodel = (model as Record<string, any>)[key] as Model;
+              const submodel = (model as Record<string, any>)[
+                key as any
+              ] as Model;
               const constructable =
                 typeof submodel === "object" &&
                 submodel !== null &&
                 !Array.isArray(submodel);
               // create instance if undefined
               if (!constructable) {
-                const clazzName = (dec.props.props as Record<string, any>)
-                  ?.name as string;
+                const clazzName = (
+                  (dec.props as any).props as Record<string, any>
+                )?.name as string;
                 Clazz = new (Model.get(clazzName) as ModelConstructor<Model>)();
               }
 
               children = children || [];
-              const childrenGlobalProps = Object.assign({}, globalProps || {}, {"model": Clazz} ,{
-                inheritProps: dec.props as UIModelMetadata,
-                childOf: getPath(globalProps?.childOf as string, key),
-              });
+              const childrenGlobalProps = Object.assign(
+                {},
+                globalProps || {},
+                { model: Clazz },
+                {
+                  inheritProps: dec.props as UIModelMetadata,
+                  childOf: getPath(
+                    globalProps?.childOf as string,
+                    key as string
+                  ),
+                }
+              );
               const childDefinition = this.toFieldDefinition(
                 submodel || Clazz, // Must avoid undefined values — an instance is required to retrieve properties.
                 childrenGlobalProps,
@@ -358,70 +381,80 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
-              if(dec.props?.name)
-                mapper[dec.props?.name as string] = key;
+              if ((dec.props as UIListPropMetadata).name)
+                mapper[
+                  (dec.props as UIListPropMetadata).name as keyof typeof mapper
+                ] = key;
               const props = Object.assign(
                 {},
                 classDecorator.props?.item || {},
                 item?.props || {},
-                dec.props?.props || {},
+                (dec.props as UIListPropMetadata).props || {},
                 globalProps
               );
               childProps = {
                 tag: item?.tag || props.render || "",
-                props: Object.assign(
-                  {}, 
-                  childProps?.props, 
-                  { mapper }, 
-                  props),
+                props: Object.assign({}, childProps?.props, { mapper }, props),
               };
 
               break;
             }
-            case UIKeys.HIDDEN: 
-            case UIKeys.PAGE: 
-            case UIKeys.ORDER: 
-            case UIKeys.UILAYOUTPROP: 
+            case UIKeys.HIDDEN:
+            case UIKeys.PAGE:
+            case UIKeys.ORDER:
+            case UIKeys.UILAYOUTPROP:
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
               const props = Object.assign(
-                  {},
-                  childProps?.props,
-                  uiProps.props || {},
-                  (uiProps?.props?.name ? {
-                    path: getPath(
-                      globalProps?.childOf as string,
-                      uiProps.props!.name
-                    ),
-                    childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
-                  } : {}),
-                  globalProps
-                );
-               
-              if(dec.key === UIKeys.ELEMENT) {
+                {},
+                childProps?.props,
+                uiProps.props || {},
+                uiProps?.props?.name
+                  ? {
+                      path: getPath(
+                        globalProps?.childOf as string,
+                        uiProps.props!.name
+                      ),
+                      childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
+                    }
+                  : {},
+                globalProps
+              );
+
+              if (dec.key === UIKeys.ELEMENT) {
                 const childDefinition: FieldDefinition<Record<string, any>> = {
-                  tag:  uiProps.tag || childProps?.tag || tag || "",
+                  tag: uiProps.tag || childProps?.tag || tag || "",
                   props,
                 };
-                const validationDecs = validationDecorators[key] as DecoratorMetadata<ValidationMetadata>[];
-                const typeDec = validationDecs.shift() as DecoratorMetadata;
-                for (const dec of validationDecs) {
-                  if (this.isValidatableByAttribute(dec.key)) {
-                    childDefinition.props[this.translate(dec.key)] = this.toAttributeValue(dec.key, dec.props);
-                    continue;
-                  }
-                  if (this.isValidatableByType(dec.key)) {
-                    if (dec.key === HTML5InputTypes.DATE) {
-                      childDefinition.props[UIKeys.FORMAT] = dec.props.format || HTML5DateFormat;
+                const validationDecs = validationDecorators[
+                  key as any
+                ] as ValidationMetadata[];
+                if (validationDecs) {
+                  for (const dec of Object.entries(validationDecs).map(
+                    ([k, v]) => ({ key: k, props: v })
+                  )) {
+                    if (this.isValidatableByAttribute(dec.key)) {
+                      childDefinition.props[this.translate(dec.key)] =
+                        this.toAttributeValue(dec.key, dec.props);
+                      continue;
                     }
-                    childDefinition.props[UIKeys.TYPE] = dec.key;
-                    continue;
+                    if (this.isValidatableByType(dec.key)) {
+                      if (dec.key === HTML5InputTypes.DATE) {
+                        childDefinition.props[UIKeys.FORMAT] =
+                          dec.props.format || HTML5DateFormat;
+                      }
+                      childDefinition.props[UIKeys.TYPE] = dec.key;
+                      continue;
+                    }
                   }
                 }
 
                 if (!childDefinition.props[UIKeys.TYPE]) {
-                  const basicType = (typeDec.props as { name: string }).name;
+                  const basicType = Metadata.type(
+                    model.constructor as Constructor,
+                    key as string
+                  ).name;
                   childDefinition.props[UIKeys.TYPE] = this.translate(
                     basicType.toLowerCase(),
                     true
@@ -434,16 +467,22 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                   childDefinition.props[UIKeys.FORMAT]
                 );
                 children.push(childDefinition);
-              }
-              else {
-                const child = children.find(c => c.props?.name === key || [UIKeys.UILAYOUTPROP, UIKeys.PAGE].includes(dec.key) && c?.props?.childOf === key);
+              } else {
+                const child = children.find(
+                  (c) =>
+                    c.props?.name === key ||
+                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE].includes(dec.key) &&
+                      c?.props?.childOf === key)
+                );
                 if (child) {
-                  if(dec.key !== UIKeys.UILAYOUTPROP) {
-                    child.props = Object.assign({}, child.props, { [dec.key]: uiProps });
+                  if (dec.key !== UIKeys.UILAYOUTPROP) {
+                    child.props = Object.assign({}, child.props, {
+                      [dec.key]: uiProps,
+                    });
                   } else {
-                    const {row, col, props} = dec.props;
-                      child.props = Object.assign(
-                      {}, 
+                    const { row, col, props } = dec.props as any;
+                    child.props = Object.assign(
+                      {},
                       props || {},
                       child.props,
                       row,
@@ -466,26 +505,23 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     });
 
     const operation = globalProps?.operation;
-    children = children?.sort((a, b) => ((a?.props?.order ?? 0) - (b?.props?.order ?? 0)))
+    children = children
+      ?.sort((a, b) => (a?.props?.order ?? 0) - (b?.props?.order ?? 0))
       .filter((item) => {
-        const hiddenOn = (item?.props?.hidden as CrudOperationKeys[] || []);
-        if(!hiddenOn?.length)
-          return item;
-        if(!hiddenOn.includes(operation as CrudOperationKeys))
-          return item;
+        const hiddenOn = (item?.props?.hidden as CrudOperationKeys[]) || [];
+        if (!hiddenOn?.length) return item;
+        if (!hiddenOn.includes(operation as CrudOperationKeys)) return item;
       });
     const result: FieldDefinition<T> = {
       tag: tag,
       item: childProps as UIListItemElementMetadata,
       props: globalProps as T & FieldProperties & IPagedComponentProperties,
       children: children as FieldDefinition<any>[],
-    
     };
 
     if (generateId) result.rendererId = generateUIModelID(model);
     return result;
   }
-
 
   /**
    * @description Renders a model with global properties and additional arguments.
@@ -587,25 +623,55 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     const constructor =
       Model.get(model.constructor.name) || Model.fromObject(model);
     if (!constructor) throw new InternalError("No model registered found");
-    const flavour = Reflect.getMetadata(
-      RenderingEngine.key(UIKeys.RENDERED_BY),
-      constructor as ModelConstructor<Model>
-    );
+    const flavour = Model.renderedBy(model.constructor as Constructor<M>);
 
     // @ts-expect-error for the var args type check
     return RenderingEngine.get(flavour).render(model, ...args);
   }
-
-  /**
-   * @description Generates a metadata key for UI-related properties.
-   * @summary Prefixes a given key with the UI reflection prefix.
-   *
-   * @param {string} key - The key to prefix.
-   * @returns {string} The prefixed key.
-   *
-   * @static
-   */
-  static key(key: string): string {
-    return `${UIKeys.REFLECT}${key}`;
-  }
 }
+//
+// Decoration.for(DBKeys.ID)
+//   .extend({
+//     decorator: function pk(options: { generated: boolean }) {
+//       return function innerPk(target: object, propertyKey?: any) {
+//         if (options.generated)
+//           hideOn(OperationKeys.CREATE, OperationKeys.UPDATE)(
+//             target,
+//             propertyKey
+//           );
+//       };
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for(DBKeys.TIMESTAMP)
+//   .extend({
+//     decorator: function timestamp(ops: OperationKeys[]) {
+//       return hideOn(...(ops as any[]));
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for(DBKeys.COMPOSED)
+//   .extend({
+//     decorator: function composed() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for("createdBy")
+//   .extend({
+//     decorator: function createdBy() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();
+//
+// Decoration.for("updatedBy")
+//   .extend({
+//     decorator: function createdBy() {
+//       return hideOn(OperationKeys.CREATE, OperationKeys.UPDATE);
+//     },
+//   })
+//   .apply();

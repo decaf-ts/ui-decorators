@@ -5,8 +5,13 @@ import {
   ReservedModels,
 } from "@decaf-ts/decorator-validation";
 import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
-import { findModelId, InternalError } from "@decaf-ts/db-decorators";
+import { InternalError } from "@decaf-ts/db-decorators";
 import { FieldProperties } from "./types";
+import { DecorationKeys, Metadata } from "@decaf-ts/decoration";
+
+export function getUIAttributeKey(prop: string, key: string) {
+  return Metadata.key(UIKeys.REFLECT, DecorationKeys.PROPERTIES, prop, key);
+}
 
 /**
  * @function formatByType
@@ -19,8 +24,7 @@ export function formatByType(
   ...args: unknown[]
 ): string | number {
   if (type === UIKeys.DATE) {
-    if(!value)
-        return "";
+    if (!value) return "";
     const format: string = (args.shift() as string) || HTML5DateFormat;
     return formatDate(new Date(value), format);
   }
@@ -35,9 +39,15 @@ export function parseValueByType(
   let result: string | number | Date | undefined = undefined;
   switch (type) {
     case Array.name: {
-      const parsed = Array.isArray(value) ?  value.map(v => parseValueByType(
-        ReservedModels.STRING, v, fieldProps
-      )) : [value];
+      const parsed = Array.isArray(value)
+        ? value.map((v) =>
+            parseValueByType(
+              ReservedModels.STRING.name.toLowerCase(),
+              v,
+              fieldProps
+            )
+          )
+        : [value];
       result = parsed.join(",");
       break;
     }
@@ -46,9 +56,9 @@ export function parseValueByType(
       break;
     case HTML5InputTypes.DATE: {
       const format: string | undefined = fieldProps.format;
-      if(value && `${value}`.trim().length) {
+      if (value && `${value}`.trim().length) {
         result =
-          typeof value === ReservedModels.NUMBER
+          typeof value === ReservedModels.NUMBER.name.toLowerCase()
             ? new Date(value)
             : value
               ? format
@@ -59,12 +69,16 @@ export function parseValueByType(
       break;
     }
     default:
-      result = 
-        typeof value === ReservedModels.OBJECT ? 
-          (Array.isArray(value) ? value.join(",") : JSON.stringify(value)) :
-            typeof value === ReservedModels.BOOLEAN ?
-              value : typeof value === ReservedModels.STRING ? 
-                escapeHtml(value as string) : result;
+      result =
+        typeof value === ReservedModels.OBJECT.name.toLowerCase()
+          ? Array.isArray(value)
+            ? value.join(",")
+            : JSON.stringify(value)
+          : typeof value === ReservedModels.BOOLEAN.name.toLowerCase()
+            ? value
+            : typeof value === ReservedModels.STRING.name.toLowerCase()
+              ? escapeHtml(value as string)
+              : result;
   }
   if (typeof result === "undefined") {
     throw new InternalError(
@@ -109,12 +123,16 @@ export function revertHtml(value: string) {
 }
 
 export function generateUIModelID<M extends Model>(model: M) {
-  let id: string | number | bigint;
+  let id: string | number | bigint = Date.now();
   try {
-    id = findModelId(model) as string | number;
+    const pk = Model.pk(model.constructor);
+    if (pk)
+      id = model[Model.pk(model.constructor) as keyof typeof model] as
+        | string
+        | number;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
-    id = Date.now();
+    // do nothing;
   }
   const name = model.constructor.name;
   return `${name}-${id}`;

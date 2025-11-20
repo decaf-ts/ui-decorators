@@ -25,9 +25,6 @@ import {
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
 
-// @ts-expect-error stoopid jest
-Model.setBuilder(Model.fromModel);
-
 describe("Rendering Engine", () => {
   class TestEngine extends RenderingEngine<void> {
     constructor(flavour: string) {
@@ -162,6 +159,7 @@ describe("Rendering Engine", () => {
     const invalidKey = "invalidKey";
     const randomValue = Math.random().toString();
     expect(() => {
+      // @ts-expect-error because jest
       engine["toAttributeValue"](invalidKey, {
         [invalidKey]: randomValue,
         message: "Should throw an error",
@@ -208,7 +206,12 @@ describe("Rendering Engine", () => {
           address: neighbor,
         }),
       });
-      const globalProps = { operation: "create", dummy: "prop", handlers: {}, multiple: false };
+      const globalProps = {
+        operation: "create",
+        dummy: "prop",
+        handlers: {},
+        multiple: false,
+      };
       const def = engine["toFieldDefinition"](model, globalProps);
 
       expect(def.tag).toEqual("decaf-crud-form");
@@ -219,7 +222,7 @@ describe("Rendering Engine", () => {
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
-      expect(neighborDef.props).toEqual({ 
+      expect(neighborDef.props).toEqual({
         ...globalProps,
         name: "NeighborModel",
         childOf: "neighbor",
@@ -248,7 +251,11 @@ describe("Rendering Engine", () => {
       expect(model.neighbor).toBeUndefined();
       expect(Model.isPropertyModel(model, "neighbor")).toBeTruthy();
 
-      const globalProps = { operation: "update", handlers: {}, multiple: false };
+      const globalProps = {
+        operation: "update",
+        handlers: {},
+        multiple: false,
+      };
       const def = engine["toFieldDefinition"](model, globalProps);
 
       expect(def.tag).toEqual("decaf-crud-form");
@@ -258,13 +265,13 @@ describe("Rendering Engine", () => {
       const neighborDef = (
         def.children as FieldDefinition[]
       ).pop() as FieldDefinition;
-      const nModel = neighborDef.props?.['model'];
+      const nModel = neighborDef.props?.["model"];
       expect(neighborDef.tag).toEqual("fieldset-neighbor-component");
       expect(neighborDef.props).toEqual({
         ...globalProps,
         name: "NeighborModel",
         childOf: "neighbor",
-        model: nModel
+        model: nModel,
       });
       expect(neighborDef.children).toHaveLength(
         Object.keys(new NeighborModel({})).length
@@ -278,7 +285,7 @@ describe("Rendering Engine", () => {
         ...globalProps,
         name: "AddressModel",
         childOf: "neighbor.address",
-        model: nModel
+        model: nModel,
       });
       expect(addressDef.children).toHaveLength(
         Object.keys(new AddressModel({})).length
@@ -308,20 +315,20 @@ describe("Rendering Engine", () => {
     it("should throw if decorated with both @uielement and @uiprop", () => {
       @uimodel("ui-model-component")
       @model()
-      class TestModel extends Model {
+      class TestModel2 extends Model {
         @required()
         @minlength(3)
         @uielement("ngx-decaf-crud-field", { label: "Name" })
         @uiprop("ngx-decaf-crud-field")
         name!: string;
 
-        constructor(arg?: ModelArg<TestModel>) {
+        constructor(arg?: ModelArg<TestModel2>) {
           super(arg);
         }
       }
 
       expect(() =>
-        engine["toFieldDefinition"](new TestModel({}), {})
+        engine["toFieldDefinition"](new TestModel2({}), {})
       ).toThrowError(
         `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
       );

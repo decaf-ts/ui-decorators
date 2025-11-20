@@ -1,6 +1,5 @@
-import "reflect-metadata";
 import { UIKeys } from "./constants";
-import { propMetadata } from "@decaf-ts/decorator-validation";
+import { propMetadata } from "@decaf-ts/decoration";
 import {
   CrudOperationKeys,
   UIElementMetadata,
@@ -9,8 +8,8 @@ import {
   UIListPropMetadata,
   UIPropMetadata,
 } from "./types";
-import { RenderingEngine } from "./Rendering";
 import { OperationKeys } from "@decaf-ts/db-decorators";
+import { getUIAttributeKey } from "./utils";
 
 /**
  * @description Decorator that hides a property during specific CRUD operations
@@ -48,12 +47,13 @@ import { OperationKeys } from "@decaf-ts/db-decorators";
  *   RenderingEngine->>UI: Render or hide based on current operation
  */
 export function hideOn(...operations: CrudOperationKeys[]) {
-  return propMetadata<CrudOperationKeys[]>(
-    RenderingEngine.key(UIKeys.HIDDEN),
-    operations
-  );
+  return function hideOn(object: any, propertyKey?: any) {
+    return propMetadata(
+      getUIAttributeKey(propertyKey, UIKeys.HIDDEN),
+      operations
+    )(object, propertyKey);
+  };
 }
-
 
 /**
  * @description Decorator that sets the order of a UI element
@@ -85,12 +85,13 @@ export function hideOn(...operations: CrudOperationKeys[]) {
  *   uiorder->>System: returns decorated property
  */
 export function uiorder(order: number = 1) {
-  return propMetadata<number>(
-    RenderingEngine.key(UIKeys.ORDER),
-    order
-  );
+  return function uiorder(object: any, propertyKey?: any) {
+    return propMetadata(getUIAttributeKey(propertyKey, UIKeys.ORDER), order)(
+      object,
+      propertyKey
+    );
+  };
 }
-
 
 /**
  * @description Decorator that completely hides a property in all UI operations
@@ -192,10 +193,10 @@ export function uielement(
       }),
     };
 
-    return propMetadata(RenderingEngine.key(UIKeys.ELEMENT), metadata)(
-      original,
-      propertyKey
-    );
+    return propMetadata(
+      getUIAttributeKey(propertyKey, UIKeys.ELEMENT),
+      metadata
+    )(original, propertyKey);
   };
 }
 
@@ -246,12 +247,12 @@ export function uiprop(
   propName: string | undefined = undefined,
   stringify: boolean = false
 ) {
-  return (target: any, propertyKey: string) => {
+  return (target: any, propertyKey?: any) => {
     const metadata: UIPropMetadata = {
       name: propName || propertyKey,
       stringify: stringify,
     };
-    propMetadata(RenderingEngine.key(UIKeys.PROP), metadata)(
+    propMetadata(getUIAttributeKey(propertyKey, UIKeys.PROP), metadata)(
       target,
       propertyKey
     );
@@ -319,16 +320,23 @@ export function uichild(
   isArray: boolean = false,
   serialize: boolean = false
 ) {
-  return (target: any, propertyKey: string) => {
+  return (target: any, propertyKey?: any) => {
     const metadata: UIElementMetadata = {
       tag: tag,
       serialize: serialize,
-      props: Object.assign({}, props || {}, {
-        name: clazz || propertyKey,
-      }, isArray ? {customTypes: [Array.name], multiple: true} : {multiple: props?.multiple || false}),
+      props: Object.assign(
+        {},
+        props || {},
+        {
+          name: clazz || propertyKey,
+        },
+        isArray
+          ? { customTypes: [Array.name], multiple: true }
+          : { multiple: props?.multiple || false }
+      ),
     };
 
-    propMetadata(RenderingEngine.key(UIKeys.CHILD), metadata)(
+    propMetadata(getUIAttributeKey(propertyKey, UIKeys.CHILD), metadata)(
       target,
       propertyKey
     );
@@ -388,12 +396,12 @@ export function uilistprop(
   propName: string | undefined = undefined,
   props?: Record<string, any>
 ) {
-  return (target: any, propertyKey: string) => {
+  return (target: any, propertyKey?: any) => {
     const metadata: Partial<UIListPropMetadata> = {
       name: propName || propertyKey,
       props: props || {},
     };
-    propMetadata(RenderingEngine.key(UIKeys.UILISTPROP), metadata)(
+    propMetadata(getUIAttributeKey(propertyKey, UIKeys.UILISTPROP), metadata)(
       target,
       propertyKey
     );
@@ -450,24 +458,20 @@ export function uilistprop(
  *   RenderingEngine->>LayoutContainer: Position element at grid coordinates
  *   LayoutContainer->>RenderingEngine: Return positioned element
  */
-export function uilayoutprop(
-  col: UILayoutCol = 1,
-  row: number = 1
-) {
-  return (target: any, propertyKey: string) => {
+export function uilayoutprop(col: UILayoutCol = 1, row: number = 1) {
+  return (target: any, propertyKey?: any) => {
     const metadata: UILayoutPropMetadata = {
-      name:  propertyKey,
+      name: propertyKey,
       // col,
       // row,
-      props: Object.assign({}, {row, col}),
-    };  
-    propMetadata(RenderingEngine.key(UIKeys.UILAYOUTPROP), metadata)(
+      props: Object.assign({}, { row, col }),
+    };
+    propMetadata(getUIAttributeKey(propertyKey, UIKeys.UILAYOUTPROP), metadata)(
       target,
       propertyKey
     );
   };
 }
-
 
 /**
  * @description Decorator that assigns a property to a specific page in multi-page forms
@@ -530,11 +534,11 @@ export function uilayoutprop(
  *   RenderingEngine->>PaginationController: Group properties by page
  *   PaginationController->>UI: Render current page properties
  */
-export function uipageprop(
-  page: number = 1
-) {
- return propMetadata<number>(
-    RenderingEngine.key(UIKeys.PAGE),
-    page
-  );
+export function uipageprop(page: number = 1) {
+  return function uipageprop(original: any, propertyKey?: any) {
+    return propMetadata(getUIAttributeKey(propertyKey, UIKeys.PAGE), page)(
+      original,
+      propertyKey
+    );
+  };
 }

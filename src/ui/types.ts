@@ -164,7 +164,6 @@ export type UIListItemElementMetadata = {
   mapper?: Record<string, string>;
 };
 
-
 /**
  * @typedef UILayoutMetadata
  * @memberOf module:ui-decorators
@@ -174,47 +173,52 @@ export type UILayoutMetadata = {
     cols?: number;
     rows?: number | string[];
     props?: Record<string, any>;
-  }
-}
+  };
+};
 
 /**
  * @typedef UIClassMetadata
  * @memberOf module:ui-decorators
  */
-export type UIClassMetadata = UILayoutMetadata | UIModelMetadata | UIListModelMetadata;
+export type UIClassMetadata =
+  | UILayoutMetadata
+  | UIModelMetadata
+  | UIHandlerMetadata
+  | UIListModelMetadata;
 
 /**
  * @typedef UILayoutCol
  * @memberOf module:ui-decorators
  */
-export type UILayoutCol = number | 'half' | 'full' | 'auto' | 'expand';
+export type UILayoutCol = number | "half" | "full" | "auto" | "expand";
 
 /**
  * @typedef UIListItemPosition
  * @memberOf module:ui-decorators
  */
-export type UIListItemPosition =  'title' | 'description' | 'info' | 'subinfo';
+export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
-
+export type UIHandlerMetadata = {
+  handlers?: Record<string, any>;
+};
 /**
  * @typedef UILayoutPropMetadata
  * @memberOf module:ui-decorators
  */
 export type UILayoutPropMetadata = {
   name: string;
-  props: Record<string, any>  &{
+  props: Record<string, any> & {
     col: UILayoutCol;
     row: number | string[];
   };
 };
 
-
 /**
  * @typedef UIMediaBreakPoints
  * @memberOf module:ui-decorators
  */
-export type UIMediaBreakPointsType = 
-  UIMediaBreakPoints.SMALL | 
-  UIMediaBreakPoints.MEDIUM | 
-  UIMediaBreakPoints.LARGE |
-  UIMediaBreakPoints.XLARGE;
+export type UIMediaBreakPointsType =
+  | UIMediaBreakPoints.SMALL
+  | UIMediaBreakPoints.MEDIUM
+  | UIMediaBreakPoints.LARGE
+  | UIMediaBreakPoints.XLARGE;
