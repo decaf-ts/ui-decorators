@@ -6,3 +6,4 @@ export * from "./Rendering";
 export * from "./types";
 export * from "./handlers";
 export * from "./utils";
+export * from "./DecafComponent";
