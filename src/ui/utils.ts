@@ -7,7 +7,7 @@ import {
 import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
 import { InternalError } from "@decaf-ts/db-decorators";
 import { FieldProperties } from "./types";
-import { DecorationKeys, Metadata } from "@decaf-ts/decoration";
+import { Constructor, DecorationKeys, Metadata } from "@decaf-ts/decoration";
 
 export function getUIAttributeKey(prop: string, key: string) {
   return Metadata.key(UIKeys.REFLECT, DecorationKeys.PROPERTIES, prop, key);
@@ -125,11 +125,11 @@ export function revertHtml(value: string) {
 export function generateUIModelID<M extends Model>(model: M) {
   let id: string | number | bigint = Date.now();
   try {
-    const pk = Model.pk(model.constructor);
+    const pk = Model.pk(model.constructor as Constructor<M>);
     if (pk)
-      id = model[Model.pk(model.constructor) as keyof typeof model] as
-        | string
-        | number;
+      id = model[
+        Model.pk(model.constructor as Constructor<M>) as keyof typeof model
+      ] as string | number;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
     // do nothing;
