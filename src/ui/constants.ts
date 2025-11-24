@@ -106,6 +106,7 @@ export const UIKeys = {
   FORMAT: "format",
   ORDER: "order",
   PAGE: "page",
+  EVENTS: "events",
 
   READ_ONLY: "readonly",
   REQUIRED: ValidationKeys.REQUIRED,
@@ -278,7 +279,7 @@ export const HTML5InputTypes = {
  * @readonly
  * @memberOf module:ui-decorators
  */
-export const HTML5CheckTypes = [
+export const HTML5CheckTypes: string[] = [
   HTML5InputTypes.CHECKBOX,
   HTML5InputTypes.RADIO,
 ];

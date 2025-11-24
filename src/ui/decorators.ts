@@ -3,6 +3,7 @@ import { propMetadata } from "@decaf-ts/decoration";
 import {
   CrudOperationKeys,
   UIElementMetadata,
+  UIFunctionLike,
   UILayoutCol,
   UILayoutPropMetadata,
   UIListPropMetadata,
@@ -10,6 +11,7 @@ import {
 } from "./types";
 import { OperationKeys } from "@decaf-ts/db-decorators";
 import { getUIAttributeKey } from "./utils";
+import { DecafComponent } from "./DecafComponent";
 
 /**
  * @description Decorator that hides a property during specific CRUD operations
@@ -541,4 +543,43 @@ export function uipageprop(page: number = 1) {
       propertyKey
     );
   };
+}
+
+/**
+ * A decorator factory that binds a UI event to a specified handler function.
+ * This is used to attach event handlers to specific lifecycle events of a `DecafComponent`,
+ * such as `render` or `initialize`.
+ *
+ * @param event - The name of the lifecycle event to bind the handler to. 
+ *                Must be one of the keys in `Pick<DecafComponent, 'render' | 'initialize'>`.
+ * @param handler - The function to be executed when the specified event occurs.
+ * 
+ * @returns A decorator function that applies the event-handler binding to the target object.
+ *
+ * @example
+ * ```typescript
+ * class MyComponent {
+ *   @uion('render', () => console.log('Rendering...'))
+ *   someProperty: string;
+ * }
+ * ```
+ */
+export function uion(event: keyof Pick<DecafComponent, 'render' | 'initialize'>, handler: UIFunctionLike) {
+  return function uion(original: object, propertyKey?: string) {
+    propMetadata(getUIAttributeKey(propertyKey as string, UIKeys.EVENTS), {[event]: handler})(
+      original,
+      propertyKey
+    );
+  };
+}
+
+/**
+ * A decorator function that associates a UI rendering handler with the 'render' event.
+ *
+ * @param handler - A function that conforms to the `UIFunctionLike` type, which will be executed
+ *                  when the 'render' event is triggered.
+ * @returns A decorated function that binds the handler to the 'render' event.
+ */
+export function uionrender(handler: UIFunctionLike) {
+  return uion('render', handler);
 }
