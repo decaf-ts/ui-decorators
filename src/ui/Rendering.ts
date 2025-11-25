@@ -394,6 +394,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
 
               break;
             }
+            case UIKeys.EVENTS:
             case UIKeys.HIDDEN:
             case UIKeys.PAGE:
             case UIKeys.ORDER:
@@ -463,11 +464,10 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 );
                 children.push(childDefinition);
               } else {
-                const child = children.find(
-                  (c) =>
-                    c.props?.name === key ||
-                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE].includes(dec.key) &&
-                      c?.props?.childOf === key)
+                const child = children.find((c) =>
+                  c.props?.name === key ||
+                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE, UIKeys.EVENTS].includes(dec.key) &&
+                      (c.props?.childOf === key || c.props?.childOf?.endsWith(`.${key as string}`)))
                 );
                 if (child) {
                   if (dec.key !== UIKeys.UILAYOUTPROP) {

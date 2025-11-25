@@ -198,9 +198,12 @@ export type UILayoutCol = number | "half" | "full" | "auto" | "expand";
  */
 export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
+export type UIFunctionLike = (...args: unknown[]) => unknown | Promise<unknown>
+
 export type UIHandlerMetadata = {
-  handlers?: Record<string, any>;
+  handlers?: Record<string, UIFunctionLike>;
 };
+
 /**
  * @typedef UILayoutPropMetadata
  * @memberOf module:ui-decorators
