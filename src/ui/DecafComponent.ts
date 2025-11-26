@@ -7,6 +7,28 @@ import { IRepository, OperationKeys } from '@decaf-ts/db-decorators';
 export abstract class DecafComponent extends LoggedClass {
 
   /**
+   * @description The CRUD operation type to be performed on the model.
+   * @summary Specifies which operation (Create, Read, Update, Delete) this component instance
+   * should perform. This determines the UI behavior, form configuration, and available actions.
+   * The operation affects form validation, field availability, and the specific repository
+   * method called during data submission.
+   *
+   * @type {OperationKeys}
+   */
+  operation?: OperationKeys;
+
+  /**
+   * @description Router instance for programmatic navigation.
+   * @summary Injected Router service used for programmatic navigation between routes
+   * in the application. This service enables navigation to different views and operations,
+   * handles route parameters, and manages the browser's navigation history.
+   * @protected
+   * @type {Router}
+   * @memberOf module:lib/engine/NgxComponentDirective
+   */
+  router?: any;
+
+  /**
    * @description Name identifier for the component instance.
    * @summary Provides a string identifier that can be used to name or label the component
    * instance. This name can be used for debugging purposes, logging, or to identify specific
@@ -36,7 +58,6 @@ export abstract class DecafComponent extends LoggedClass {
    */
   protected uid?: string | number;
 
-
   /**
    * @description Data model or model name for component operations.
    * @summary The data model that this component will use for CRUD operations. This can be provided
@@ -47,7 +68,7 @@ export abstract class DecafComponent extends LoggedClass {
    */
   protected model!: Model | string | undefined;
 
-    /**
+  /**
    * @description Primary key field name for the data model.
    * @summary Specifies which field in the model should be used as the primary key.
    * This is typically used for identifying unique records in operations like update and delete.
@@ -56,7 +77,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @default 'id'
    */
   pk!: string;
-
 
   /**
    * @description Primary key value of the current model instance.
@@ -67,7 +87,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @type {string | number | bigint | string[] | number[] | bigint[]}
    */
   protected modelId?:  string | number | bigint | string[] | number[] | bigint[];
-
 
   /**
    * @description Flag to enable or disable dark mode support for the component.
@@ -93,7 +112,6 @@ export abstract class DecafComponent extends LoggedClass {
    */
   protected isDarkMode: boolean = false;
 
-
   /**
    * @description Current locale identifier for component internationalization.
    * @summary Specifies the locale code (e.g., 'en-US', 'pt-BR') used for translating UI text
@@ -103,7 +121,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @type {string | undefined}
    */
   locale?: string;
-
 
   /**
    * @description Configuration for list item rendering behavior.
@@ -117,7 +134,6 @@ export abstract class DecafComponent extends LoggedClass {
    */
   item: Record<string, unknown> = { tag: '' };
 
-
   /**
    * @description Dynamic properties configuration for runtime customization.
    * @summary Contains key-value pairs of dynamic properties that can be applied to the component
@@ -129,7 +145,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @default {}
    */
   props: Record<string, unknown> = {};
-
 
   /**
    * @description Base route path for component navigation.
@@ -151,12 +166,10 @@ export abstract class DecafComponent extends LoggedClass {
    */
   borders: boolean = false;
 
-
   /**
    * @description Component name identifier for logging and localization contexts.
    * @summary Stores the component's name which is used as a key for logging contexts
-   * and as a base for locale resolution. Can be injected via the CPTKN token or defaults
-   * to "NgxComponentDirective" if not provided.
+   * and as a base for locale resolution. 
    * @protected
    * @type {string | undefined}
    */
@@ -173,6 +186,14 @@ export abstract class DecafComponent extends LoggedClass {
   protected localeRoot?: string;
 
   /**
+   * @description Current value of the component.
+   * @summary Can be a string, number, date, or array of string or objects.
+   * @type {any}
+   * @public
+   */
+  protected value?: any;
+
+  /**
    * @description Reference to CRUD operation constants for template usage.
    * @summary Exposes the OperationKeys enum to the component template, enabling
    * conditional rendering and behavior based on operation types. This protected
@@ -182,7 +203,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @readonly
    */
   protected readonly OperationKeys = OperationKeys;
-
 
   /**
    * @description Angular Location service.
@@ -196,7 +216,6 @@ export abstract class DecafComponent extends LoggedClass {
    */
   protected location!: any;
 
-
   /**
    * @description Repository instance for data layer operations.
    * @summary Provides a connection to the data layer for retrieving and manipulating data.
@@ -208,7 +227,6 @@ export abstract class DecafComponent extends LoggedClass {
    * @memberOf module:lib/engine/NgxComponentDirective
    */
   protected _repository?: IRepository<Model>;
-
 
   /**
    * @description Initialization status flag for the component.
@@ -228,12 +246,49 @@ export abstract class DecafComponent extends LoggedClass {
     super();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async render(...args: unknown[]): Promise<void> {}
+  get repository(): IRepository<Model> | undefined {
+    return this._repository;
+  }
 
+  set repository(repository: IRepository<Model>) {
+    this._repository = repository;
+  }
+
+  async render(...args: unknown[]): Promise<void> {
+    this.log.for(this.render).info(`render for ${this.componentName} with ${JSON.stringify(args)}`);
+  }
+
+  /**
+   * Asynchronously initializes the component with the provided arguments.
+   * This method sets the `initialized` property to `true` once the initialization is complete.
+   *
+   * @param args - A variable number of arguments of unknown types that can be used for initialization.
+   * @returns A promise that resolves when the initialization is complete.
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async initialize(...args: unknown[]): Promise<void> {
     this.initialized = true;
+  }
+
+  /**
+   * Submits data or performs an action associated with the component.
+   *
+   * @param args - A variable number of arguments of any type to be passed to the submit operation.
+   * @returns A promise that resolves with the result of the submit operation.
+   */
+  async submit(...args: unknown[]): Promise<any> {
+    this.log.for(this.submit).info(`submit for ${this.componentName} with ${JSON.stringify(args)}`);
+  }
+
+  /**
+   * Translates content based on the provided arguments.
+   * Logs the translation request with the component name and arguments.
+   *
+   * @param args - A variable number of arguments used for translation.
+   * @returns A promise that resolves with the translation result.
+   */
+  protected async translate(...args: unknown[]): Promise<any> {
+    this.log.for(this.translate).info(`translate for ${this.componentName} with ${JSON.stringify(args)}`);
   }
   
 }

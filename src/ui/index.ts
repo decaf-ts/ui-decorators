@@ -4,6 +4,6 @@ export * from "./errors";
 export * from "./interfaces";
 export * from "./Rendering";
 export * from "./types";
-export * from "./handlers";
 export * from "./utils";
 export * from "./DecafComponent";
+export * from "./DecafEventHandler";
