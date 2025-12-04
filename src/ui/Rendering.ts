@@ -415,7 +415,7 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                       childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
                     }
                   : {},
-                globalProps
+                globalProps, {name: uiProps.props?.name || key }
               );
 
               if (dec.key === UIKeys.ELEMENT) {
