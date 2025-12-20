@@ -369,6 +369,9 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 childrenGlobalProps,
                 false
               );
+              const {inheritProps} = childrenGlobalProps;
+              if(inheritProps)
+                childDefinition.props = Object.assign({}, childDefinition.props, inheritProps.props || {});
               children.push(
                 childDefinition as FieldDefinition<Record<string, any>>
               );
