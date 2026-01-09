@@ -379,15 +379,15 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
-              if ((dec.props as UIListPropMetadata).name)
-                mapper[
-                  (dec.props as UIListPropMetadata).name as keyof typeof mapper
-                ] = key;
+              const decProps = dec.props as UIListPropMetadata;
+              if (decProps.name) 
+               mapper[decProps.name] = (typeof decProps?.props === 'object' && UIKeys.SEQUENCE in decProps.props) ? decProps.props : key;
+              
               const props = Object.assign(
                 {},
                 classDecorator.props?.item || {},
                 item?.props || {},
-                (dec.props as UIListPropMetadata).props || {},
+                decProps?.props || {},
                 globalProps
               );
               childProps = {

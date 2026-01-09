@@ -583,3 +583,61 @@ export function uion(event: keyof Pick<DecafComponent, 'render' | 'initialize'>,
 export function uionrender(handler: UIFunctionLike) {
   return uion('render', handler);
 }
+
+
+/**
+ * @description Decorator that marks a property as a column in a UI table
+ * @summary Controls column ordering and optional value parsing for table props
+ * Use this decorator to register list properties as table columns, define the
+ * sequence in which they appear, and optionally provide a parser that formats
+ * the value before rendering.
+ *
+ * @param {number} sequence The display order for the column (lower means first)
+ * @param {UIFunctionLike} [valueParserFn] Optional formatter executed per cell
+ * @return {Function} A property decorator function
+ *
+ * @function uitablecol
+ * @category Property Decorators
+ *
+ * @example
+ * class Order {
+ *   @attribute()
+ *   @uitablecol(1)
+ *   orderNumber: string;
+ *
+ *   @attribute()
+ *   @uitablecol(2, (value) => `$${value?.toFixed(2)}`)
+ *   total: number;
+ * }
+ *
+ * @mermaid
+ * sequenceDiagram
+ *   participant Model
+ *   participant uitablecol
+ *   participant RenderingEngine
+ *   participant Table
+ *   Model->>uitablecol: Apply to property
+ *   uitablecol->>Model: Store column metadata
+ *   RenderingEngine->>Model: Retrieve column props
+ *   Model->>RenderingEngine: Return order and parser
+ *   RenderingEngine->>Table: Render column in sequence
+ */
+export function uitablecol(
+  sequence: number,
+  valueParserFn?: UIFunctionLike,
+) {
+   return (target: any, propertyKey?: any) => {
+    const metadata: Partial<UIListPropMetadata> = {
+      name: propertyKey,
+      props: {
+        sequence,
+        ...!valueParserFn ? {} : { valueParserFn }
+      }
+
+    };
+    propMetadata(getUIAttributeKey(propertyKey, UIKeys.UILISTPROP), metadata)(
+      target,
+      propertyKey
+    );
+  };
+}

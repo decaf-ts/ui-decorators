@@ -198,7 +198,7 @@ export type UILayoutCol = number | "half" | "full" | "auto" | "expand";
  */
 export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
-export type UIFunctionLike = (...args: unknown[]) => unknown | Promise<unknown>
+export type UIFunctionLike = (...args: any[]) => any | Promise<any>
 
 export type UIHandlerMetadata = {
   handlers?: Record<string, UIFunctionLike>;
