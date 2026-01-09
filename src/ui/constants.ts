@@ -109,6 +109,7 @@ export const UIKeys = {
   EVENTS: "events",
 
   READ_ONLY: "readonly",
+  SEQUENCE: "sequence", 
   REQUIRED: ValidationKeys.REQUIRED,
   MIN: ValidationKeys.MIN,
   MIN_LENGTH: ValidationKeys.MIN_LENGTH,
