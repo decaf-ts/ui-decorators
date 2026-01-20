@@ -12,6 +12,7 @@ import {
 import { OperationKeys } from "@decaf-ts/db-decorators";
 import { getUIAttributeKey } from "./utils";
 import { DecafComponent } from "./DecafComponent";
+import { Model } from "@decaf-ts/decorator-validation";
 
 /**
  * @description Decorator that hides a property during specific CRUD operations
@@ -550,10 +551,10 @@ export function uipageprop(page: number = 1) {
  * This is used to attach event handlers to specific lifecycle events of a `DecafComponent`,
  * such as `render` or `initialize`.
  *
- * @param event - The name of the lifecycle event to bind the handler to. 
+ * @param event - The name of the lifecycle event to bind the handler to.
  *                Must be one of the keys in `Pick<DecafComponent, 'render' | 'initialize'>`.
  * @param handler - The function to be executed when the specified event occurs.
- * 
+ *
  * @returns A decorator function that applies the event-handler binding to the target object.
  *
  * @example
@@ -564,12 +565,14 @@ export function uipageprop(page: number = 1) {
  * }
  * ```
  */
-export function uion(event: keyof Pick<DecafComponent, 'render' | 'initialize'>, handler: UIFunctionLike) {
+export function uion(
+  event: keyof Pick<DecafComponent<Model>, "render" | "initialize">,
+  handler: UIFunctionLike
+) {
   return function uion(original: object, propertyKey?: string) {
-    propMetadata(getUIAttributeKey(propertyKey as string, UIKeys.EVENTS), {[event]: handler})(
-      original,
-      propertyKey
-    );
+    propMetadata(getUIAttributeKey(propertyKey as string, UIKeys.EVENTS), {
+      [event]: handler,
+    })(original, propertyKey);
   };
 }
 
@@ -581,9 +584,8 @@ export function uion(event: keyof Pick<DecafComponent, 'render' | 'initialize'>,
  * @returns A decorated function that binds the handler to the 'render' event.
  */
 export function uionrender(handler: UIFunctionLike) {
-  return uion('render', handler);
+  return uion("render", handler);
 }
-
 
 /**
  * @description Decorator that marks a property as a column in a UI table
@@ -622,18 +624,14 @@ export function uionrender(handler: UIFunctionLike) {
  *   Model->>RenderingEngine: Return order and parser
  *   RenderingEngine->>Table: Render column in sequence
  */
-export function uitablecol(
-  sequence: number,
-  valueParserFn?: UIFunctionLike,
-) {
-   return (target: any, propertyKey?: any) => {
+export function uitablecol(sequence: number, valueParserFn?: UIFunctionLike) {
+  return (target: any, propertyKey?: any) => {
     const metadata: Partial<UIListPropMetadata> = {
       name: propertyKey,
       props: {
         sequence,
-        ...!valueParserFn ? {} : { valueParserFn }
-      }
-
+        ...(!valueParserFn ? {} : { valueParserFn }),
+      },
     };
     propMetadata(getUIAttributeKey(propertyKey, UIKeys.UILISTPROP), metadata)(
       target,

@@ -1,3 +1,4 @@
+import { Model } from "@decaf-ts/decorator-validation";
 import { DecafComponent } from "./DecafComponent";
 
 /**
@@ -8,8 +9,7 @@ import { DecafComponent } from "./DecafComponent";
  * @class EventHandler
  * @memberOf module:ui-decorators/ui
  */
-export class DecafEventHandler extends DecafComponent {
-  
+export class DecafEventHandler extends DecafComponent<Model> {
   /**
    * @description Creates an instance of DecafEventHandler
    * @summary Initializes a new EventHandler object
@@ -17,7 +17,7 @@ export class DecafEventHandler extends DecafComponent {
    * extended in the future to accept configuration options if needed.
    */
   constructor() {
-    super()
+    super();
   }
 
   /**
@@ -28,6 +28,8 @@ export class DecafEventHandler extends DecafComponent {
    * @returns void
    */
   handle(...args: unknown[]): void {
-    this.log.for(this.handle).info(`component ${this.componentName} handling ${JSON.stringify(args)}`);
+    this.log
+      .for(this.handle)
+      .info(`component ${this.componentName} handling ${JSON.stringify(args)}`);
   }
 }
