@@ -1,10 +1,35 @@
-import { LoggedClass } from '@decaf-ts/logging';
-import { UIFunctionLike } from './types';
-import { Model } from '@decaf-ts/decorator-validation';
-import { IRepository, OperationKeys } from '@decaf-ts/db-decorators';
+import { LoggedClass } from "@decaf-ts/logging";
+import { UIFunctionLike } from "./types";
+import { Model } from "@decaf-ts/decorator-validation";
+import { IRepository, OperationKeys } from "@decaf-ts/db-decorators";
 
+type PrimaryKeyType = string | number | bigint;
 
-export abstract class DecafComponent extends LoggedClass {
+/**
+ * Base class for all Decaf UI components, providing common state management,
+ * logging, localization, navigation hooks, CRUD context metadata, and
+ * repository integration used by higher-level decorators and renderers.
+ */
+export abstract class DecafComponent<M extends Model> extends LoggedClass {
+  /**
+   * @description Data model or model name for component operations.
+   * @summary The data model that this component will use for CRUD operations. This can be provided
+   * as a Model instance, a model constructor, or a string representing the model's registered name.
+   * When set, this property provides the component with access to the model's schema, validation rules,
+   * and metadata needed for rendering and data operations.
+   * @type {M | Model | string | undefined}
+   */
+  model!: M | Model | string | undefined;
+
+  /**
+   * @description Primary key value of the current model instance.
+   * @summary Specifies the primary key value for the current model record being displayed or
+   * manipulated by the component. This identifier is used for CRUD operations that target
+   * specific records, such as read, update, and delete operations. The value corresponds to
+   * the field designated as the primary key in the model definition.
+   * @type {PrimaryKeyType | PrimaryKeyType[]}
+   */
+  modelId?: PrimaryKeyType | PrimaryKeyType[];
 
   /**
    * @description The CRUD operation type to be performed on the model.
@@ -24,7 +49,6 @@ export abstract class DecafComponent extends LoggedClass {
    * handles route parameters, and manages the browser's navigation history.
    * @protected
    * @type {Router}
-   * @memberOf module:lib/engine/NgxComponentDirective
    */
   router?: any;
 
@@ -36,7 +60,7 @@ export abstract class DecafComponent extends LoggedClass {
    * identifier that helps distinguish between multiple instances of the same component type.
    * @type {string}
    */
-  protected name!: string;
+  name!: string;
 
   /**
    * @description Parent component identifier for hierarchical component relationships.
@@ -46,47 +70,26 @@ export abstract class DecafComponent extends LoggedClass {
    * component dependencies and establish component hierarchies for rendering and event propagation.
    * @type {string | undefined}
    */
-  protected childOf!: string | undefined;
+  childOf!: string | undefined;
 
   /**
    * @description Unique identifier for the component instance.
    * @summary A unique identifier automatically generated for each component instance.
    * This UID is used for DOM element identification, component tracking, and debugging purposes.
    * By default, it generates a random 16-character value, but it can be explicitly set via input.
-   * @type {string | number}
-   * @default generateRandomValue(16)
+   * @type {string}
    */
-  protected uid?: string | number;
-
-  /**
-   * @description Data model or model name for component operations.
-   * @summary The data model that this component will use for CRUD operations. This can be provided
-   * as a Model instance, a model constructor, or a string representing the model's registered name.
-   * When set, this property provides the component with access to the model's schema, validation rules,
-   * and metadata needed for rendering and data operations.
-   * @type {Model | string | undefined}
-   */
-  protected model!: Model | string | undefined;
+  uid?: PrimaryKeyType;
 
   /**
    * @description Primary key field name for the data model.
    * @summary Specifies which field in the model should be used as the primary key.
    * This is typically used for identifying unique records in operations like update and delete.
    * If not explicitly set, it defaults to the repository's configured primary key or 'id'.
-   * @type {string}
+   * @type {keyof M | string}
    * @default 'id'
    */
-  pk!: string;
-
-  /**
-   * @description Primary key value of the current model instance.
-   * @summary Specifies the primary key value for the current model record being displayed or
-   * manipulated by the component. This identifier is used for CRUD operations that target
-   * specific records, such as read, update, and delete operations. The value corresponds to
-   * the field designated as the primary key in the model definition.
-   * @type {string | number | bigint | string[] | number[] | bigint[]}
-   */
-  protected modelId?:  string | number | bigint | string[] | number[] | bigint[];
+  pk!: keyof M | string;
 
   /**
    * @description Flag to enable or disable dark mode support for the component.
@@ -132,7 +135,7 @@ export abstract class DecafComponent extends LoggedClass {
    * @type {Record<string, unknown>}
    * @default {tag: ""}
    */
-  item: Record<string, unknown> = { tag: '' };
+  item: Record<string, unknown> = { tag: "" };
 
   /**
    * @description Dynamic properties configuration for runtime customization.
@@ -169,7 +172,7 @@ export abstract class DecafComponent extends LoggedClass {
   /**
    * @description Component name identifier for logging and localization contexts.
    * @summary Stores the component's name which is used as a key for logging contexts
-   * and as a base for locale resolution. 
+   * and as a base for locale resolution.
    * @protected
    * @type {string | undefined}
    */
@@ -191,7 +194,7 @@ export abstract class DecafComponent extends LoggedClass {
    * @type {any}
    * @public
    */
-  protected value?: any;
+  value?: any;
 
   /**
    * @description Reference to CRUD operation constants for template usage.
@@ -214,7 +217,7 @@ export abstract class DecafComponent extends LoggedClass {
    * popstate events, or supporting custom navigation logic.
    *
    */
-  protected location!: any;
+  location!: any;
 
   /**
    * @description Repository instance for data layer operations.
@@ -222,11 +225,10 @@ export abstract class DecafComponent extends LoggedClass {
    * This is an instance of the DecafRepository class, initialized lazily in the repository getter.
    * The repository is used to perform CRUD (Create, Read, Update, Delete) operations on the
    * data model and provides methods for querying and filtering data based on specific criteria.
-   * @type {DecafRepository<Model>}
-   * @private
-   * @memberOf module:lib/engine/NgxComponentDirective
+   * @type {IRepository<M>}
+   * @protected
    */
-  protected _repository?: IRepository<Model>;
+  protected _repository?: IRepository<M>;
 
   /**
    * @description Initialization status flag for the component.
@@ -238,7 +240,10 @@ export abstract class DecafComponent extends LoggedClass {
    */
   protected initialized: boolean = false;
 
-  protected events?: Record<keyof Pick<DecafComponent, 'render' | 'initialize'>, UIFunctionLike>;
+  protected events?: Record<
+    keyof Pick<DecafComponent<M>, "render" | "initialize">,
+    UIFunctionLike
+  >;
 
   protected handlers: Record<string, UIFunctionLike> = {};
 
@@ -246,16 +251,22 @@ export abstract class DecafComponent extends LoggedClass {
     super();
   }
 
-  get repository(): IRepository<Model> | undefined {
-    return this._repository;
+  get repository(): IRepository<M> {
+    return this._repository as IRepository<M>;
   }
 
-  set repository(repository: IRepository<Model>) {
+  set repository(repository: IRepository<M>) {
     this._repository = repository;
   }
 
   async render(...args: unknown[]): Promise<void> {
-    this.log.for(this.render).info(`render for ${this.componentName} with ${JSON.stringify(args)}`);
+    this.log
+      .for(this.render)
+      .info(`render for ${this.componentName} with ${JSON.stringify(args)}`);
+  }
+
+  async refresh(...args: unknown[]): Promise<void> {
+    this.log.for(this.refresh).info(`Refresh called with args: ${args}`);
   }
 
   /**
@@ -271,16 +282,6 @@ export abstract class DecafComponent extends LoggedClass {
   }
 
   /**
-   * Submits data or performs an action associated with the component.
-   *
-   * @param args - A variable number of arguments of any type to be passed to the submit operation.
-   * @returns A promise that resolves with the result of the submit operation.
-   */
-  async submit(...args: unknown[]): Promise<any> {
-    this.log.for(this.submit).info(`submit for ${this.componentName} with ${JSON.stringify(args)}`);
-  }
-
-  /**
    * Translates content based on the provided arguments.
    * Logs the translation request with the component name and arguments.
    *
@@ -288,7 +289,34 @@ export abstract class DecafComponent extends LoggedClass {
    * @returns A promise that resolves with the translation result.
    */
   protected async translate(...args: unknown[]): Promise<any> {
-    this.log.for(this.translate).info(`translate for ${this.componentName} with ${JSON.stringify(args)}`);
+    this.log
+      .for(this.translate)
+      .info(`translate for ${this.componentName} with ${JSON.stringify(args)}`);
   }
-  
+
+  async preview(...args: unknown[]): Promise<void> {
+    this.log.for(this.preview).debug(`Preview called with args: ${args}`);
+  }
+
+  // async process(...args: unknown[]): Promise<any> {
+  //   this.log.for(this.process).debug(`Process called with args: ${args}`);
+  // }
+
+  // async batchOperation(...args: unknown[]): Promise<any> {
+  //   this.log
+  //     .for(this.batchOperation)
+  //     .debug(`BatchOperation called with args: ${args}`);
+  // }
+
+  /**
+   * Submits data or performs an action associated with the component.
+   *
+   * @param args - A variable number of arguments of any type to be passed to the submit operation.
+   * @returns A promise that resolves with the result of the submit operation.
+   */
+  async submit(...args: unknown[]): Promise<any> {
+    this.log
+      .for(this.submit)
+      .info(`submit for ${this.componentName} with ${JSON.stringify(args)}`);
+  }
 }
