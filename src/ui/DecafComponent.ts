@@ -86,10 +86,10 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary Specifies which field in the model should be used as the primary key.
    * This is typically used for identifying unique records in operations like update and delete.
    * If not explicitly set, it defaults to the repository's configured primary key or 'id'.
-   * @type {keyof M | string}
+   * @type {string}
    * @default 'id'
    */
-  pk!: keyof M | string;
+  pk!: string;
 
   /**
    * @description Flag to enable or disable dark mode support for the component.
