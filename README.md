@@ -6,6 +6,8 @@ A TypeScript library that provides a declarative approach to UI rendering throug
 
 The library offers a flexible rendering engine architecture that can be extended to support different UI frameworks (React, Angular, HTML5, etc.) while maintaining a consistent model-driven approach to UI development. It bridges the gap between data models and their visual representation, enabling developers to define UI behavior directly on their domain models.
 
+> Release docs refreshed on 2025-11-26. See [workdocs/reports/RELEASE_NOTES.md](./workdocs/reports/RELEASE_NOTES.md) for ticket summaries.
+
 
 ![Licence](https://img.shields.io/github/license/decaf-ts/ui-decorators.svg?style=plastic)
 ![GitHub language count](https://img.shields.io/github/languages/count/decaf-ts/ui-decorators?style=plastic)
@@ -478,6 +480,9 @@ This example demonstrates how to create a complete registration form with variou
   - strategy;
   - builder;
   - etc;
+
+## Release Documentation Hooks
+Stay aligned with the automated release pipeline by reviewing [Release Notes](./workdocs/reports/RELEASE_NOTES.md) and [Dependencies](./workdocs/reports/DEPENDENCIES.md) after trying these recipes (updated on 2025-11-26).
 
 
 ### Related
