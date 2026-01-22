@@ -88,6 +88,7 @@ export interface FieldProperties {
   step?: number;
   format?: string;
   pk?: string;
+  subType?: string;
   multiple?: boolean;
   customTypes?: string | string[];
   options?: Record<string, unknown>[];
