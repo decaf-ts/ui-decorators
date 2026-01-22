@@ -22,7 +22,6 @@ import {
   uilistmodel,
   uilistprop,
   uimodel,
-  uionrender,
   uiorder,
   uipageprop,
   uisteppedmodel,
@@ -64,6 +63,7 @@ export class TestClass extends Model {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function render() {
   return "test";
 }
