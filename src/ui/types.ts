@@ -9,6 +9,7 @@
 
 import { OperationKeys } from "@decaf-ts/db-decorators";
 import { UIKeys, UIMediaBreakPoints } from "./constants";
+import { DecafEventHandler } from "./DecafEventHandler";
 
 /**
  * @description Interface for defining a UI field or component
@@ -87,6 +88,7 @@ export interface FieldProperties {
   step?: number;
   format?: string;
   pk?: string;
+  subType?: string;
   multiple?: boolean;
   customTypes?: string | string[];
   options?: Record<string, unknown>[];
@@ -198,10 +200,16 @@ export type UILayoutCol = number | "half" | "full" | "auto" | "expand";
  */
 export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
-export type UIFunctionLike = (...args: any[]) => any | Promise<any>
+export type UIFunctionLike = (...args: any[]) => any | Promise<any>;
 
+export type UIEventName = keyof Pick<
+  DecafEventHandler,
+  "render" | "initialize" | "handleClick" | "refresh"
+>;
+
+export type UIEventProperty = Record<string, UIFunctionLike>;
 export type UIHandlerMetadata = {
-  handlers?: Record<string, UIFunctionLike>;
+  handlers?: UIEventProperty;
 };
 
 /**

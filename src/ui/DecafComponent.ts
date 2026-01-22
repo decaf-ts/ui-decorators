@@ -1,9 +1,17 @@
 import { LoggedClass } from "@decaf-ts/logging";
-import { UIFunctionLike } from "./types";
+import { CrudOperationKeys, UIEventProperty, UIFunctionLike } from "./types";
 import { Model } from "@decaf-ts/decorator-validation";
 import { IRepository, OperationKeys } from "@decaf-ts/db-decorators";
+import { Constructor } from "@decaf-ts/decoration";
+import { DecafEventHandler } from "./DecafEventHandler";
 
 type PrimaryKeyType = string | number | bigint;
+
+export const isClassConstructor = <C>(
+  value: UIFunctionLike | Constructor<C>
+): value is Constructor<C> => {
+  return typeof value === "function" && /^class\s/.test(String(value));
+};
 
 /**
  * Base class for all Decaf UI components, providing common state management,
@@ -30,6 +38,22 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @type {PrimaryKeyType | PrimaryKeyType[]}
    */
   modelId?: PrimaryKeyType | PrimaryKeyType[];
+
+  /**
+   * @description Pre-built filtering expression applied to repository queries.
+   * @summary Supply a custom `AttributeOption` to control how records are constrained. When omitted,
+   * the directive derives a condition from `filterBy` or `pk`, comparing it against `modelId`.
+   * @type {any}
+   */
+  filter!: any;
+
+  /**
+   * @description Model field used when generating the default condition.
+   * @summary Indicates which key should be compared to `modelId` when `filter` is not provided.
+   * Defaults to the configured primary key so overrides are only needed for custom lookups.
+   * @type {string}
+   */
+  filterBy!: string;
 
   /**
    * @description The CRUD operation type to be performed on the model.
@@ -86,10 +110,41 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary Specifies which field in the model should be used as the primary key.
    * This is typically used for identifying unique records in operations like update and delete.
    * If not explicitly set, it defaults to the repository's configured primary key or 'id'.
-   * @type {keyof M | string}
-   * @default 'id'
+   * @type {string}
+1   */
+  pk!: string;
+
+  /**
+   * @description Angular change detection service for manual change detection control.
+   * @summary Injected service that provides manual control over change detection cycles.
+   * This is essential for ensuring that programmatic DOM changes (like setting accordion
+   * attributes) are properly reflected in the component's state and trigger appropriate
+   * view updates when modifications occur outside the normal Angular change detection flow.
+   * @protected
    */
-  pk!: keyof M | string;
+  protected changeDetectorRef?: any;
+
+  /**
+   * @description Controls field visibility based on CRUD operations.
+   * @summary Can be a boolean or an array of operation keys where the field should be hidden.
+   * @type {boolean | CrudOperationKeys[]}
+   */
+  hidden?: boolean | CrudOperationKeys[];
+
+  /**
+   * @description Label for the file upload field.
+   * @summary Provides a user-friendly label for the file upload input.
+   *
+   * @type {string | undefined}
+   */
+  label?: string;
+
+  /**
+   * @description Whether the field is read-only.
+   * @type {boolean}
+   * @public
+   */
+  readonly?: boolean;
 
   /**
    * @description Flag to enable or disable dark mode support for the component.
@@ -240,12 +295,9 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    */
   protected initialized: boolean = false;
 
-  protected events?: Record<
-    keyof Pick<DecafComponent<M>, "render" | "initialize">,
-    UIFunctionLike
-  >;
+  protected events: UIEventProperty = {};
 
-  protected handlers: Record<string, UIFunctionLike> = {};
+  protected handlers: UIEventProperty = {};
 
   constructor() {
     super();
@@ -288,7 +340,7 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @param args - A variable number of arguments used for translation.
    * @returns A promise that resolves with the translation result.
    */
-  protected async translate(...args: unknown[]): Promise<any> {
+  async translate(...args: unknown[]): Promise<any> {
     this.log
       .for(this.translate)
       .info(`translate for ${this.componentName} with ${JSON.stringify(args)}`);
@@ -318,5 +370,67 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
     this.log
       .for(this.submit)
       .info(`submit for ${this.componentName} with ${JSON.stringify(args)}`);
+  }
+
+  /**
+   * @description Normalizes handler definitions into executable functions.
+   * @summary Iterates through a handlers map and ensures each entry is stored as a callable
+   * function on the component. Plain functions are stored directly, while handler classes are
+   * instantiated so their `handle` method (or a keyed override) becomes the registered handler.
+   * This allows decorators to accept either inline functions or handler classes transparently.
+   * @template T Extends `DecafEventHandler` to constrain handler class types.
+   * @param handlers - Dictionary of handler names mapped to functions or handler constructors.
+   * @param instance - Optional target handler instance; defaults to the current component.
+   */
+  protected parseHandlers<T extends DecafEventHandler>(
+    handlers: UIEventProperty,
+    instance: T
+  ): UIEventProperty {
+    const result: UIEventProperty = {};
+    Object.entries(handlers).forEach(([key, fn]) => {
+      if (isClassConstructor<DecafEventHandler>(fn)) {
+        const clazz = new fn() as DecafEventHandler;
+        const event =
+          key in clazz ? clazz[key as keyof DecafEventHandler] : clazz.handle;
+        result[key] = event;
+        instance.handlers[key] = event;
+      } else {
+        result[key] = fn;
+        instance.handlers[key] = fn;
+      }
+    });
+    return result;
+  }
+
+  /**
+   * @description Registers event callbacks on the component instance.
+   * @summary Processes an events map produced by decorators where each value can be a factory
+   * returning a function or a component constructor. When a constructor is returned, the method
+   * matching the event key is instantiated and stored; otherwise the produced function is
+   * assigned directly. This enables flexible event binding definitions for derived components.
+   * @template T Extends `DecafComponent<Model>` to scope acceptable event owners.
+   * @param events - Dictionary of event names mapped to function factories or component constructors.
+   * @param instance - Optional component instance to receive the events; defaults to `this`.
+   */
+  protected parseEvents<T extends DecafComponent<Model>>(
+    events: UIEventProperty,
+    instance: T
+  ): UIEventProperty {
+    const result: UIEventProperty = {};
+    Object.entries(events).forEach(([key, fn]) => {
+      const name = key as string;
+      const evt = (fn as UIFunctionLike)();
+      if (isClassConstructor<T>(evt)) {
+        const fn = new evt()[key as keyof T] as UIFunctionLike;
+        if (fn) {
+          result[name] = fn;
+          instance.events[name] = fn;
+        }
+      } else {
+        result[name] = fn;
+        instance.events[name] = fn;
+      }
+    });
+    return result;
   }
 }

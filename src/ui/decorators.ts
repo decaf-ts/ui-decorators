@@ -3,6 +3,7 @@ import { propMetadata } from "@decaf-ts/decoration";
 import {
   CrudOperationKeys,
   UIElementMetadata,
+  UIEventName,
   UIFunctionLike,
   UILayoutCol,
   UILayoutPropMetadata,
@@ -11,8 +12,6 @@ import {
 } from "./types";
 import { OperationKeys } from "@decaf-ts/db-decorators";
 import { getUIAttributeKey } from "./utils";
-import { DecafComponent } from "./DecafComponent";
-import { Model } from "@decaf-ts/decorator-validation";
 
 /**
  * @description Decorator that hides a property during specific CRUD operations
@@ -183,13 +182,17 @@ export function hidden() {
  *   RenderingEngine->>UI: Render with specified element
  */
 export function uielement(
-  tag: string,
+  tag: string | Record<string, any>,
   props?: Record<string, any>,
   serialize: boolean = false
 ) {
   return (original: any, propertyKey?: any) => {
+    if (typeof tag === "object") {
+      props = tag;
+      tag = "";
+    }
     const metadata: UIElementMetadata = {
-      tag: tag,
+      tag: tag as string,
       serialize: serialize,
       props: Object.assign({}, props || {}, {
         name: propertyKey,
@@ -549,7 +552,7 @@ export function uipageprop(page: number = 1) {
 /**
  * A decorator factory that binds a UI event to a specified handler function.
  * This is used to attach event handlers to specific lifecycle events of a `DecafComponent`,
- * such as `render` or `initialize`.
+ * such as `render` | `initialize` | `handleClick` | `refresh`
  *
  * @param event - The name of the lifecycle event to bind the handler to.
  *                Must be one of the keys in `Pick<DecafComponent, 'render' | 'initialize'>`.
@@ -566,14 +569,25 @@ export function uipageprop(page: number = 1) {
  * ```
  */
 export function uion(
-  event: keyof Pick<DecafComponent<Model>, "render" | "initialize">,
+  event: UIEventName | Record<string, UIFunctionLike>,
   handler: UIFunctionLike
 ) {
   return function uion(original: object, propertyKey?: string) {
     propMetadata(getUIAttributeKey(propertyKey as string, UIKeys.EVENTS), {
-      [event]: handler,
+      ...(typeof event === "object" ? event : { [event]: handler }),
     })(original, propertyKey);
   };
+}
+
+/**
+ * A decorator function that associates a UI click handler with the 'handleClick' event.
+ *
+ * @param handler - A function that conforms to the `UIFunctionLike` type, which will be executed
+ *                  when the 'handleClick' event is triggered.
+ * @returns A decorated function that binds the handler to the 'handleClick' event.
+ */
+export function uionclick(handler: UIFunctionLike) {
+  return uion("handleClick", handler);
 }
 
 /**

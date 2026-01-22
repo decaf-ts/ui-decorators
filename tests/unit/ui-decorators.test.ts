@@ -1,4 +1,4 @@
-import { UIKeys } from "../../src";
+import { FieldProperties, UIElementMetadata, UIKeys } from "../../src";
 import { TestClass } from "./models";
 import { Metadata } from "@decaf-ts/decoration";
 import { Model } from "@decaf-ts/decorator-validation";
@@ -19,16 +19,22 @@ describe(`UI decorators Test`, function () {
   });
 
   it("Decorates the properties properly", function () {
-    const uiElementDec = Model.uiElementOf(TestClass, "name");
+    const uiElementDec = Model.uiElementOf(
+      TestClass,
+      "name"
+    ) as UIElementMetadata;
     const { tag, props } = uiElementDec;
 
     expect(tag).toEqual("input-element");
     expect(props).toBeDefined();
-    expect(props.subtype).toEqual("OtherTest");
+    expect((props as FieldProperties).subType).toEqual("OtherTest");
   });
 
   it("Must be hidden property on create", function () {
-    const decorator = Model.uiElementOf(TestClass, "hiddenProp");
+    const decorator = Model.uiElementOf(
+      TestClass,
+      "hiddenProp"
+    ) as UIElementMetadata;
     const { tag, props } = decorator;
 
     expect(tag).toEqual("input-element");

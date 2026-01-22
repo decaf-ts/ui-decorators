@@ -32,4 +32,34 @@ export class DecafEventHandler extends DecafComponent<Model> {
       .for(this.handle)
       .info(`component ${this.componentName} handling ${JSON.stringify(args)}`);
   }
+
+  /**
+   * Handles an click event with the provided arguments.
+   * Logs the event handling process, including the component name and the arguments passed.
+   *
+   * @param args - The arguments for the event handler.
+   * @returns void
+   */
+  handleClick(...args: unknown[]): void {
+    this.log
+      .for(this.handleClick)
+      .info(
+        `component ${this.componentName} handling click ${JSON.stringify(args)}`
+      );
+  }
+
+  /**
+   * Handles an click event with the provided arguments.
+   * Logs the event handling process, including the component name and the arguments passed.
+   *
+   * @param args - The arguments for the event handler.
+   * @returns void
+   */
+  handleAction(...args: unknown[]): void {
+    this.log
+      .for(this.handleAction)
+      .info(
+        `component ${this.componentName} handling action ${JSON.stringify(args)}`
+      );
+  }
 }
