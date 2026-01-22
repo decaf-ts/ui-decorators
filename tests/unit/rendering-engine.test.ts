@@ -110,6 +110,7 @@ describe("Rendering Engine", () => {
         minlength: 5,
         different: "email",
         placeholder: `translation.demo.name.placeholder`,
+        hidden: ["update"],
       },
       birthdate: {
         required: true,

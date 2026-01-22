@@ -22,6 +22,7 @@ import {
   uilistmodel,
   uilistprop,
   uimodel,
+  uionrender,
   uiorder,
   uipageprop,
   uisteppedmodel,
@@ -50,17 +51,21 @@ export class TestClass extends Model {
   @uilistprop("propName")
   @uilayoutprop(1, 1)
   @uipageprop(1)
-  @uielement("input-element", { subtype: "OtherTest" })
+  @uielement("input-element", { subType: "OtherTest" })
   name!: string;
 
   @hideOn(OperationKeys.CREATE)
   @uipageprop(1)
-  @uielement("input-element", { subtype: "HiddenTest" })
+  @uielement("input-element", { subType: "HiddenTest" })
   hiddenProp!: string;
 
   constructor(model?: ModelArg<TestClass>) {
     super(model);
   }
+}
+
+function render() {
+  return "test";
 }
 
 @uimodel("decaf-crud-form", { test: "1" })
@@ -79,6 +84,7 @@ export class DemoModel extends Model {
     label: "translation.demo.name.label",
     placeholder: "translation.demo.name.placeholder",
   })
+  @hideOn(OperationKeys.UPDATE)
   name!: string;
 
   @date(usedDateFormat)

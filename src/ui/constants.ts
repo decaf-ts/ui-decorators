@@ -29,6 +29,7 @@ import {
   Validator,
 } from "@decaf-ts/decorator-validation";
 import { Constructor } from "@decaf-ts/decoration";
+import { OperationKeys } from "@decaf-ts/db-decorators";
 
 export enum UIMediaBreakPoints {
   SMALL = "small",
@@ -109,7 +110,7 @@ export const UIKeys = {
   EVENTS: "events",
 
   READ_ONLY: "readonly",
-  SEQUENCE: "sequence", 
+  SEQUENCE: "sequence",
   REQUIRED: ValidationKeys.REQUIRED,
   MIN: ValidationKeys.MIN,
   MIN_LENGTH: ValidationKeys.MIN_LENGTH,
@@ -284,3 +285,126 @@ export const HTML5CheckTypes: string[] = [
   HTML5InputTypes.CHECKBOX,
   HTML5InputTypes.RADIO,
 ];
+
+/**
+ * @description Event name constants.
+ * @summary Contains constants for standardized event names used throughout the application.
+ * These constants ensure consistent event naming across components and make it easier to
+ * track and handle events. Each constant represents a specific application event type.
+ * @typedef {Object} ComponentEventNames
+ * @property {string} BackButtonClickEvent - Event fired when back button navigation ends
+ * @property {string} Render - Event after component initialize action occurs
+ * @property {string} Refresh - Event fired when a refresh action occurs
+ * @property {string} Click - Event fired when a click action occurs
+ * @property {string} Change - Event fired when a change action occurs
+ * @property {string} Submit - Event fired when a form submission occurs
+ * @property {string} ValidationError - Event fired when a validation error occurs
+ * @property {string} ThemeChange - Event fired when a theme change occurs
+ * @property {string} FormGroupLoaded - Event fired when a reactve form group is loaded
+ * @const ComponentEventNames
+ */
+export const ComponentEventNames = {
+  Render: "render",
+  BackButtonClickEvent: "backButtonNavigationEndEvent",
+  Refresh: "RefreshEvent",
+  Click: "ClickEvent",
+  Change: "ChangeEvent",
+  Submit: "SubmitEvent",
+  ValidationError: "validationErrorEvent",
+  ThemeChange: "themeChangeEvent",
+  FormGroupLoaded: "formGroupLoadedEvent",
+} as const;
+
+/**
+ * @description Lifecycle hook labels for repository transactions.
+ * @summary Provides canonical names for CRUD lifecycle callbacks so decorators and
+ * components can register work before or after repository operations in a consistent way.
+ * Each key maps to the string used when wiring transaction middleware.
+ * @const TransactionHooks
+ */
+export const TransactionHooks = {
+  BeforeCreate: "beforeCreate",
+  AfterCreate: "afterCreate",
+  BeforeUpdate: "beforeUpdate",
+  AfterUpdate: "afterUpdate",
+  BeforeDelete: "beforeDelete",
+  AfterDelete: "afterDelete",
+} as const;
+
+/**
+ * @description Standardized size tokens for UI elements.
+ * @summary Defines the semantic size keywords supported by layout and form decorators.
+ * These values feed rendering engines so components can express sizing in a uniform vocabulary.
+ * @const ElementSizes
+ */
+export const ElementSizes = {
+  xsmall: "xsmall",
+  small: "small",
+  medium: "medium",
+  default: "default",
+  large: "large",
+  xLarge: "xlarge",
+  "2xLarge": "2xlarge",
+  auto: "auto",
+  expand: "expand",
+  block: "block",
+} as const;
+
+/**
+ * @description Alignment keywords for element positioning.
+ * @summary Supplies canonical position values (horizontal and vertical) that decorators can
+ * use when aligning labels, controls, or helper text across components.
+ * @const ElementPositions
+ */
+export const ElementPositions = {
+  left: "left",
+  center: "center",
+  right: "right",
+  top: "top",
+  bottom: "bottom",
+} as const;
+
+/**
+ * @description Grid spacing presets for layout decorators.
+ * @summary Maps human-readable gap sizes to the tokens interpreted by the rendering engine
+ * when building CSS grid layouts, enabling predictable spacing across components.
+ * @const LayoutGridGaps
+ */
+export const LayoutGridGaps = {
+  small: "small",
+  medium: "medium",
+  large: "large",
+  collapse: "collapse",
+  none: "",
+} as const;
+
+/**
+ * @description Canonical action role identifiers for UI controls.
+ * @summary Enumerates the semantic roles a button or action may represent so decorators and
+ * renderers can attach consistent behaviors and styling (including CRUD verbs tied to
+ * `OperationKeys`).
+ * @const ActionRoles
+ */
+export const ActionRoles = {
+  cancel: "cancel",
+  confirm: "confirm",
+  submit: "submit",
+  clear: "clear",
+  back: "back",
+  [OperationKeys.CREATE]: OperationKeys.CREATE,
+  [OperationKeys.READ]: OperationKeys.READ,
+  [OperationKeys.UPDATE]: OperationKeys.UPDATE,
+  [OperationKeys.DELETE]: OperationKeys.DELETE,
+} as const;
+
+/**
+ * @description Allowed color scheme tokens for windowed surfaces.
+ * @summary Provides the supported theme identifiers exposed to consuming apps so they
+ * can target light, dark, or unset window color schemes in a predictable way.
+ * @const WindowColorSchemes
+ */
+export const WindowColorSchemes = {
+  light: "light",
+  dark: "dark",
+  undefined: "undefined",
+} as const;
