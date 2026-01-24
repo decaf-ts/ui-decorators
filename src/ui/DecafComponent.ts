@@ -311,13 +311,13 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
     this._repository = repository;
   }
 
-  async render(...args: unknown[]): Promise<void> {
+  async render(...args: unknown[]): Promise<any> {
     this.log
       .for(this.render)
       .info(`render for ${this.componentName} with ${JSON.stringify(args)}`);
   }
 
-  async refresh(...args: unknown[]): Promise<void> {
+  async refresh(...args: unknown[]): Promise<any> {
     this.log.for(this.refresh).info(`Refresh called with args: ${args}`);
   }
 
@@ -329,7 +329,7 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @returns A promise that resolves when the initialization is complete.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async initialize(...args: unknown[]): Promise<void> {
+  async initialize(...args: unknown[]): Promise<any> {
     this.initialized = true;
   }
 
