@@ -98,7 +98,7 @@ export const UIKeys = {
   UILISTPROP: "uilistprop",
   UILAYOUT: "uilayout",
   UILAYOUTPROP: "uilayoutprop",
-  HANDLERS: "uihandlers",
+  HANDLERS: "handlers",
 
   TYPE: "type",
   SUB_TYPE: "subtype",
