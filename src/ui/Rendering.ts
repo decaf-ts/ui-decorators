@@ -330,9 +330,11 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
               break;
             }
             case UIKeys.CHILD: {
-              if (!Model.isPropertyModel(model, key as string))
+              const modelName =
+                (dec.props as UIPropMetadata)?.name || (key as string);
+              if (!Model.isPropertyModel(model, modelName))
                 throw new RenderingError(
-                  `Child "${key as string}" must be a model.`
+                  `Child "${modelName as string}" must be a model.`
                 );
 
               let Clazz;
@@ -369,9 +371,13 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 childrenGlobalProps,
                 false
               );
-              const {inheritProps} = childrenGlobalProps;
-              if(inheritProps)
-                childDefinition.props = Object.assign({}, childDefinition.props, inheritProps.props || {});
+              const { inheritProps } = childrenGlobalProps;
+              if (inheritProps)
+                childDefinition.props = Object.assign(
+                  {},
+                  childDefinition.props,
+                  inheritProps.props || {}
+                );
               children.push(
                 childDefinition as FieldDefinition<Record<string, any>>
               );
@@ -380,9 +386,13 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             case UIKeys.UILISTPROP: {
               mapper = mapper || {};
               const decProps = dec.props as UIListPropMetadata;
-              if (decProps.name) 
-               mapper[decProps.name] = (typeof decProps?.props === 'object' && UIKeys.SEQUENCE in decProps.props) ? decProps.props : key;
-              
+              if (decProps.name)
+                mapper[decProps.name] =
+                  typeof decProps?.props === "object" &&
+                  UIKeys.SEQUENCE in decProps.props
+                    ? decProps.props
+                    : key;
+
               const props = Object.assign(
                 {},
                 classDecorator.props?.item || {},
@@ -418,7 +428,8 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                       childOf: undefined, // The childOf prop is passed by globalProps when it is a nested prop
                     }
                   : {},
-                globalProps, {name: uiProps.props?.name || key }
+                globalProps,
+                { name: uiProps.props?.name || key }
               );
 
               if (dec.key === UIKeys.ELEMENT) {
@@ -467,10 +478,14 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 );
                 children.push(childDefinition);
               } else {
-                const child = children.find((c) =>
-                  c.props?.name === key ||
-                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE, UIKeys.EVENTS].includes(dec.key) &&
-                      (c.props?.childOf === key || c.props?.childOf?.endsWith(`.${key as string}`)))
+                const child = children.find(
+                  (c) =>
+                    c.props?.name === key ||
+                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE, UIKeys.EVENTS].includes(
+                      dec.key
+                    ) &&
+                      (c.props?.childOf === key ||
+                        c.props?.childOf?.endsWith(`.${key as string}`)))
                 );
                 if (child) {
                   if (dec.key !== UIKeys.UILAYOUTPROP) {
