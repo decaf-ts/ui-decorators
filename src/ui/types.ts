@@ -91,6 +91,7 @@ export interface FieldProperties {
   subType?: string;
   multiple?: boolean;
   customTypes?: string | string[];
+  validationMessage?: string | string[];
   options?: Record<string, unknown>[];
   row?: number;
   col?: number;
