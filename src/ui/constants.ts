@@ -92,7 +92,7 @@ export const UIKeys = {
   CHILD: "uichild",
   NAME: "name",
   NAME_PREFIX: "input-",
-  CUSTOM_PROPS: "customValidationProps",
+  VALIDATION_MESSAGE: "validationMessage",
 
   UILISTMODEL: "uilistmodel",
   UILISTPROP: "uilistprop",
@@ -101,7 +101,7 @@ export const UIKeys = {
   HANDLERS: "handlers",
 
   TYPE: "type",
-  SUB_TYPE: "subtype",
+  SUB_TYPE: "subType",
 
   HIDDEN: "hidden",
   FORMAT: "format",

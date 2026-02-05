@@ -42,6 +42,12 @@ import {
  *
  * @class RenderingEngine
  */
+/**
+ * Represents the base abstraction for decaf rendering engines, handling engine registration,
+ * initialization, model-to-field translation, and runtime rendering orchestration.
+ * Implementations must provide initialization and rendering logic while leveraging the shared
+ * metadata-driven conversion utilities supplied here.
+ */
 export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
   /**
    * @description Cache for storing rendering engine instances or constructors.
@@ -153,6 +159,22 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       Model.uiHandlersFor(model.constructor as Constructor<M>),
       Model.uiLayoutOf(model.constructor as Constructor<M>),
     ].filter(Boolean) as UIClassMetadata[];
+  }
+
+  /**
+   * @description Checks if a validation key represents a custom validator (i.e., not a built-in validation or UI key).
+   * @summary Determines whether the provided key corresponds to a user-defined validator by excluding all built-in ValidationKeys and UIKeys.
+   *
+   * @param {string} key - The validation key to check.
+   * @returns {boolean} True if the key is a custom validator, false otherwise.
+   * @returns {boolean} True if the key is not a built-in validation key or UI key (i.e. is custom), false otherwise.
+   */
+  protected isCustomValidator(key: string): boolean {
+    return (
+      !Object.values(ValidationKeys).includes(
+        key as (typeof ValidationKeys)[keyof typeof ValidationKeys]
+      ) && !Object.values(UIKeys).includes(key)
+    );
   }
 
   /**
@@ -456,6 +478,12 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                       }
                       childDefinition.props[UIKeys.TYPE] = dec.key;
                       continue;
+                    }
+                    if (this.isCustomValidator(dec.key)) {
+                      props[UIKeys.SUB_TYPE] = dec.key;
+                      if (dec.props?.message) {
+                        props[UIKeys.VALIDATION_MESSAGE] = dec.props.message;
+                      }
                     }
                   }
                 }
