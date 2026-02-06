@@ -2,16 +2,11 @@ import { LoggedClass } from "@decaf-ts/logging";
 import { CrudOperationKeys, UIEventProperty, UIFunctionLike } from "./types";
 import { Model } from "@decaf-ts/decorator-validation";
 import { IRepository, OperationKeys } from "@decaf-ts/db-decorators";
-import { Constructor } from "@decaf-ts/decoration";
 import { DecafEventHandler } from "./DecafEventHandler";
+import { DecafTranslateService } from "./DecafTranslateService";
+import { isClassConstructor } from "./utils";
 
 type PrimaryKeyType = string | number | bigint;
-
-export const isClassConstructor = <C>(
-  value: UIFunctionLike | Constructor<C>
-): value is Constructor<C> => {
-  return typeof value === "function" && /^class\s/.test(String(value));
-};
 
 /**
  * Base class for all Decaf UI components, providing common state management,
@@ -113,6 +108,16 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @type {string}
 1   */
   pk!: string;
+
+  /**
+   * @description Translation service for application internationalization.
+   * @summary Injected service that provides translation capabilities for UI text.
+   * Used to translate button labels, validation messages, and other text content based
+   * on the current locale setting, enabling multilingual support throughout the application.
+   * @protected
+   * @type {DecafTranslateService}
+   */
+  translateService!: DecafTranslateService;
 
   /**
    * @description Angular change detection service for manual change detection control.

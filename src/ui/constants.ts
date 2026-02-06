@@ -109,6 +109,9 @@ export const UIKeys = {
   PAGE: "page",
   EVENTS: "events",
 
+  FIRST: "first",
+  LAST: "last",
+
   READ_ONLY: "readonly",
   SEQUENCE: "sequence",
   REQUIRED: ValidationKeys.REQUIRED,

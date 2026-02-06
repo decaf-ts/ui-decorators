@@ -86,7 +86,9 @@ export function hideOn(...operations: CrudOperationKeys[]) {
  *   uiorder->>property: sets order metadata
  *   uiorder->>System: returns decorated property
  */
-export function uiorder(order: number = 1) {
+export function uiorder(
+  order: number | typeof UIKeys.FIRST | typeof UIKeys.LAST = UIKeys.FIRST
+) {
   return function uiorder(object: any, propertyKey?: any) {
     return propMetadata(getUIAttributeKey(propertyKey, UIKeys.ORDER), order)(
       object,
@@ -638,7 +640,10 @@ export function uionrender(handler: UIFunctionLike) {
  *   Model->>RenderingEngine: Return order and parser
  *   RenderingEngine->>Table: Render column in sequence
  */
-export function uitablecol(sequence: number, valueParserFn?: UIFunctionLike) {
+export function uitablecol(
+  sequence: number | typeof UIKeys.FIRST | typeof UIKeys.LAST = UIKeys.LAST,
+  valueParserFn?: UIFunctionLike
+) {
   return (target: any, propertyKey?: any) => {
     const metadata: Partial<UIListPropMetadata> = {
       name: propertyKey,

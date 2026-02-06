@@ -24,6 +24,7 @@ import { Constructor, Metadata } from "@decaf-ts/decoration";
 import {
   Model,
   ModelConstructor,
+  Primitives,
   ReservedModels,
   ValidationKeys,
   ValidationMetadata,
@@ -159,6 +160,37 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       Model.uiHandlersFor(model.constructor as Constructor<M>),
       Model.uiLayoutOf(model.constructor as Constructor<M>),
     ].filter(Boolean) as UIClassMetadata[];
+  }
+
+  private sortChildrenByOrder(children: FieldDefinition<any>[] = []) {
+    return children.sort((a, b) => {
+      const aOrder = a.props?.order ?? 0;
+      const bOrder = b.props?.order ?? 0;
+      const weight = (v: number | string) =>
+        v === UIKeys.FIRST
+          ? 0
+          : typeof v === Primitives.NUMBER
+            ? 1
+            : v === UIKeys.LAST
+              ? //TODO: review this
+                children.length + children.indexOf(b)
+              : 1;
+
+      const aWeight = weight(aOrder);
+      const bWeight = weight(bOrder);
+      if (aWeight !== bWeight) {
+        return aWeight - bWeight;
+      }
+
+      if (
+        aWeight === 1 &&
+        typeof aOrder === Primitives.NUMBER &&
+        typeof bOrder === Primitives.NUMBER
+      ) {
+        return aOrder - bOrder;
+      }
+      return 0;
+    });
   }
 
   /**
@@ -546,18 +578,18 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     });
 
     const operation = globalProps?.operation;
-    children = children
-      ?.sort((a, b) => (a?.props?.order ?? 0) - (b?.props?.order ?? 0))
-      .filter((item) => {
-        const hiddenOn = (item?.props?.hidden as CrudOperationKeys[]) || [];
-        if (!hiddenOn?.length) return item;
-        if (!hiddenOn.includes(operation as CrudOperationKeys)) return item;
-      });
+    children = this.sortChildrenByOrder(children).filter((item) => {
+      const hiddenOn = (item?.props?.hidden as CrudOperationKeys[]) || [];
+      if (!hiddenOn?.length) return item;
+      if (!hiddenOn.includes(operation as CrudOperationKeys)) return item;
+    });
     const result: FieldDefinition<T> = {
       tag: tag,
       item: childProps as UIListItemElementMetadata,
       props: globalProps as T & FieldProperties & IPagedComponentProperties,
-      children: children as FieldDefinition<any>[],
+      children: children?.length
+        ? (children as FieldDefinition<any>[])
+        : undefined,
     };
 
     if (generateId) result.rendererId = generateUIModelID(model);
