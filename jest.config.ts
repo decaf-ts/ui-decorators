@@ -11,7 +11,13 @@ const config: Config.InitialOptions = {
   coverageDirectory: "./workdocs/reports/coverage",
   collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!src/bin/**/*"],
   reporters: ["default"],
-  coveragePathIgnorePatterns: ["DecafComponent.ts", "DecafEventHandler.ts"],
+  coveragePathIgnorePatterns: [
+    "DecafComponent.ts",
+    "DecafEventHandler.ts",
+    "ui/validator.ts",
+    "ui/overrides.ts",
+    "ui/UIValidator.ts",
+  ],
 };
 
 export default config;

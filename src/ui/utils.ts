@@ -6,9 +6,26 @@ import {
 } from "@decaf-ts/decorator-validation";
 import { HTML5DateFormat, HTML5InputTypes, UIKeys } from "./constants";
 import { InternalError } from "@decaf-ts/db-decorators";
-import { FieldProperties } from "./types";
+import { FieldProperties, UIFunctionLike } from "./types";
 import { Constructor, DecorationKeys, Metadata } from "@decaf-ts/decoration";
 
+/**
+ *
+ * Type guard that verifies if a provided UI function-like value is a class constructor.
+ */
+export const isClassConstructor = <C>(
+  fn: UIFunctionLike | Constructor<C>
+): fn is Constructor<C> => {
+  return typeof fn === "function" && /^class\s/.test(String(fn));
+};
+
+/**
+ * Derives the metadata key for a UI attribute on a decorated property.
+ *
+ * @param prop - Property name decorated on the UI model.
+ * @param key - Attribute identifier stored under the property metadata.
+ * @returns Fully qualified metadata key scoped to `UIKeys.REFLECT`.
+ */
 export function getUIAttributeKey(prop: string, key: string) {
   return Metadata.key(UIKeys.REFLECT, DecorationKeys.PROPERTIES, prop, key);
 }
