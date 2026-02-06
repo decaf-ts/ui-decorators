@@ -60,7 +60,7 @@ describe("Rendering Engine", () => {
       id: 1,
       name: "name",
       birthdate: new Date(),
-      year: 2022,
+      year: "2022",
       email: "email@example.com",
       website: "https://example.com",
       password: "Password123!",
@@ -130,6 +130,9 @@ describe("Rendering Engine", () => {
           if (!definition.children) throw new Error("Child not defined");
 
           expect(definition.children[i].tag).toEqual("decaf-crud-field");
+          if (key === "id") {
+            expect(definition.children[i].props?.["order"]).toEqual(0);
+          }
 
           const propsExpectancy: any = {
             label: `translation.demo.${key}.label`,
@@ -146,7 +149,8 @@ describe("Rendering Engine", () => {
                 name: key,
                 operation: "create",
               },
-              propsExpectancy
+              propsExpectancy,
+              key === "id" ? { order: 0 } : {}
             )
           );
         } catch (e: unknown) {

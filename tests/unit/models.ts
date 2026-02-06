@@ -75,6 +75,7 @@ export class DemoModel extends Model {
   @id()
   // @hideOn(OperationKeys.CREATE, OperationKeys.UPDATE)
   @uielement("decaf-crud-field", { label: "translation.demo.id.label" })
+  @uiorder(0)
   id!: number;
 
   @required()
