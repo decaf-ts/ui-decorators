@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     "require": "./lib/index.cjs",
-    "import": "./lib/esm/index.js"
+    "import": "./lib/esm/index.js",
+    "types": "./lib/index.d.ts"
   },
   "types": "lib/index.d.ts",
   "scripts": {
