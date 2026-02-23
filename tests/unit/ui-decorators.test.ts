@@ -46,6 +46,6 @@ describe(`UI decorators Test`, function () {
     expect(testModel.render).toBeDefined();
     expect(() => {
       testModel.render();
-    }).toThrowError();
+    }).toThrow();
   });
 });

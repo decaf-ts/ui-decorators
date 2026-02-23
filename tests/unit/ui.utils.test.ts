@@ -87,7 +87,7 @@ describe("UI Utils", () => {
     it("should throw an error if value can't be parsed", () => {
       expect(() => {
         parseValueByType("number", {} as any, {} as FieldProperties);
-      }).toThrowError(/Failed to parse value/);
+      }).toThrow(/Failed to parse value/);
     });
   });
 

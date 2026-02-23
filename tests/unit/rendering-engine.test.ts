@@ -169,7 +169,7 @@ describe("Rendering Engine", () => {
         [invalidKey]: randomValue,
         message: "Should throw an error",
       });
-    }).toThrowError(
+    }).toThrow(
       new Error(
         `Invalid attribute key "${invalidKey}". Expected one of: ${Object.keys(ValidatableByAttribute).join(", ")}.`
       )
@@ -310,9 +310,7 @@ describe("Rendering Engine", () => {
         }
       }
 
-      expect(() =>
-        engine["toFieldDefinition"](new NoUIModel({}), {})
-      ).toThrowError(
+      expect(() => engine["toFieldDefinition"](new NoUIModel({}), {})).toThrow(
         `No ui definitions set for model NoUIModel. Did you use @uimodel?`
       );
     });
@@ -332,9 +330,7 @@ describe("Rendering Engine", () => {
         }
       }
 
-      expect(() =>
-        engine["toFieldDefinition"](new TestModel2({}), {})
-      ).toThrowError(
+      expect(() => engine["toFieldDefinition"](new TestModel2({}), {})).toThrow(
         `Only one type of decoration is allowed. Please choose between @uiprop, @uichild or @uielement`
       );
     });
@@ -352,9 +348,9 @@ describe("Rendering Engine", () => {
         }
       }
 
-      expect(() =>
-        engine["toFieldDefinition"](new TestModel({}), {})
-      ).toThrowError(`Child "name" must be a model`);
+      expect(() => engine["toFieldDefinition"](new TestModel({}), {})).toThrow(
+        `Child "name" must be a model`
+      );
     });
   });
 
@@ -424,7 +420,7 @@ describe("Rendering Engine", () => {
             key,
             validationMetadata as ValidationMetadata
           )
-        ).toThrowError(
+        ).toThrow(
           new RegExp(`Invalid attribute key "${key}". Expected one of:`)
         );
       });
