@@ -385,11 +385,21 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.CHILD: {
               const modelName =
-                (dec.props as UIPropMetadata)?.name || (key as string);
-              if (!Model.isPropertyModel(model, modelName))
+                (dec.props as UIModelMetadata)?.props?.name || (key as string);
+              try {
+                const isPropertyModel =
+                  Model.isModel(Model.build({}, modelName)) ||
+                  Model.isPropertyModel(model, modelName);
+                if (!isPropertyModel)
+                  throw new RenderingError(
+                    `Child "${modelName as string}" must be a model.`
+                  );
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (e: unknown) {
                 throw new RenderingError(
                   `Child "${modelName as string}" must be a model.`
                 );
+              }
 
               let Clazz;
               const submodel = (model as Record<string, any>)[

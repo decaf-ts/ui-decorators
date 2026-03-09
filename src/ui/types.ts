@@ -8,7 +8,7 @@
  */
 
 import { OperationKeys } from "@decaf-ts/db-decorators";
-import { UIKeys, UIMediaBreakPoints } from "./constants";
+import { ElementSizes, UIKeys, UIMediaBreakPoints } from "./constants";
 import { DecafEventHandler } from "./DecafEventHandler";
 
 /**
@@ -193,7 +193,12 @@ export type UIClassMetadata =
  * @typedef UILayoutCol
  * @memberOf module:ui-decorators
  */
-export type UILayoutCol = number | "half" | "full" | "auto" | "expand";
+export type UILayoutCol =
+  | number
+  | typeof ElementSizes.half
+  | typeof ElementSizes.full
+  | typeof ElementSizes.auto
+  | typeof ElementSizes.expand;
 
 /**
  * @typedef UIListItemPosition
