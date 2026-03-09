@@ -326,6 +326,8 @@ export const ComponentEventNames = {
  * @const TransactionHooks
  */
 export const TransactionHooks = {
+  BeforeRead: "beforeRead",
+  AfterRead: "afterRead",
   BeforeCreate: "beforeCreate",
   AfterCreate: "afterCreate",
   BeforeUpdate: "beforeUpdate",
@@ -351,6 +353,8 @@ export const ElementSizes = {
   auto: "auto",
   expand: "expand",
   block: "block",
+  half: "half",
+  full: "full",
 } as const;
 
 /**
