@@ -3,6 +3,7 @@ import {
   UIHandlerMetadata,
   UIListModelMetadata,
   UIModelMetadata,
+  UILayoutMetadata,
 } from "../ui/types";
 import { UIMediaBreakPoints } from "../ui/constants";
 import { IPagedComponentProperties } from "../ui/interfaces";
@@ -293,23 +294,32 @@ export function uilayout(
   rows: number | string[] = 1,
   props: any = {}
 ) {
+  const layoutConfig =
+    typeof colsMode === "boolean"
+      ? {
+          flexMode: colsMode,
+          cols: 1,
+        }
+      : {
+          flexMode: false,
+          cols: colsMode,
+        };
+  const layoutProps = Object.assign(
+    {},
+    layoutConfig,
+    { rows },
+    Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props)
+  );
+  const layoutMeta: UILayoutMetadata = {
+    props: {
+      cols: layoutConfig.cols,
+      rows,
+      props: Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props),
+    },
+  };
   return (original: any, propertyKey?: any) => {
-    return uimodel(
-      tag,
-      Object.assign({
-        ...(typeof colsMode === "boolean"
-          ? {
-              flexMode: colsMode,
-              cols: 1,
-            }
-          : {
-              flexMode: false,
-              cols: colsMode,
-            }),
-        rows,
-        ...Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props),
-      })
-    )(original, propertyKey);
+    metadata(Metadata.key(UIKeys.REFLECT, UIKeys.UILAYOUT), layoutMeta)(original);
+    return uimodel(tag, layoutProps)(original, propertyKey);
   };
 }
 
@@ -411,4 +421,3 @@ export function uisteppedmodel(
     props,
   });
 }
-

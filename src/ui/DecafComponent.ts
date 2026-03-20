@@ -9,7 +9,8 @@ import { isClassConstructor } from "./utils";
 type PrimaryKeyType = string | number | bigint;
 
 /**
- * Base class for all Decaf UI components, providing common state management,
+ * @description Base class for all Decaf UI components
+ * @summary Base class for all Decaf UI components, providing common state management,
  * logging, localization, navigation hooks, CRUD context metadata, and
  * repository integration used by higher-level decorators and renderers.
  */
@@ -20,7 +21,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * as a Model instance, a model constructor, or a string representing the model's registered name.
    * When set, this property provides the component with access to the model's schema, validation rules,
    * and metadata needed for rendering and data operations.
-   * @type {M | Model | string | undefined}
    */
   model!: M | Model | string | undefined;
 
@@ -30,7 +30,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * manipulated by the component. This identifier is used for CRUD operations that target
    * specific records, such as read, update, and delete operations. The value corresponds to
    * the field designated as the primary key in the model definition.
-   * @type {PrimaryKeyType | PrimaryKeyType[]}
    */
   modelId?: PrimaryKeyType | PrimaryKeyType[];
 
@@ -38,7 +37,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @description Pre-built filtering expression applied to repository queries.
    * @summary Supply a custom `AttributeOption` to control how records are constrained. When omitted,
    * the directive derives a condition from `filterBy` or `pk`, comparing it against `modelId`.
-   * @type {any}
    */
   filter!: any;
 
@@ -46,7 +44,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @description Model field used when generating the default condition.
    * @summary Indicates which key should be compared to `modelId` when `filter` is not provided.
    * Defaults to the configured primary key so overrides are only needed for custom lookups.
-   * @type {string}
    */
   filterBy!: string;
 
@@ -67,7 +64,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * in the application. This service enables navigation to different views and operations,
    * handles route parameters, and manages the browser's navigation history.
    * @protected
-   * @type {Router}
    */
   router?: any;
 
@@ -77,7 +73,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * instance. This name can be used for debugging purposes, logging, or to identify specific
    * component instances within a larger application structure. It serves as a human-readable
    * identifier that helps distinguish between multiple instances of the same component type.
-   * @type {string}
    */
   name!: string;
 
@@ -87,7 +82,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * This property establishes a parent-child relationship between components, allowing for
    * proper nesting and organization of components within a layout. It can be used to track
    * component dependencies and establish component hierarchies for rendering and event propagation.
-   * @type {string | undefined}
    */
   childOf!: string | undefined;
 
@@ -96,7 +90,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary A unique identifier automatically generated for each component instance.
    * This UID is used for DOM element identification, component tracking, and debugging purposes.
    * By default, it generates a random 16-character value, but it can be explicitly set via input.
-   * @type {string}
    */
   uid?: PrimaryKeyType;
 
@@ -105,7 +98,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary Specifies which field in the model should be used as the primary key.
    * This is typically used for identifying unique records in operations like update and delete.
    * If not explicitly set, it defaults to the repository's configured primary key or 'id'.
-   * @type {string}
 1   */
   pk!: string;
 
@@ -115,7 +107,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * Used to translate button labels, validation messages, and other text content based
    * on the current locale setting, enabling multilingual support throughout the application.
    * @protected
-   * @type {DecafTranslateService}
    */
   translateService!: DecafTranslateService;
 
@@ -132,22 +123,17 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
   /**
    * @description Controls field visibility based on CRUD operations.
    * @summary Can be a boolean or an array of operation keys where the field should be hidden.
-   * @type {boolean | CrudOperationKeys[]}
    */
   hidden?: boolean | CrudOperationKeys[];
 
   /**
    * @description Label for the file upload field.
    * @summary Provides a user-friendly label for the file upload input.
-   *
-   * @type {string | undefined}
    */
   label?: string;
 
   /**
    * @description Whether the field is read-only.
-   * @type {boolean}
-   * @public
    */
   readonly?: boolean;
 
@@ -158,8 +144,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * controls whether the component should respond to dark mode changes and apply the
    * dark palette class to its DOM element. By default, dark mode support is disabled.
    * @protected
-   * @type {boolean}
-   * @default false
    */
   protected enableDarkMode: boolean = true;
 
@@ -170,8 +154,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * controls whether the component should respond to dark mode changes and apply the
    * dark palette class to its DOM element. By default, dark mode support is disabled.
    * @protected
-   * @type {boolean}
-   * @default false
    */
   protected isDarkMode: boolean = false;
 
@@ -181,7 +163,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * and formatting data according to regional conventions. This property can be set to override
    * the default application locale for this specific component instance, enabling per-component
    * localization when needed.
-   * @type {string | undefined}
    */
   locale?: string;
 
@@ -192,8 +173,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * and other properties needed to render list items correctly. The tag property
    * identifies which component should be used to render each item in a list.
    * Additional properties can be included to customize the rendering behavior.
-   * @type {Record<string, unknown>}
-   * @default {tag: ""}
    */
   item: Record<string, unknown> = { tag: "" };
 
@@ -204,8 +183,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * requiring explicit input bindings for every possible configuration option. Properties from
    * this object are parsed and applied to the component instance through the parseProps method,
    * enabling customizable component behavior based on external configuration.
-   * @type {Record<string, unknown>}
-   * @default {}
    */
   props: Record<string, unknown> = {};
 
@@ -215,7 +192,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * This is often used as a prefix for constructing navigation URLs when transitioning between
    * different operations or views. The route helps establish the component's position in the
    * application's routing hierarchy.
-   * @type {string}
    */
   route?: string = "";
 
@@ -223,9 +199,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @description Controls whether borders are displayed around the component.
    * @summary Boolean flag that determines if the component should be visually outlined with borders.
    * When true, borders are shown to visually separate the component from surrounding content.
-   *
-   * @type {boolean}
-   * @default false
    */
   borders: boolean = false;
 
@@ -234,7 +207,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary Stores the component's name which is used as a key for logging contexts
    * and as a base for locale resolution.
    * @protected
-   * @type {string | undefined}
    */
   protected componentName?: string;
 
@@ -244,15 +216,12 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * If not explicitly provided, it defaults to the component's name. This key is used to
    * load appropriate translation resources and locale-specific configurations.
    * @protected
-   * @type {string | undefined}
    */
   protected localeRoot?: string;
 
   /**
    * @description Current value of the component.
    * @summary Can be a string, number, date, or array of string or objects.
-   * @type {any}
-   * @public
    */
   value?: any;
 
@@ -285,7 +254,7 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * This is an instance of the DecafRepository class, initialized lazily in the repository getter.
    * The repository is used to perform CRUD (Create, Read, Update, Delete) operations on the
    * data model and provides methods for querying and filtering data based on specific criteria.
-   * @type {IRepository<M>}
+   *
    * @protected
    */
   protected _repository?: IRepository<M>;
@@ -295,7 +264,6 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
    * @summary Tracks whether the component has completed its initialization process.
    * This flag is used to prevent duplicate initialization and to determine if
    * certain operations that require initialization can be performed.
-   * @type {boolean}
    * @default false
    */
   protected initialized: boolean = false;
@@ -304,7 +272,7 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
 
   protected handlers: UIEventProperty = {};
 
-  constructor() {
+  protected constructor() {
     super();
   }
 

@@ -189,10 +189,6 @@ export type UIClassMetadata =
   | UIHandlerMetadata
   | UIListModelMetadata;
 
-/**
- * @typedef UILayoutCol
- * @memberOf module:ui-decorators
- */
 export type UILayoutCol =
   | number
   | typeof ElementSizes.half
@@ -200,10 +196,6 @@ export type UILayoutCol =
   | typeof ElementSizes.auto
   | typeof ElementSizes.expand;
 
-/**
- * @typedef UIListItemPosition
- * @memberOf module:ui-decorators
- */
 export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
 export type UIFunctionLike = (...args: any[]) => any | Promise<any>;
@@ -230,10 +222,6 @@ export type UILayoutPropMetadata = {
   };
 };
 
-/**
- * @typedef UIMediaBreakPoints
- * @memberOf module:ui-decorators
- */
 export type UIMediaBreakPointsType =
   | UIMediaBreakPoints.SMALL
   | UIMediaBreakPoints.MEDIUM

@@ -6,6 +6,9 @@
  * @module ui-decorators
  */
 
+import "./overrides";
+import { Metadata } from "@decaf-ts/decoration";
+export * from "./overrides";
 export * from "./model";
 export * from "./ui";
 
@@ -16,3 +19,7 @@ export * from "./ui";
  * @memberOf module:ui-decorators
  */
 export const VERSION = "##VERSION##";
+
+export const PACKAGE_NAME = "##PACKAGE##";
+
+Metadata.registerLibrary(PACKAGE_NAME, VERSION);
