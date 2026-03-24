@@ -172,11 +172,9 @@ export type UIListItemElementMetadata = {
  * @memberOf module:ui-decorators
  */
 export type UILayoutMetadata = {
-  props: {
-    cols?: number;
-    rows?: number | string[];
-    props?: Record<string, any>;
-  };
+  cols?: number;
+  rows?: number | string[];
+  props?: Record<string, any>;
 };
 
 /**

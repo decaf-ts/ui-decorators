@@ -12,7 +12,7 @@ describe("ui-decorators ModelBuilder extensions", () => {
     builder.renderedBy("react");
     builder.uilistmodel("li", { index: 1 });
     builder.uihandlers({ onClick: () => {} });
-    builder.uilayout("section", 2, [1, 2], { layout: true });
+    builder.uilayout("section", 2, 2, { layout: true });
     builder.uisteppedmodel("wizard", 3, true, { paginated: true });
 
     const Dynamic = builder.build();
