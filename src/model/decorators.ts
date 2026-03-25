@@ -294,8 +294,8 @@ export function uilayout(
   rows: number | string[] = 1,
   props: any = {}
 ) {
-  const layoutConfig =
-    typeof colsMode === "boolean"
+  const config = Object.assign({
+    ...(typeof colsMode === "boolean"
       ? {
           flexMode: colsMode,
           cols: 1,
@@ -303,23 +303,13 @@ export function uilayout(
       : {
           flexMode: false,
           cols: colsMode,
-        };
-  const layoutProps = Object.assign(
-    {},
-    layoutConfig,
-    { rows },
-    Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props)
-  );
-  const layoutMeta: UILayoutMetadata = {
-    props: {
-      cols: layoutConfig.cols,
-      rows,
-      props: Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props),
-    },
-  };
+        }),
+    rows,
+    ...Object.assign({ breakpoint: UIMediaBreakPoints.LARGE }, props),
+  } as UILayoutMetadata);
   return (original: any, propertyKey?: any) => {
-    metadata(Metadata.key(UIKeys.REFLECT, UIKeys.UILAYOUT), layoutMeta)(original);
-    return uimodel(tag, layoutProps)(original, propertyKey);
+    metadata(Metadata.key(UIKeys.REFLECT, UIKeys.UILAYOUT), config)(original);
+    return uimodel(tag, config)(original, propertyKey);
   };
 }
 
