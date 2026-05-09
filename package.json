@@ -100,6 +100,8 @@
   "module": "./lib/esm/index.js",
   "sideEffects": [
     "./lib/esm/overrides/index.js",
-    "./lib/cjs/overrides/index.cjs"
+    "./lib/esm/model/overrides.js",
+    "./lib/cjs/overrides/index.cjs",
+    "./lib/cjs/model/overrides.cjs"
   ]
 }
