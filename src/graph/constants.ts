@@ -67,11 +67,13 @@ export type GraphPortMetadata = {
   connectionRules?: GraphConnectionRule;
   visible?: boolean;
   handle?: string;
+  expand?: boolean;
   metadata?: Record<string, unknown>;
 };
 
 export type GraphPortDefinition = {
   property: string;
+  path?: string;
   direction: PortDirection;
   name: string;
   label: string;
@@ -84,6 +86,9 @@ export type GraphPortDefinition = {
   validation?: Record<string, any>;
   graph?: GraphPortMetadata;
   connectionRules?: GraphConnectionRule;
+  composite?: boolean;
+  children?: GraphPortDefinition[];
+  model?: string;
 };
 
 export type GraphNodeDefinition = {

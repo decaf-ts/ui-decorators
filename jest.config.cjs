@@ -3,6 +3,7 @@ const config = {
   // eslint-disable-next-line no-undef
   rootDir: __dirname,
   transform: { "^.+\\.ts$": "ts-jest" },
+  watchman: false,
   testEnvironment: "node",
   testRegex: "/tests/.*\\.(test|spec)\\.(ts|tsx)$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],

@@ -11,3 +11,16 @@ export type {
   GraphWorkflowNodeMetadata,
   GraphWorkflowRelationMetadata,
 } from "./constants";
+export type {
+  GraphWorkflowSnapshot,
+  GraphWorkflowSnapshotDefinition,
+  GraphWorkflowSnapshotEdge,
+  GraphWorkflowSnapshotInput,
+  GraphWorkflowSnapshotNode,
+  GraphWorkflowSnapshotPosition,
+  GraphWorkflowSnapshotReference,
+  GraphWorkflowSnapshotSize,
+  GraphWorkflowSnapshotState,
+  GraphWorkflowSnapshotValue,
+  GraphWorkflowSnapshotPortState,
+} from "./snapshot";
