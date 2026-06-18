@@ -14,6 +14,17 @@
         "default": "./lib/cjs/index.cjs"
       },
       "default": "./lib/esm/index.js"
+    },
+    "./graph": {
+      "import": {
+        "types": "./lib/types/graph/index.d.mts",
+        "default": "./lib/esm/graph/index.js"
+      },
+      "require": {
+        "types": "./lib/types/graph/index.d.cts",
+        "default": "./lib/cjs/graph/index.cjs"
+      },
+      "default": "./lib/esm/graph/index.js"
     }
   },
   "types": "./lib/types/index.d.mts",
@@ -105,8 +116,12 @@
   "module": "./lib/esm/index.js",
   "sideEffects": [
     "./lib/esm/overrides/index.js",
+    "./lib/esm/graph/overrides/index.js",
+    "./lib/esm/graph/overrides/overrides.js",
     "./lib/esm/model/overrides.js",
     "./lib/cjs/overrides/index.cjs",
+    "./lib/cjs/graph/overrides/index.cjs",
+    "./lib/cjs/graph/overrides/overrides.cjs",
     "./lib/cjs/model/overrides.cjs"
   ]
 }

@@ -1,0 +1,143 @@
+import { Constructor, Metadata } from "@decaf-ts/decoration";
+import { Model } from "@decaf-ts/decorator-validation";
+import { ValidationKeys } from "@decaf-ts/decorator-validation";
+import { UIKeys } from "../ui/constants";
+import {
+  GraphKeys,
+} from "./constants";
+import type {
+  GraphNodeDefinition,
+  GraphNodeMetadata,
+  GraphPortDefinition,
+  GraphPortMetadata,
+} from "./constants";
+import "../model/overrides";
+
+type GraphModelLike<M extends Model = Model> = Constructor<M> | M;
+
+function resolveModel<M extends Model>(model: GraphModelLike<M>): Constructor<M> {
+  const resolved = Metadata.constr(model as Constructor<M>);
+  if (typeof resolved === "function") return resolved as Constructor<M>;
+  const fallback = (model as Model).constructor;
+  if (typeof fallback === "function") return fallback as Constructor<M>;
+  return model as Constructor<M>;
+}
+
+function asString(value: unknown): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  return typeof value === "string" ? value : String(value);
+}
+
+function pickLabel(
+  element?: Record<string, any>,
+  prop?: Record<string, any>,
+  fallback?: string
+) {
+  const elementLabel = asString(element?.props?.label ?? element?.props?.name);
+  return (
+    elementLabel ??
+    asString(prop?.name) ??
+    fallback ??
+    ""
+  );
+}
+
+export function graphNodeMetadataOf<M extends Model>(
+  model: GraphModelLike<M>
+): GraphNodeMetadata | undefined {
+  const resolved = resolveModel(model);
+  return Metadata.get(resolved, GraphKeys.NODE) as GraphNodeMetadata | undefined;
+}
+
+export function graphPortMetadataOf<M extends Model>(
+  model: GraphModelLike<M>,
+  property: keyof M | string
+): GraphPortMetadata | undefined {
+  const resolved = resolveModel(model);
+  return Metadata.get(resolved, Metadata.key(GraphKeys.PORT, String(property))) as
+    | GraphPortMetadata
+    | undefined;
+}
+
+export function graphPortDefinitionOf<M extends Model>(
+  model: GraphModelLike<M>,
+  property: keyof M | string
+): GraphPortDefinition | undefined {
+  const resolved = resolveModel(model);
+  const propertyKey = String(property);
+  const graph = graphPortMetadataOf(resolved, property);
+  if (!graph) return undefined;
+
+  const element = ((Model as any).uiElementOf(resolved, propertyKey) ||
+    undefined) as Record<string, any> | undefined;
+  const uiProp = (Model as any).uiDecorationOf(
+    resolved,
+    propertyKey,
+    UIKeys.PROP
+  ) as Record<string, any> | undefined;
+  const validation = (Metadata as any).validationFor(resolved, propertyKey) as
+    | Record<string, any>
+    | undefined;
+  const designType = Metadata.type(resolved, propertyKey);
+  const typeName = asString(
+    validation?.[ValidationKeys.TYPE]?.customTypes?.[0]?.name ??
+      element?.props?.type ??
+      uiProp?.type ??
+      designType?.name
+  );
+
+  return {
+    property: propertyKey,
+    direction: graph.direction,
+    name: propertyKey,
+    label: pickLabel(element, uiProp, propertyKey),
+    type: typeName?.toLowerCase(),
+    required: !!validation?.[ValidationKeys.REQUIRED],
+    hidden: !!(Model as any).uiIsHidden(resolved, propertyKey),
+    designType: designType?.name,
+    element,
+    prop: uiProp,
+    validation,
+    graph,
+    connectionRules: graph.connectionRules,
+  };
+}
+
+export function graphPortsOf<M extends Model>(
+  model: GraphModelLike<M>
+): GraphPortDefinition[] {
+  const resolved = resolveModel(model);
+  const properties = Metadata.properties(resolved) || [];
+  return properties
+    .map((property) => graphPortDefinitionOf(resolved, property))
+    .filter((property): property is GraphPortDefinition => !!property);
+}
+
+export function graphDefinitionOf<M extends Model>(
+  model: GraphModelLike<M>
+): GraphNodeDefinition {
+  const resolved = resolveModel(model);
+  const ui = Model.uiModelOf(resolved);
+  const graph = graphNodeMetadataOf(resolved) || {};
+  const tag = ui?.tag || resolved.name;
+  const ports = graphPortsOf(resolved);
+
+  return {
+    name: resolved.name,
+    tag,
+    kind: graph.kind || tag,
+    category: graph.category,
+    color: graph.color,
+    group: graph.group,
+    height: graph.height,
+    icon: graph.icon,
+    labels: graph.labels || [],
+    maxChildren: graph.maxChildren,
+    minWidth: graph.minWidth,
+    width: graph.width,
+    props: ui?.props,
+    ui,
+    graph,
+    ports,
+  };
+}

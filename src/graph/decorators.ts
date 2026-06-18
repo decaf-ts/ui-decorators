@@ -5,35 +5,49 @@ import {
   metadata,
   propMetadata,
 } from "@decaf-ts/decoration";
+import { uimodel } from "../model/decorators";
 import { GraphKeys, PortDirection } from "./constants";
+import type { GraphNodeMetadata, GraphPortMetadata } from "./constants";
 
-export type NodeMetadata = {};
-
-export function node() {
-  function node() {
-    const meta: NodeMetadata = {};
+export function node(
+  tag?: string,
+  graph?: GraphNodeMetadata,
+  props?: Record<string, any>
+) {
+  function node(
+    tag?: string,
+    graph?: GraphNodeMetadata,
+    props?: Record<string, any>
+  ) {
+    const meta: GraphNodeMetadata = {
+      kind: graph?.kind || tag,
+      ...graph,
+    };
     return function innerNode(target: object) {
-      return apply(metadata(GraphKeys.NODE, meta))(target);
+      return apply(uimodel(tag, props), metadata(GraphKeys.NODE, meta))(target);
     };
   }
 
   return Decoration.for(GraphKeys.NODE)
     .define({
       decorator: node,
-      args: [],
+      args: [tag, graph, props],
     })
     .apply();
 }
 
-export type PortMetadata = {
-  direction: PortDirection;
-};
-
-export function port(direction: PortDirection) {
-  function port() {
+export function port(
+  direction: PortDirection,
+  graph?: Partial<Omit<GraphPortMetadata, "direction">>
+) {
+  function port(
+    direction: PortDirection,
+    graph?: Partial<Omit<GraphPortMetadata, "direction">>
+  ) {
     return function innerPort(target: object, propertyKey?: any) {
-      const meta: PortMetadata = {
+      const meta: GraphPortMetadata = {
         direction,
+        ...graph,
       };
       return apply(
         propMetadata(Metadata.key(GraphKeys.PORT, propertyKey), meta)
@@ -44,15 +58,15 @@ export function port(direction: PortDirection) {
   return Decoration.for(GraphKeys.PORT)
     .define({
       decorator: port,
-      args: [],
+      args: [direction, graph],
     })
     .apply();
 }
 
-export function input() {
-  return port(PortDirection.INPUT);
+export function input(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
+  return port(PortDirection.INPUT, graph);
 }
 
-export function output() {
-  return port(PortDirection.OUTPUT);
+export function output(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
+  return port(PortDirection.OUTPUT, graph);
 }
