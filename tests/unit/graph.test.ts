@@ -3,6 +3,8 @@ import { Metadata } from "@decaf-ts/decoration";
 import { Model, model, required } from "@decaf-ts/decorator-validation";
 import { RenderingEngine as UiRenderingEngine, uielement } from "../../src";
 import {
+  graph,
+  graphWorkflowDefinitionOf,
   node,
   port,
   graphDefinitionOf,
@@ -27,6 +29,53 @@ class GraphToolModel extends Model {
   @uielement("textarea", { label: "Result" })
   @port(PortDirection.OUTPUT)
   result!: string;
+}
+
+@graph("graph-workflow", {
+  kind: "workflow",
+  category: "Workflow",
+  nodes: [
+    {
+      id: "draft",
+      kind: "node",
+      label: "Draft node",
+      node: "GraphDraftNode",
+    },
+    {
+      id: "review",
+      kind: "node",
+      label: "Review node",
+      node: "GraphReviewNode",
+    },
+  ],
+  relations: [
+    {
+      source: "workflow",
+      sourcePort: "brief",
+      target: "draft",
+      targetPort: "plan",
+      label: "brief-to-plan",
+    },
+    {
+      source: "draft",
+      sourcePort: "draft",
+      target: "review",
+      targetPort: "draft",
+      label: "draft-to-review",
+    },
+  ],
+})
+@model()
+class GraphWorkflowModel extends Model {
+  @required()
+  @uielement("input", { label: "Brief" })
+  @port(PortDirection.INPUT)
+  brief!: string;
+
+  @required()
+  @uielement("input", { label: "Approved" })
+  @port(PortDirection.OUTPUT)
+  approved!: string;
 }
 
 class GraphRenderer extends UiRenderingEngine<void, unknown> {
@@ -97,6 +146,87 @@ describe("ui-decorators graph layer", () => {
           direction: PortDirection.OUTPUT,
         }),
       ],
+    });
+  });
+
+  it("decorates a workflow root with graph metadata and derived inputs/outputs", () => {
+    const workflowMeta = Metadata.get(GraphWorkflowModel, GraphKeys.GRAPH);
+    const workflowUi = Metadata.get(
+      GraphWorkflowModel,
+      Metadata.key(UIKeys.REFLECT, UIKeys.UIMODEL)
+    );
+    const definition = graphWorkflowDefinitionOf(GraphWorkflowModel);
+
+    expect(workflowUi).toEqual({
+      tag: "graph-workflow",
+      props: undefined,
+    });
+    expect(workflowMeta).toMatchObject({
+      kind: "workflow",
+      category: "Workflow",
+      inputs: [
+        expect.objectContaining({
+          property: "brief",
+          direction: PortDirection.INPUT,
+        }),
+      ],
+      outputs: [
+        expect.objectContaining({
+          property: "approved",
+          direction: PortDirection.OUTPUT,
+        }),
+      ],
+      nodes: [
+        expect.objectContaining({
+          id: "draft",
+          label: "Draft node",
+        }),
+        expect.objectContaining({
+          id: "review",
+          label: "Review node",
+        }),
+      ],
+      relations: [
+        expect.objectContaining({
+          source: "workflow",
+          target: "draft",
+        }),
+        expect.objectContaining({
+          source: "draft",
+          target: "review",
+        }),
+      ],
+    });
+    expect(definition).toMatchObject({
+      name: "GraphWorkflowModel",
+      tag: "graph-workflow",
+      kind: "workflow",
+      category: "Workflow",
+      inputs: [
+        expect.objectContaining({
+          property: "brief",
+          direction: PortDirection.INPUT,
+        }),
+      ],
+      outputs: [
+        expect.objectContaining({
+          property: "approved",
+          direction: PortDirection.OUTPUT,
+        }),
+      ],
+      nodes: expect.arrayContaining([
+        expect.objectContaining({
+          id: "draft",
+        }),
+        expect.objectContaining({
+          id: "review",
+        }),
+      ]),
+      relations: expect.arrayContaining([
+        expect.objectContaining({
+          label: "brief-to-plan",
+        }),
+      ]),
     });
   });
 

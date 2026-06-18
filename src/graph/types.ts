@@ -6,4 +6,8 @@ export type {
   GraphNodeMetadata,
   GraphPortDefinition,
   GraphPortMetadata,
+  GraphWorkflowDefinition,
+  GraphWorkflowMetadata,
+  GraphWorkflowNodeMetadata,
+  GraphWorkflowRelationMetadata,
 } from "./constants";

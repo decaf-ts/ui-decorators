@@ -10,7 +10,10 @@ import type {
   GraphNodeMetadata,
   GraphPortDefinition,
   GraphPortMetadata,
+  GraphWorkflowDefinition,
+  GraphWorkflowMetadata,
 } from "./constants";
+import { PortDirection } from "./constants";
 import "../model/overrides";
 
 type GraphModelLike<M extends Model = Model> = Constructor<M> | M;
@@ -47,6 +50,13 @@ export function graphNodeMetadataOf<M extends Model>(
 ): GraphNodeMetadata | undefined {
   const resolved = resolveModel(model);
   return Metadata.get(resolved, GraphKeys.NODE) as GraphNodeMetadata | undefined;
+}
+
+export function graphWorkflowMetadataOf<M extends Model>(
+  model: GraphModelLike<M>
+): GraphWorkflowMetadata | undefined {
+  const resolved = resolveModel(model);
+  return Metadata.get(resolved, GraphKeys.GRAPH) as GraphWorkflowMetadata | undefined;
 }
 
 export function graphPortMetadataOf<M extends Model>(
@@ -139,5 +149,38 @@ export function graphDefinitionOf<M extends Model>(
     ui,
     graph,
     ports,
+  };
+}
+
+export function graphWorkflowDefinitionOf<M extends Model>(
+  model: GraphModelLike<M>
+): GraphWorkflowDefinition {
+  const resolved = resolveModel(model);
+  const workflow = graphWorkflowMetadataOf(resolved) || {};
+  const node = graphDefinitionOf(resolved);
+  const inputs =
+    workflow.inputs ||
+    node.ports.filter((port) => port.direction === PortDirection.INPUT);
+  const outputs =
+    workflow.outputs ||
+    node.ports.filter((port) => port.direction === PortDirection.OUTPUT);
+
+  return {
+    ...node,
+    kind: workflow.kind || node.kind,
+    category: workflow.category ?? node.category,
+    color: workflow.color ?? node.color,
+    group: workflow.group ?? node.group,
+    height: workflow.height ?? node.height,
+    icon: workflow.icon ?? node.icon,
+    labels: workflow.labels || node.labels,
+    maxChildren: workflow.maxChildren ?? node.maxChildren,
+    minWidth: workflow.minWidth ?? node.minWidth,
+    width: workflow.width ?? node.width,
+    inputs,
+    outputs,
+    nodes: workflow.nodes || [],
+    relations: workflow.relations || [],
+    workflow,
   };
 }

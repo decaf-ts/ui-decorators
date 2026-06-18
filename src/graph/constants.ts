@@ -37,6 +37,31 @@ export type GraphNodeMetadata = {
   metadata?: Record<string, unknown>;
 };
 
+export type GraphWorkflowNodeMetadata = {
+  id: string;
+  kind?: GraphNodeKind;
+  label?: string;
+  description?: string;
+  node?: unknown;
+  metadata?: Record<string, unknown>;
+};
+
+export type GraphWorkflowRelationMetadata = {
+  source: string | unknown;
+  sourcePort?: string;
+  target: string | unknown;
+  targetPort?: string;
+  label?: string;
+  metadata?: Record<string, unknown>;
+};
+
+export type GraphWorkflowMetadata = GraphNodeMetadata & {
+  inputs?: GraphPortDefinition[];
+  outputs?: GraphPortDefinition[];
+  nodes?: GraphWorkflowNodeMetadata[];
+  relations?: GraphWorkflowRelationMetadata[];
+};
+
 export type GraphPortMetadata = {
   direction: PortDirection;
   connectionRules?: GraphConnectionRule;
@@ -78,4 +103,12 @@ export type GraphNodeDefinition = {
   ui?: Record<string, any>;
   graph?: GraphNodeMetadata;
   ports: GraphPortDefinition[];
+};
+
+export type GraphWorkflowDefinition = GraphNodeDefinition & {
+  inputs: GraphPortDefinition[];
+  outputs: GraphPortDefinition[];
+  nodes: GraphWorkflowNodeMetadata[];
+  relations: GraphWorkflowRelationMetadata[];
+  workflow: GraphWorkflowMetadata;
 };
