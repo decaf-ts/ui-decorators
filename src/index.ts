@@ -36,7 +36,6 @@ export const COMMIT = "##COMMIT##";
  */
 export const FULL_VERSION = "##FULL_VERSION##";
 
-
 export const PACKAGE_NAME = "##PACKAGE##";
 
 Metadata.registerLibrary(PACKAGE_NAME, VERSION);

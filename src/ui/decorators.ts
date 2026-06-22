@@ -3,6 +3,7 @@ import { propMetadata } from "@decaf-ts/decoration";
 import {
   CrudOperationKeys,
   UIElementMetadata,
+  UIEventHandler,
   UIEventName,
   UIFunctionLike,
   UILayoutCol,
@@ -571,8 +572,15 @@ export function uipageprop(page: number = 1) {
  * ```
  */
 export function uion(
-  event: UIEventName | Record<string, UIFunctionLike>,
-  handler: UIFunctionLike
+  event: UIEventName,
+  handler: UIEventHandler
+): (original: object, propertyKey?: string) => void;
+export function uion(
+  events: Record<string, UIEventHandler>
+): (original: object, propertyKey?: string) => void;
+export function uion(
+  event: UIEventName | Record<string, UIEventHandler>,
+  handler?: UIEventHandler
 ) {
   return function uion(original: object, propertyKey?: string) {
     propMetadata(getUIAttributeKey(propertyKey as string, UIKeys.EVENTS), {
@@ -584,22 +592,22 @@ export function uion(
 /**
  * A decorator function that associates a UI click handler with the 'handleClick' event.
  *
- * @param handler - A function that conforms to the `UIFunctionLike` type, which will be executed
+ * @param handler - A function that conforms to the `UIEventHandler` type, which will be executed
  *                  when the 'handleClick' event is triggered.
  * @returns A decorated function that binds the handler to the 'handleClick' event.
  */
-export function uionclick(handler: UIFunctionLike) {
+export function uionclick(handler: UIEventHandler) {
   return uion("handleClick", handler);
 }
 
 /**
  * A decorator function that associates a UI rendering handler with the 'render' event.
  *
- * @param handler - A function that conforms to the `UIFunctionLike` type, which will be executed
+ * @param handler - A function that conforms to the `UIEventHandler ` type, which will be executed
  *                  when the 'render' event is triggered.
  * @returns A decorated function that binds the handler to the 'render' event.
  */
-export function uionrender(handler: UIFunctionLike) {
+export function uionrender(handler: UIEventHandler) {
   return uion("render", handler);
 }
 
