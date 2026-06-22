@@ -15,7 +15,6 @@ export interface IDecafRouter {
    * are extracted.
    *
    * @param {string | string[]} [params] - The parameter name(s) to extract from the route
-   * @return {Record<string, any>[]} An array of key-value objects representing the extracted parameters
    *
    * @memberOf module:ui-decorators/ui/interfaces
    */
