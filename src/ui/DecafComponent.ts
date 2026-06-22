@@ -1,5 +1,10 @@
 import { LoggedClass } from "@decaf-ts/logging";
-import { CrudOperationKeys, UIEventProperty, UIFunctionLike } from "./types";
+import {
+  CrudOperationKeys,
+  UIEventHandler,
+  UIEventProperty,
+  UIFunctionLike,
+} from "./types";
 import { Model } from "@decaf-ts/decorator-validation";
 import { IRepository, OperationKeys } from "@decaf-ts/db-decorators";
 import { DecafEventHandler } from "./DecafEventHandler";
@@ -394,7 +399,7 @@ export abstract class DecafComponent<M extends Model> extends LoggedClass {
       const name = key as string;
       const evt = (fn as UIFunctionLike)();
       if (isClassConstructor<T>(evt)) {
-        const fn = new evt()[key as keyof T] as UIFunctionLike;
+        const fn = new evt()[key as keyof T] as UIEventHandler;
         if (fn) {
           result[name] = fn;
           instance.events[name] = fn;

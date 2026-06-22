@@ -8,6 +8,8 @@ import {
 } from "./constants";
 import {
   CrudOperationKeys,
+  DecafSpinnerOptions,
+  DecafToastOptions,
   FieldDefinition,
   FieldProperties,
   UIClassMetadata,
@@ -16,10 +18,10 @@ import {
   UIListPropMetadata,
   UIModelMetadata,
   UIPropMetadata,
+  IPagedComponentProperties,
 } from "./types";
 import { RenderingError } from "./errors";
 import { formatByType, generateUIModelID } from "./utils";
-import { IPagedComponentProperties } from "./interfaces";
 import { Constructor, Metadata } from "@decaf-ts/decoration";
 import {
   Model,
@@ -29,6 +31,12 @@ import {
   ValidationKeys,
   ValidationMetadata,
 } from "@decaf-ts/decorator-validation";
+import { IDecafModal } from "./interfaces/IDecafModal";
+import { DecafComponent } from "./DecafComponent";
+
+import { IDecafSpinner } from "./interfaces/IDecafSpinner";
+import { IDecafRouter } from "./interfaces/IDecafRouter";
+import { IDecafToast } from "./interfaces/IDecafToast";
 
 /**
  * @description Abstract class for rendering UI components based on model metadata.
@@ -79,6 +87,17 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
     RenderingEngine.register(this);
     console.log(`decaf's ${flavour} rendering engine loaded`);
   }
+
+  abstract getModal<C extends DecafComponent<Model>>(
+    component: Partial<C>,
+    ...args: any[]
+  ): Promise<IDecafModal>;
+
+  abstract getToast(options: DecafToastOptions): Promise<IDecafToast>;
+
+  abstract getSpinner(options: DecafSpinnerOptions): Promise<IDecafSpinner>;
+
+  abstract router(): IDecafRouter;
 
   /**
    * @description Initializes the rendering engine.

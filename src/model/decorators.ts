@@ -4,9 +4,9 @@ import {
   UIListModelMetadata,
   UIModelMetadata,
   UILayoutMetadata,
+  IPagedComponentProperties,
 } from "../ui/types";
 import { UIMediaBreakPoints } from "../ui/constants";
-import { IPagedComponentProperties } from "../ui/interfaces";
 import { apply, Metadata, metadata } from "@decaf-ts/decoration";
 
 /**

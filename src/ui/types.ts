@@ -10,6 +10,10 @@
 import { OperationKeys } from "@decaf-ts/db-decorators";
 import { ElementSizes, UIKeys, UIMediaBreakPoints } from "./constants";
 import { DecafEventHandler } from "./DecafEventHandler";
+import { DecafComponent } from "./DecafComponent";
+import { Model } from "@decaf-ts/decorator-validation";
+import { RenderingEngine } from "./Rendering";
+import { CrudOperations } from "@decaf-ts/db-decorators";
 
 /**
  * @description Interface for defining a UI field or component
@@ -198,6 +202,12 @@ export type UIListItemPosition = "title" | "description" | "info" | "subinfo";
 
 export type UIFunctionLike = (...args: any[]) => any | Promise<any>;
 
+export type UIEventHandler = (
+  instance: DecafComponent<Model>,
+  renderEngine: RenderingEngine,
+  ...args: any[]
+) => any | Promise<any>;
+
 export type UIEventName = keyof Pick<
   DecafEventHandler,
   "render" | "initialize" | "handleClick" | "refresh"
@@ -220,8 +230,105 @@ export type UILayoutPropMetadata = {
   };
 };
 
+/**
+ * @description Dismissal role returned by toast actions.
+ * @summary Represents the role reported when a toast is closed, including the
+ * default cancel role, custom roles, or an undefined result when no role is set.
+ *
+ * @typedef {('cancel' | string | undefined)} DecafToastRole
+ * @memberOf module:ui-decorators
+ */
+export type DecafToastRole = "cancel" | string | undefined;
+
 export type UIMediaBreakPointsType =
   | UIMediaBreakPoints.SMALL
   | UIMediaBreakPoints.MEDIUM
   | UIMediaBreakPoints.LARGE
   | UIMediaBreakPoints.XLARGE;
+
+export type DecafSpinnerOptions = {
+  cssClass?: string;
+  duration?: number;
+  message?: string;
+  [key: string]: any;
+};
+
+export interface DecafModalOptions<T extends DecafComponent<Model>> {
+  component: T;
+  componentProps?: Partial<keyof DecafComponent<Model>> &
+    Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+export type DecafToastOptions = {
+  message: string;
+  duration: 3000;
+  position: "top" | "bottom" | "middle";
+  color?: string;
+  [key: string]: any;
+};
+
+/**
+ * @description Interfaces for UI form components
+ * @summary Defines interfaces for form fields with CRUD operations
+ * This module contains interfaces that extend basic field properties with
+ * CRUD operation information for form generation.
+ * @module ui/interfaces
+ * @memberOf module:ui-decorators
+ */
+
+/**
+ * @description Form field interface with CRUD operation information
+ * @summary Extends basic field properties with a specific CRUD operation
+ * This interface represents a form field that is associated with a specific
+ * CRUD operation (Create, Read, Update, Delete). It combines all the standard
+ * field properties with an operation property.
+ *
+ * @interface CrudFormField
+ * @extends FieldProperties
+ * @memberOf module:ui-decorators
+ *
+ * @property {CrudOperations} operation - The CRUD operation associated with this field
+ */
+export interface CrudFormField extends FieldProperties {
+  /**
+   * @description The CRUD operation associated with this field
+   * @summary Specifies which operation (Create, Read, Update, Delete) this field is for
+   */
+  operation: CrudOperations;
+}
+
+/**
+ * @description Interface for defining a page/step in a multi-step form or wizard
+ * @summary Provides metadata for individual pages in stepped model forms
+ * This interface represents a single page or step in a multi-step form workflow.
+ * It allows defining optional title and description metadata for each page,
+ * which can be used to display step indicators, progress bars, or navigation labels.
+ * Used in conjunction with the @uisteppedmodel decorator.
+ *
+ * @interface IPagedComponentProperties
+ * @memberOf module:ui-decorators
+ *
+ * @property {string} [title] - Optional title for the page/step (e.g., "Personal Information")
+ * @property {string} [description] - Optional description providing additional context for the page
+ *
+ * @example
+ * // Define pages for a multi-step wizard
+ * const wizardPages: IPagedComponentProperties[] = [
+ *   { title: 'Personal Info', description: 'Enter your basic details' },
+ *   { title: 'Contact', description: 'Provide your contact information' },
+ *   { title: 'Review', description: 'Review and confirm your information' }
+ * ];
+ *
+ * @uisteppedmodel('div', wizardPages, true)
+ * class RegistrationWizard extends Model {
+ *   // Properties with @uipageprop decorators
+ * }
+ */
+export interface IPagedComponentProperties {
+  title?: string;
+  description?: string;
+  pages?: number | IPagedComponentProperties[];
+  rows?: number | string[];
+  cols?: number | string[];
+}
