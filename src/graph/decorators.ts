@@ -99,9 +99,9 @@ export function port(
 }
 
 export function input(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
-  return port(PortDirection.INPUT, graph);
+  return port(PortDirection.INPUT, { ...graph, schema: true });
 }
 
 export function output(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
-  return port(PortDirection.OUTPUT, graph);
+  return port(PortDirection.OUTPUT, { ...graph, schema: true });
 }

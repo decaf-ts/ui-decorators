@@ -35,6 +35,11 @@ export type GraphNodeMetadata = {
   width?: number;
   connectionRules?: GraphConnectionRule;
   metadata?: Record<string, unknown>;
+  /**
+   * Per-group rendering choice for Schema-typed `@input` / `@output` properties
+   * (the one-vs-all toggle). See {@link GraphPortGroupMetadata}.
+   */
+  portGroups?: GraphPortGroupMetadata[];
 };
 
 export type GraphWorkflowNodeMetadata = {
@@ -69,6 +74,42 @@ export type GraphPortMetadata = {
   handle?: string;
   expand?: boolean;
   metadata?: Record<string, unknown>;
+  /**
+   * Marks this port as a "Schema port" declared via `@input` / `@output`.
+   *
+   * When `true` AND the property type is a Decaf `Model` (a "Schema"), the
+   * reader flattens the Schema's own `@input` / `@output` properties into the
+   * parent node's port list (unprefixed — no `<schemaProp>.` prefix), instead
+   * of producing a composite port with prefixed children. A `@input` Schema
+   * contributes only the Schema's `@input` properties; a `@output` Schema
+   * contributes only the Schema's `@output` properties. The carrier property
+   * itself (e.g. `inputSchema`) is not emitted as a port — it is the group
+   * carrier.
+   *
+   * Set automatically by `@input` / `@output`; NOT set by `@port`, so
+   * `@port`-decorated Schema-typed properties keep the legacy composite
+   * expansion (prefixed children).
+   */
+  schema?: boolean;
+};
+
+/**
+ * Metadata for a Schema port group — the one-vs-all rendering choice for a
+ * `@input` / `@output` Schema-typed property.
+ *
+ * `toggle: "all"` (default) renders each Schema property as its own connectable
+ * port on the canvas. `toggle: "single"` renders one grouped port that receives
+ * the whole object and maps it to the right place. The per-instance
+ * manual-fill (hide a port because its value is supplied via the CRUD field)
+ * is NOT carried here — that is the editor's port-toggle state in `node.data`.
+ */
+export type GraphPortGroupMetadata = {
+  /** The Schema-typed `@input` / `@output` property name that owns this group. */
+  property: string;
+  /** Render choice for this group. Defaults to `"all"`. */
+  toggle?: "single" | "all";
+  /** Optional label for the grouped port when `toggle === "single"`. */
+  label?: string;
 };
 
 export type GraphPortDefinition = {
@@ -108,6 +149,13 @@ export type GraphNodeDefinition = {
   ui?: Record<string, any>;
   graph?: GraphNodeMetadata;
   ports: GraphPortDefinition[];
+  /**
+   * Per-group rendering choice for Schema-typed `@input` / `@output` properties
+   * (the one-vs-all toggle). Derived from {@link GraphNodeMetadata.portGroups};
+   * every Schema-typed `@input` / `@output` property not listed defaults to
+   * `toggle: "all"`.
+   */
+  portGroups?: GraphPortGroupMetadata[];
 };
 
 export type GraphWorkflowDefinition = GraphNodeDefinition & {

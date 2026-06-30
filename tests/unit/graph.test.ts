@@ -5,6 +5,7 @@ import { RenderingEngine as UiRenderingEngine, uielement } from "../../src";
 import {
   graph,
   graphLeafPortsOf,
+  graphPortsOf,
   graphWorkflowSnapshotFromJSON,
   graphWorkflowSnapshotInputValuesOf,
   graphWorkflowSnapshotOf,
@@ -12,7 +13,9 @@ import {
   graphWorkflowSnapshotRestore,
   graphWorkflowSnapshotToJSON,
   graphWorkflowDefinitionOf,
+  input,
   node,
+  output,
   port,
   graphDefinitionOf,
   graphPortDefinitionOf,
@@ -117,6 +120,56 @@ class GraphCompanyModel extends Model {
   @uielement("input", { label: "Address" })
   @port(PortDirection.INPUT)
   address!: GraphAddressModel;
+}
+
+// --- Schema-flattening (@input / @output on a Schema-typed property) ---------
+
+@model()
+class IfInputSchema extends Model {
+  @uielement("input", { label: "Input" })
+  @input()
+  input!: unknown;
+}
+
+@model()
+class IfOutputSchema extends Model {
+  @uielement("input", { label: "Then" })
+  @output({ metadata: { branch: "then" } })
+  then!: unknown;
+
+  @uielement("input", { label: "Otherwise" })
+  @output({ metadata: { branch: "else" } })
+  otherwise!: unknown;
+}
+
+@node("core.flow.if", {
+  kind: "core.flow.if",
+  category: "Flow Control",
+  icon: "split",
+  portGroups: [
+    { property: "inputSchema", toggle: "all" },
+    { property: "outputSchema", toggle: "single", label: "Branches" },
+  ],
+})
+@model()
+class IfNode extends Model {
+  @input()
+  inputSchema!: IfInputSchema;
+
+  @output()
+  outputSchema!: IfOutputSchema;
+}
+
+// A Schema-typed @input / @output with NO declared portGroups — defaults to
+// toggle: "all" for every group.
+@node("core.flow.code", { kind: "core.flow.code", category: "Code", icon: "code" })
+@model()
+class CodeNode extends Model {
+  @input()
+  inputSchema!: IfInputSchema;
+
+  @output()
+  outputSchema!: IfInputSchema;
 }
 
 class GraphRenderer extends UiRenderingEngine<void, unknown> {
@@ -537,5 +590,92 @@ describe("ui-decorators graph layer", () => {
       ])
     );
     expect(restored.definition).toMatchObject(snapshot.definition);
+  });
+
+  describe("schema-flattening @input / @output", () => {
+    it("flattens a Schema-typed @input / @output into unprefixed ports", () => {
+      const ports = graphPortsOf(IfNode);
+      const properties = ports.map((p) => p.property);
+
+      // The carrier properties (inputSchema / outputSchema) are NOT ports.
+      expect(properties).not.toContain("inputSchema");
+      expect(properties).not.toContain("outputSchema");
+
+      // The Schema's matching-direction properties ARE ports, unprefixed.
+      expect(properties).toEqual(["input", "then", "otherwise"]);
+
+      const inputPort = ports.find((p) => p.property === "input");
+      expect(inputPort).toMatchObject({
+        property: "input",
+        path: "input",
+        direction: PortDirection.INPUT,
+        label: "Input",
+      });
+
+      const thenPort = ports.find((p) => p.property === "then");
+      expect(thenPort).toMatchObject({
+        property: "then",
+        path: "then",
+        direction: PortDirection.OUTPUT,
+        label: "Then",
+        graph: { direction: PortDirection.OUTPUT, schema: true, metadata: { branch: "then" } },
+      });
+
+      const otherwisePort = ports.find((p) => p.property === "otherwise");
+      expect(otherwisePort).toMatchObject({
+        property: "otherwise",
+        direction: PortDirection.OUTPUT,
+        graph: { metadata: { branch: "else" } },
+      });
+    });
+
+    it("returns undefined for the Schema group carrier from the singular reader", () => {
+      expect(graphPortDefinitionOf(IfNode, "inputSchema")).toBeUndefined();
+      expect(graphPortDefinitionOf(IfNode, "outputSchema")).toBeUndefined();
+    });
+
+    it("exposes the one-vs-all portGroups on the node definition", () => {
+      const def = graphDefinitionOf(IfNode);
+      expect(def.portGroups).toEqual([
+        { property: "inputSchema", toggle: "all" },
+        { property: "outputSchema", toggle: "single", label: "Branches" },
+      ]);
+    });
+
+    it("defaults unlisted Schema groups to toggle: 'all'", () => {
+      const def = graphDefinitionOf(CodeNode);
+      expect(def.portGroups).toEqual([
+        { property: "inputSchema", toggle: "all" },
+        { property: "outputSchema", toggle: "all" },
+      ]);
+    });
+
+    it("keeps @port (non-schema) Schema-typed properties as composite (legacy)", () => {
+      // GraphCompanyModel.address uses @port, not @input — must stay composite.
+      const addressPort = graphPortDefinitionOf(GraphCompanyModel, "address");
+      expect(addressPort?.composite).toBe(true);
+      expect(addressPort?.children?.map((c) => c.path)).toEqual([
+        "address.street",
+        "address.city",
+      ]);
+    });
+
+    it("does not flatten a primitive @input / @output property", () => {
+      // A primitive @input is a normal leaf port; `schema: true` is a no-op.
+      @node("prim-node", { kind: "prim", category: "AI" })
+      @model()
+      class PrimNode extends Model {
+        @uielement("input", { label: "Value" })
+        @input()
+        value!: string;
+      }
+      const ports = graphPortsOf(PrimNode);
+      expect(ports.map((p) => p.property)).toEqual(["value"]);
+      expect(ports[0]).toMatchObject({
+        property: "value",
+        direction: PortDirection.INPUT,
+        label: "Value",
+      });
+    });
   });
 });

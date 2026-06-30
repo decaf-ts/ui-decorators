@@ -9,6 +9,7 @@ import type {
   GraphNodeDefinition,
   GraphNodeMetadata,
   GraphPortDefinition,
+  GraphPortGroupMetadata,
   GraphPortMetadata,
   GraphWorkflowDefinition,
   GraphWorkflowMetadata,
@@ -116,6 +117,37 @@ export function graphPortDefinitionOf<M extends Model>(
   return graphPortDefinitionOfInternal(resolveModel(model), String(property));
 }
 
+/**
+ * Returns the flattened ports of a Schema-typed `@input` / `@output` property
+ * (a "Schema port group"). The Schema's own `@input` / `@output` properties
+ * whose direction matches `direction` are spliced into the result UNPREFIXED
+ * (no `<schemaProp>.` prefix). The carrier property itself is not a port.
+ *
+ * Returns `undefined` when the property is not a Schema group (not
+ * `graph.schema`, or not Schema-typed), so the caller falls back to the legacy
+ * single-port / composite expansion path.
+ */
+function schemaGroupPorts(
+  resolved: Constructor<Model>,
+  propertyKey: string,
+  direction: PortDirection,
+  visited: Set<Constructor<Model>> = new Set()
+): GraphPortDefinition[] | undefined {
+  const graph = graphPortMetadataOf(resolved, propertyKey);
+  if (!graph?.schema) return undefined;
+  const validation = (Metadata as any).validationFor(resolved, propertyKey) as
+    | Record<string, any>
+    | undefined;
+  const nestedModel = resolveNestedModelConstructor(resolved, propertyKey, validation);
+  if (!nestedModel) return undefined;
+  if (visited.has(nestedModel)) return []; // cycle guard — stop recursing
+  const nextVisited = new Set(visited);
+  nextVisited.add(resolved);
+  nextVisited.add(nestedModel);
+  const childPorts = graphPortsOfInternal(nestedModel, nextVisited);
+  return childPorts.filter((child) => child.direction === direction);
+}
+
 function graphPortDefinitionOfInternal(
   resolved: Constructor<Model>,
   propertyKey: string,
@@ -124,6 +156,16 @@ function graphPortDefinitionOfInternal(
   const graph = graphPortMetadataOf(resolved, propertyKey);
   if (!graph) return undefined;
 
+  // Schema port group (@input / @output on a Schema-typed property): the
+  // carrier is not a port — its Schema's matching-direction ports are spliced
+  // into the parent by graphPortsOfInternal. The singular reader returns
+  // undefined for the carrier.
+  const validation = (Metadata as any).validationFor(resolved, propertyKey) as
+    | Record<string, any>
+    | undefined;
+  const nestedModel = resolveNestedModelConstructor(resolved, propertyKey, validation);
+  if (graph.schema && nestedModel) return undefined;
+
   const element = ((Model as any).uiElementOf(resolved, propertyKey) ||
     undefined) as Record<string, any> | undefined;
   const uiProp = (Model as any).uiDecorationOf(
@@ -131,9 +173,6 @@ function graphPortDefinitionOfInternal(
     propertyKey,
     UIKeys.PROP
   ) as Record<string, any> | undefined;
-  const validation = (Metadata as any).validationFor(resolved, propertyKey) as
-    | Record<string, any>
-    | undefined;
   const designType = Metadata.type(resolved, propertyKey);
   const typeName = asString(
     validation?.[ValidationKeys.TYPE]?.customTypes?.[0]?.name ??
@@ -141,7 +180,6 @@ function graphPortDefinitionOfInternal(
       uiProp?.type ??
       designType?.name
   );
-  const nestedModel = resolveNestedModelConstructor(resolved, propertyKey, validation);
   const shouldExpand = !!graph.expand || (!!nestedModel && !visited.has(nestedModel));
   const children =
     shouldExpand && nestedModel
@@ -187,9 +225,23 @@ function graphPortsOfInternal(
   visited: Set<Constructor<Model>> = new Set()
 ): GraphPortDefinition[] {
   const properties = Metadata.properties(resolved) || [];
-  return properties
-    .map((property) => graphPortDefinitionOfInternal(resolved, String(property), visited))
-    .filter((property): property is GraphPortDefinition => !!property);
+  const result: GraphPortDefinition[] = [];
+  for (const property of properties) {
+    const key = String(property);
+    const graph = graphPortMetadataOf(resolved, key);
+    // Schema port group: splice the Schema's matching-direction ports
+    // (unprefixed) instead of emitting the carrier.
+    if (graph?.schema) {
+      const groupPorts = schemaGroupPorts(resolved, key, graph.direction, visited);
+      if (groupPorts) {
+        result.push(...groupPorts);
+        continue;
+      }
+    }
+    const port = graphPortDefinitionOfInternal(resolved, key, visited);
+    if (port) result.push(port);
+  }
+  return result;
 }
 
 export function graphLeafPortsOf(ports: GraphPortDefinition[]): GraphPortDefinition[] {
@@ -218,6 +270,7 @@ export function graphDefinitionOf<M extends Model>(
   const graph = graphNodeMetadataOf(resolved) || {};
   const tag = ui?.tag || resolved.name;
   const ports = graphPortsOf(resolved);
+  const portGroups = resolvePortGroups(resolved, graph);
 
   return {
     name: resolved.name,
@@ -236,7 +289,47 @@ export function graphDefinitionOf<M extends Model>(
     ui,
     graph,
     ports,
+    portGroups,
   };
+}
+
+/**
+ * Builds the effective `portGroups` list for a node: starts from the declared
+ * `GraphNodeMetadata.portGroups` and ensures every Schema-typed `@input` /
+ * `@output` property not explicitly listed gets a default
+ * `{ property, toggle: "all" }` entry. Non-Schema-typed `@input` / `@output`
+ * properties are not groups and are ignored.
+ */
+function resolvePortGroups(
+  resolved: Constructor<Model>,
+  graph: GraphNodeMetadata
+): GraphPortGroupMetadata[] | undefined {
+  const declared = graph.portGroups || [];
+  const declaredByProperty = new Map(declared.map((g) => [g.property, g]));
+  const groups: GraphPortGroupMetadata[] = [];
+  const properties = Metadata.properties(resolved) || [];
+  for (const property of properties) {
+    const key = String(property);
+    const portMeta = graphPortMetadataOf(resolved, key);
+    if (!portMeta?.schema) continue;
+    const validation = (Metadata as any).validationFor(resolved, key) as
+      | Record<string, any>
+      | undefined;
+    const nestedModel = resolveNestedModelConstructor(resolved, key, validation);
+    if (!nestedModel) continue; // not Schema-typed — not a group
+    const declaredGroup = declaredByProperty.get(key);
+    groups.push(
+      declaredGroup
+        ? { ...declaredGroup, toggle: declaredGroup.toggle ?? "all" }
+        : { property: key, toggle: "all" as const }
+    );
+  }
+  // also keep declared groups that don't correspond to a Schema property
+  // (defensive — lets callers carry labels for future groups)
+  for (const g of declared) {
+    if (!groups.some((x) => x.property === g.property)) groups.push(g);
+  }
+  return groups.length ? groups : undefined;
 }
 
 export function graphWorkflowDefinitionOf<M extends Model>(
