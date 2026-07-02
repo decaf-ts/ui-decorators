@@ -105,3 +105,67 @@ export function input(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
 export function output(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
   return port(PortDirection.OUTPUT, { ...graph, schema: true });
 }
+
+/**
+ * Options for the `@pinnable()` decorator.
+ */
+export interface GraphPinnableOptions {
+  enabled?: boolean;
+  ttlMs?: number;
+  strategy?: "manual" | "automatic" | "disabled";
+  includeDependencies?: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Pinning metadata stored on a node via `@pinnable()`.
+ */
+export interface GraphPinningMetadata {
+  enabled: boolean;
+  ttlMs?: number;
+  strategy: "manual" | "automatic" | "disabled";
+  includeDependencies: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Class decorator that marks a graph node as pinnable.
+ *
+ * The metadata is stored in the node's `graph.metadata.pinnable` field so the
+ * Angular renderer and the core pinning policy can read it.
+ *
+ * Usage:
+ * ```ts
+ * @node("ai.expensiveCompletion", { kind: "ai.expensiveCompletion" })
+ * @pinnable({ strategy: "manual", includeDependencies: true })
+ * export class ExpensiveCompletionNode extends Model { ... }
+ * ```
+ */
+export function pinnable(options: GraphPinnableOptions = {}) {
+  function pinnable(target: object) {
+    const existingMeta = Metadata.get(
+      target as any,
+      GraphKeys.NODE
+    ) as GraphNodeMetadata | undefined;
+    const meta: GraphNodeMetadata = existingMeta ?? {};
+    meta.metadata = {
+      ...(meta.metadata ?? {}),
+      pinnable: {
+        enabled: options.enabled ?? true,
+        ttlMs: options.ttlMs,
+        strategy: options.strategy ?? "manual",
+        includeDependencies: options.includeDependencies ?? true,
+        metadata: options.metadata,
+      } as GraphPinningMetadata,
+    };
+    Metadata.set(target as any, GraphKeys.NODE, meta);
+    return target;
+  }
+
+  return Decoration.for("graph.pinnable")
+    .define({
+      decorator: pinnable as any,
+      args: [options],
+    })
+    .apply();
+}
