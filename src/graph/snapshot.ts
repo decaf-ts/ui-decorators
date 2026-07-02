@@ -34,6 +34,7 @@ export type GraphWorkflowSnapshotSize = {
 export type GraphWorkflowSnapshotPortState = {
   expanded?: boolean;
   value?: unknown;
+  mode?: "port" | "value";
   metadata?: Record<string, unknown>;
 };
 
