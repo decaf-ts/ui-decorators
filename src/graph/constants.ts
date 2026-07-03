@@ -8,6 +8,7 @@ export enum GraphKeys {
 export enum PortDirection {
   INPUT = "input",
   OUTPUT = "output",
+  CONNECTION = "connection",
 }
 
 export type GraphNodeKind = string;
@@ -63,6 +64,7 @@ export type GraphWorkflowRelationMetadata = {
 export type GraphWorkflowMetadata = GraphNodeMetadata & {
   inputs?: GraphPortDefinition[];
   outputs?: GraphPortDefinition[];
+  connections?: GraphPortDefinition[];
   nodes?: GraphWorkflowNodeMetadata[];
   relations?: GraphWorkflowRelationMetadata[];
 };
@@ -74,6 +76,13 @@ export type GraphPortMetadata = {
   handle?: string;
   expand?: boolean;
   metadata?: Record<string, unknown>;
+  /**
+   * Optional category for `@connection()` ports (e.g. `"model"`, `"memory"`,
+   * `"workspace"`). Connections of the same category share a color and icon
+   * defined by the {@link GRAPH_CATEGORY_STYLE_REGISTRY}. When omitted, the
+   * port inherits the node's color.
+   */
+  category?: string;
   /**
    * Marks this port as a "Schema port" declared via `@input` / `@output`.
    *
@@ -150,6 +159,16 @@ export type GraphNodeDefinition = {
   graph?: GraphNodeMetadata;
   ports: GraphPortDefinition[];
   /**
+   * Effective color resolved from the category registry (or the node's
+   * explicit `color` override). Computed by `graphDefinitionOf`.
+   */
+  effectiveColor?: string;
+  /**
+   * Effective icon resolved from the category registry (or the node's
+   * explicit `icon` override). Computed by `graphDefinitionOf`.
+   */
+  effectiveIcon?: string;
+  /**
    * Per-group rendering choice for Schema-typed `@input` / `@output` properties
    * (the one-vs-all toggle). Derived from {@link GraphNodeMetadata.portGroups};
    * every Schema-typed `@input` / `@output` property not listed defaults to
@@ -161,7 +180,83 @@ export type GraphNodeDefinition = {
 export type GraphWorkflowDefinition = GraphNodeDefinition & {
   inputs: GraphPortDefinition[];
   outputs: GraphPortDefinition[];
+  connections: GraphPortDefinition[];
   nodes: GraphWorkflowNodeMetadata[];
   relations: GraphWorkflowRelationMetadata[];
   workflow: GraphWorkflowMetadata;
 };
+
+/**
+ * Style (color + icon) assigned to a node or connection category. Nodes and
+ * connections without an explicit `color` / `icon` inherit from their
+ * category's style.
+ */
+export interface GraphCategoryStyle {
+  color: string;
+  icon?: string;
+}
+
+/**
+ * Registry mapping category names to their default style (color + icon).
+ * Consumers register categories via {@link registerGraphCategoryStyle}.
+ *
+ * The engine and renderer resolve the "effective" color/icon for a node by
+ * checking the node's explicit `color` / `icon` first, then falling back to
+ * the category's style, then a default.
+ */
+const GRAPH_CATEGORY_STYLE_REGISTRY: Record<string, GraphCategoryStyle> = {};
+
+/**
+ * Default fallback style when no category is registered and no explicit
+ * color/icon is set on the node.
+ */
+export const GRAPH_DEFAULT_CATEGORY_STYLE: GraphCategoryStyle = {
+  color: "#64748b",
+  icon: "ti-pointer",
+};
+
+/**
+ * Registers a category style (color + optional icon) in the global registry.
+ * Call this at module init time (e.g. in the engine's node declarations) to
+ * define the visual style for a category of nodes or connections.
+ */
+export function registerGraphCategoryStyle(
+  category: string,
+  style: GraphCategoryStyle
+): void {
+  GRAPH_CATEGORY_STYLE_REGISTRY[category] = style;
+}
+
+/**
+ * Returns the style registered for `category`, or the default fallback style.
+ */
+export function graphCategoryStyleOf(category?: string): GraphCategoryStyle {
+  if (category && GRAPH_CATEGORY_STYLE_REGISTRY[category]) {
+    return GRAPH_CATEGORY_STYLE_REGISTRY[category];
+  }
+  return GRAPH_DEFAULT_CATEGORY_STYLE;
+}
+
+/**
+ * Resolves the effective color for a node: explicit `color` overrides the
+ * category color, which overrides the default.
+ */
+export function resolveEffectiveColor(
+  explicitColor?: string,
+  category?: string
+): string {
+  if (explicitColor) return explicitColor;
+  return graphCategoryStyleOf(category).color;
+}
+
+/**
+ * Resolves the effective icon for a node: explicit `icon` overrides the
+ * category icon, which overrides the default.
+ */
+export function resolveEffectiveIcon(
+  explicitIcon?: string,
+  category?: string
+): string {
+  if (explicitIcon) return explicitIcon;
+  return graphCategoryStyleOf(category).icon ?? GRAPH_DEFAULT_CATEGORY_STYLE.icon!;
+}

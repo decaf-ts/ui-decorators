@@ -15,6 +15,7 @@ import type {
   GraphWorkflowMetadata,
 } from "./constants";
 import { PortDirection } from "./constants";
+import { resolveEffectiveColor, resolveEffectiveIcon } from "./constants";
 import "../model/overrides";
 
 type GraphModelLike<M extends Model = Model> = Constructor<M> | M;
@@ -278,9 +279,11 @@ export function graphDefinitionOf<M extends Model>(
     kind: graph.kind || tag,
     category: graph.category,
     color: graph.color,
+    effectiveColor: resolveEffectiveColor(graph.color, graph.category),
     group: graph.group,
     height: graph.height,
     icon: graph.icon,
+    effectiveIcon: resolveEffectiveIcon(graph.icon, graph.category),
     labels: graph.labels || [],
     maxChildren: graph.maxChildren,
     minWidth: graph.minWidth,
@@ -344,21 +347,27 @@ export function graphWorkflowDefinitionOf<M extends Model>(
   const outputs =
     workflow.outputs ||
     node.ports.filter((port) => port.direction === PortDirection.OUTPUT);
+  const connections =
+    workflow.connections ||
+    node.ports.filter((port) => port.direction === PortDirection.CONNECTION);
 
   return {
     ...node,
     kind: workflow.kind || node.kind,
     category: workflow.category ?? node.category,
     color: workflow.color ?? node.color,
+    effectiveColor: resolveEffectiveColor(workflow.color ?? node.color, workflow.category ?? node.category),
     group: workflow.group ?? node.group,
     height: workflow.height ?? node.height,
     icon: workflow.icon ?? node.icon,
+    effectiveIcon: resolveEffectiveIcon(workflow.icon ?? node.icon, workflow.category ?? node.category),
     labels: workflow.labels || node.labels,
     maxChildren: workflow.maxChildren ?? node.maxChildren,
     minWidth: workflow.minWidth ?? node.minWidth,
     width: workflow.width ?? node.width,
     inputs,
     outputs,
+    connections,
     nodes: workflow.nodes || [],
     relations: workflow.relations || [],
     workflow,

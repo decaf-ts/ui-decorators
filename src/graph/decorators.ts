@@ -58,6 +58,9 @@ export function graph(
         outputs:
           graph?.outputs ||
           ports.filter((port) => port.direction === PortDirection.OUTPUT),
+        connections:
+          graph?.connections ||
+          ports.filter((port) => port.direction === PortDirection.CONNECTION),
       };
       return apply(uimodel(tag, props), metadata(GraphKeys.GRAPH, meta))(target);
     };
@@ -104,6 +107,37 @@ export function input(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
 
 export function output(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
   return port(PortDirection.OUTPUT, { ...graph, schema: true });
+}
+
+/**
+ * Declares a "connection" port on a node — a third port kind alongside
+ * `@input()` and `@output()`. Connection ports are rendered on the **bottom**
+ * side of the node (inputs are on the left, outputs on the right).
+ *
+ * Connections are typed by `category` (e.g. `"model"`, `"memory"`,
+ * `"workspace"`). The category determines the port's color via the
+ * {@link registerGraphCategoryStyle} registry.
+ *
+ * Unlike `@input` / `@output`, connection ports do NOT carry workflow data
+ * values — they represent structural dependencies (e.g. an Agent node
+ * connecting to a Model resource, a Memory store, or a Workspace). Nodes may
+ * have zero or more `@connection()` ports.
+ *
+ * Usage:
+ * ```ts
+ * @node("ai.agent", { kind: "ai.agent", category: "Agent" })
+ * @model()
+ * export class AgentNode extends Model {
+ *   @connection({ category: "model", handle: "model" })
+ *   model!: unknown;
+ *
+ *   @connection({ category: "memory", handle: "memory" })
+ *   memory!: unknown;
+ * }
+ * ```
+ */
+export function connection(graph?: Partial<Omit<GraphPortMetadata, "direction">>) {
+  return port(PortDirection.CONNECTION, graph);
 }
 
 /**
