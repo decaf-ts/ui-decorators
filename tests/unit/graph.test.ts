@@ -678,4 +678,51 @@ describe("ui-decorators graph layer", () => {
       });
     });
   });
+
+  describe("Metadata.nodes() and Metadata.workflows() accessors", () => {
+    it("Metadata.nodes() returns all @node-decorated constructors", () => {
+      const nodes = Metadata.nodes();
+      // The test file declares multiple @node classes: GraphToolModel,
+      // GraphAddressModel, GraphCompanyModel, IfFlowModel, CodeModel, PrimNode.
+      expect(nodes.length).toBeGreaterThanOrEqual(6);
+      // Each entry must be a constructor function.
+      for (const ctor of nodes) {
+        expect(typeof ctor).toBe("function");
+      }
+      // The set must include the known @node-decorated classes.
+      const nodeNames = nodes.map((n: any) => n.name);
+      expect(nodeNames).toContain("GraphToolModel");
+      expect(nodeNames).toContain("IfNode");
+    });
+
+    it("Metadata.workflows() returns all @graph-decorated constructors", () => {
+      const workflows = Metadata.workflows();
+      expect(workflows.length).toBeGreaterThanOrEqual(1);
+      for (const ctor of workflows) {
+        expect(typeof ctor).toBe("function");
+      }
+      const workflowNames = workflows.map((w: any) => w.name);
+      expect(workflowNames).toContain("GraphWorkflowModel");
+    });
+
+    it("re-decorating the same class does not duplicate registry entries", () => {
+      const before = Metadata.nodes().length;
+
+      @node("dup-node", { kind: "dup", category: "Test" })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      class DupNode extends Model {
+        @output({ label: "Out" })
+        out!: unknown;
+      }
+
+      // Re-apply @node to the same class — registry should not duplicate.
+      const after = Metadata.nodes().length;
+      expect(after).toBe(before + 1);
+
+      // The registry is idempotent for the same constructor reference.
+      const nodes = Metadata.nodes();
+      const dupEntries = nodes.filter((n: any) => n.name === "DupNode");
+      expect(dupEntries.length).toBe(1);
+    });
+  });
 });

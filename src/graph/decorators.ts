@@ -5,10 +5,12 @@ import {
   metadata,
   propMetadata,
 } from "@decaf-ts/decoration";
+import type { Constructor } from "@decaf-ts/decoration";
 import { uimodel } from "../model/decorators";
 import { GraphKeys, PortDirection } from "./constants";
 import type { GraphNodeMetadata, GraphPortMetadata, GraphWorkflowMetadata } from "./constants";
 import { graphPortsOf } from "./reader";
+import { registerNode, registerWorkflow } from "./registry";
 
 export function node(
   tag?: string,
@@ -25,7 +27,9 @@ export function node(
       ...graph,
     };
     return function innerNode(target: object) {
-      return apply(uimodel(tag, props), metadata(GraphKeys.NODE, meta))(target);
+      const result = apply(uimodel(tag, props), metadata(GraphKeys.NODE, meta))(target);
+      registerNode(target as Constructor);
+      return result;
     };
   }
 
@@ -62,7 +66,9 @@ export function graph(
           graph?.connections ||
           ports.filter((port) => port.direction === PortDirection.CONNECTION),
       };
-      return apply(uimodel(tag, props), metadata(GraphKeys.GRAPH, meta))(target);
+      const result = apply(uimodel(tag, props), metadata(GraphKeys.GRAPH, meta))(target);
+      registerWorkflow(target as Constructor);
+      return result;
     };
   }
 

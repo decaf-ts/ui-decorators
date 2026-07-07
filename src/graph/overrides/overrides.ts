@@ -1,7 +1,9 @@
 import "./Rendering";
+import { Metadata } from "@decaf-ts/decoration";
 import { type FieldDefinition, RenderingEngine } from "../../ui/index";
 import { Model } from "@decaf-ts/decorator-validation";
 import { graphDefinitionOf } from "../reader";
+import { graphNodes, graphWorkflows } from "../registry";
 
 (RenderingEngine.prototype as any).renderAsNode = function renderAsNode<
   M extends Model,
@@ -12,3 +14,11 @@ import { graphDefinitionOf } from "../reader";
   void args;
   return graphDefinitionOf(model) as unknown as R;
 };
+
+(Metadata as any).nodes = function nodes(): any[] {
+  return graphNodes();
+}.bind(Metadata);
+
+(Metadata as any).workflows = function workflows(): any[] {
+  return graphWorkflows();
+}.bind(Metadata);
