@@ -1,6 +1,6 @@
 {
   "name": "@decaf-ts/ui-decorators",
-  "version": "0.17.6",
+  "version": "0.17.7",
   "description": "Extension of decorator validation to ui elements to allow for web integration",
   "type": "module",
   "exports": {
@@ -18,7 +18,7 @@
     "./graph": {
       "import": {
         "types": "./lib/types/graph/index.d.mts",
-        "default": "./lib/esm/graph/index.js" 
+        "default": "./lib/esm/graph/index.js"
       },
       "require": {
         "types": "./lib/types/graph/index.d.cts",
