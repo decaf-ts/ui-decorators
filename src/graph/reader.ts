@@ -52,6 +52,16 @@ function resolveNestedModelConstructor(
   property: string,
   validation?: Record<string, any>
 ): Constructor<Model> | undefined {
+  // 1. Explicit `model` option on @input({ model: SomeSchema }) — survives
+  //    bundler tree-shaking because the class is referenced in the decorator
+  //    call, not just in TypeScript's __metadata("design:type", ...).
+  const graph = graphPortMetadataOf(model, property);
+  if (graph?.model && typeof graph.model === "function" && Model.isModel(graph.model as never)) {
+    return graph.model as Constructor<Model>;
+  }
+
+  // 2. TypeScript design:type metadata (fragile — bundlers may replace with
+  //    Object when the class is tree-shaken).
   const directType = Metadata.type(model, property);
   if (typeof directType === "function" && Model.isModel(directType)) {
     return directType as Constructor<Model>;

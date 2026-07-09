@@ -100,6 +100,15 @@ export type GraphPortMetadata = {
    * expansion (prefixed children).
    */
   schema?: boolean;
+  /**
+   * Explicit reference to the nested `Model` constructor for Schema port
+   * groups. When provided, the reader uses this directly instead of relying
+   * on TypeScript's `design:type` metadata (which bundlers like esbuild may
+   * tree-shake, replacing the class reference with `Object`).
+   *
+   * Set via `@input({ model: SomeSchema })` / `@output({ model: SomeSchema })`.
+   */
+  model?: unknown;
 };
 
 /**
