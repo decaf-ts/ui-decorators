@@ -492,16 +492,25 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
             }
             case UIKeys.EVENTS:
             case UIKeys.HIDDEN:
+            case UIKeys.HIDE_FOR:
+            case UIKeys.SHOW_FOR:
             case UIKeys.PAGE:
             case UIKeys.ORDER:
             case UIKeys.UILAYOUTPROP:
             case UIKeys.ELEMENT: {
               children = children || [];
               const uiProps: UIElementMetadata = dec.props as UIElementMetadata;
+              const visibilityProps =
+                dec.key === UIKeys.HIDE_FOR
+                  ? { hideFor: dec.props as string[] }
+                  : dec.key === UIKeys.SHOW_FOR
+                    ? { showFor: dec.props as string[] }
+                    : {};
               const props = Object.assign(
                 {},
                 childProps?.props,
                 uiProps.props || {},
+                visibilityProps,
                 uiProps?.props?.name
                   ? {
                       path: getPath(
@@ -567,17 +576,22 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
                 );
                 children.push(childDefinition);
               } else {
-                const child = children.find(
-                  (c) =>
-                    c.props?.name === key ||
-                    ([UIKeys.UILAYOUTPROP, UIKeys.PAGE, UIKeys.EVENTS].includes(
-                      dec.key
-                    ) &&
-                      (c.props?.childOf === key ||
-                        c.props?.childOf?.endsWith(`.${key as string}`)))
-                );
-                if (child) {
-                  if (dec.key !== UIKeys.UILAYOUTPROP) {
+              const child = children.find(
+                (c) =>
+                  c.props?.name === key ||
+                  ([UIKeys.UILAYOUTPROP, UIKeys.PAGE, UIKeys.EVENTS].includes(
+                    dec.key
+                  ) &&
+                    (c.props?.childOf === key ||
+                      c.props?.childOf?.endsWith(`.${key as string}`)))
+              );
+              if (child) {
+                  if (
+                    dec.key === UIKeys.HIDE_FOR ||
+                    dec.key === UIKeys.SHOW_FOR
+                  ) {
+                    child.props = Object.assign({}, child.props, visibilityProps);
+                  } else if (dec.key !== UIKeys.UILAYOUTPROP) {
                     child.props = Object.assign({}, child.props, {
                       [dec.key]: uiProps,
                     });
@@ -606,11 +620,41 @@ export abstract class RenderingEngine<T = void, R = FieldDefinition<T>> {
       handlers: handlers || {},
     });
 
+    const currentNamespaces = new Set(
+      [
+        ...(Array.isArray(globalProps?.namespaces)
+          ? (globalProps.namespaces as string[])
+          : []),
+        ...(typeof globalProps?.namespace === "string"
+          ? [globalProps.namespace as string]
+          : []),
+      ].filter(Boolean)
+    );
     const operation = globalProps?.operation;
     children = this.sortChildrenByOrder(children).filter((item) => {
       const hiddenOn = (item?.props?.hidden as CrudOperationKeys[]) || [];
-      if (!hiddenOn?.length) return item;
-      if (!hiddenOn.includes(operation as CrudOperationKeys)) return item;
+      if (
+        hiddenOn.length > 0 &&
+        hiddenOn.includes(operation as CrudOperationKeys)
+      ) {
+        return false;
+      }
+
+      const hideFor = (item?.props?.hideFor as string[]) || [];
+      const showFor = (item?.props?.showFor as string[]) || [];
+      if (
+        hideFor.length > 0 &&
+        [...currentNamespaces].some((namespace) => hideFor.includes(namespace))
+      ) {
+        return false;
+      }
+      if (
+        showFor.length > 0 &&
+        ![...currentNamespaces].some((namespace) => showFor.includes(namespace))
+      ) {
+        return false;
+      }
+      return true;
     });
     const result: FieldDefinition<T> = {
       tag: tag,

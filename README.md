@@ -224,7 +224,7 @@ You can control when properties are visible using the `@hideOn` and `@hidden` de
 
 ```typescript
 import { Model } from '@decaf-ts/decorator-validation';
-import { uimodel, uielement, hideOn, hidden } from '@decaf-ts/ui-decorators';
+import { uimodel, uielement, hideOn, hidden, hideFor, showFor, renderIf } from '@decaf-ts/ui-decorators';
 import { OperationKeys } from '@decaf-ts/db-decorators';
 
 @uimodel()
@@ -239,8 +239,22 @@ class User extends Model {
   @uielement('input', { type: 'text' })
   @hidden() // Completely hidden in all operations
   internalId: string;
+
+  @uielement('input', { type: 'text' })
+  @hideFor('tenant:beta') // Hide for a specific namespace
+  betaOnlyNotes: string;
+
+  @uielement('input', { type: 'text' })
+  @showFor('tenant:alpha') // Only show for a specific namespace
+  alphaOnlyNotes: string;
+
+  @uielement('input', { type: 'text' })
+  @renderIf('tenant:alpha') // Alias for showFor
+  alphaOnlyNotesCopy: string;
 }
 ```
+
+When rendering, pass the active namespace as `globalProps.namespace` or `globalProps.namespaces`. The rendering engine filters fields that use `hideFor`, `showFor`, or `renderIf` against those namespaces.
 
 ### Rendering Lists of Models
 

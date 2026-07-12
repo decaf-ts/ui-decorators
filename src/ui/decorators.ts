@@ -59,6 +59,40 @@ export function hideOn(...operations: CrudOperationKeys[]) {
 }
 
 /**
+ * @description Decorator that hides a property for specific namespaces.
+ * @summary Controls property visibility based on namespace membership.
+ */
+export function hideFor(...namespaces: string[]) {
+  return function hideFor(object: any, propertyKey?: any) {
+    return propMetadata(
+      getUIAttributeKey(propertyKey, UIKeys.HIDE_FOR),
+      namespaces
+    )(object, propertyKey);
+  };
+}
+
+/**
+ * @description Decorator that shows a property only for specific namespaces.
+ * @summary Namespace-aware counterpart to `hideFor`.
+ */
+export function showFor(...namespaces: string[]) {
+  return function showFor(object: any, propertyKey?: any) {
+    return propMetadata(
+      getUIAttributeKey(propertyKey, UIKeys.SHOW_FOR),
+      namespaces
+    )(object, propertyKey);
+  };
+}
+
+/**
+ * @description Decorator that renders a property only when the namespace matches.
+ * @summary Convenience alias for namespace-scoped visibility control.
+ */
+export function renderIf(...namespaces: string[]) {
+  return showFor(...namespaces);
+}
+
+/**
  * @description Decorator that sets the order of a UI element
  * @summary Specifies the rendering order for UI components
  * This decorator applies metadata to the property or class, indicating its order in the UI rendering sequence.

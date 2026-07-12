@@ -104,6 +104,9 @@ export const UIKeys = {
   SUB_TYPE: "subType",
 
   HIDDEN: "hidden",
+  HIDE_FOR: "hide-for",
+  SHOW_FOR: "show-for",
+  RENDER_IF: "render-if",
   FORMAT: "format",
   ORDER: "order",
   PAGE: "page",

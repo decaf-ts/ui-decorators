@@ -3,6 +3,8 @@ import {
   RenderingEngine,
   uichild,
   uielement,
+  hideFor,
+  renderIf,
   UIKeys,
   uimodel,
   uiprop,
@@ -425,5 +427,43 @@ describe("Rendering Engine", () => {
         );
       });
     });
+  });
+
+  it("hides and shows fields by namespace metadata", () => {
+    @uimodel("decaf-crud-form")
+    @model()
+    class NamespaceModel extends Model {
+      @uielement("input")
+      @hideFor("tenant:beta")
+      hiddenForBeta!: string;
+
+      @uielement("input")
+      @renderIf("tenant:alpha")
+      onlyForAlpha!: string;
+
+      constructor(arg?: ModelArg<NamespaceModel>) {
+        super(arg);
+      }
+    }
+
+    const namespaceModel = new NamespaceModel({
+      hiddenForBeta: "beta",
+      onlyForAlpha: "alpha",
+    });
+
+    const alphaDef = engine["toFieldDefinition"](namespaceModel, {
+      operation: "read",
+      namespace: "tenant:alpha",
+    });
+    expect(alphaDef.children?.map((child) => child.props?.name)).toEqual([
+      "hiddenForBeta",
+      "onlyForAlpha",
+    ]);
+
+    const betaDef = engine["toFieldDefinition"](namespaceModel, {
+      operation: "read",
+      namespaces: ["tenant:beta"],
+    });
+    expect(betaDef.children).toBeUndefined();
   });
 });
