@@ -21,7 +21,7 @@ const config = {
         filename: "test-report.html",
         openReport: true,
         expand: true,
-        pageTitle: "ui-decorators Test Report",
+        pageTitle: "@decaf-ts/ui-decorators",
         stripSkippedTest: true,
         darkTheme: true,
         enableMergeData: true,
