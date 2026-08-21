@@ -23,7 +23,7 @@ import {
   MethodOrOperation,
   Service,
 } from "@decaf-ts/core";
-import { Metadata } from "@decaf-ts/decoration";
+import { Constructor, Metadata } from "@decaf-ts/decoration";
 import { InternalError } from "@decaf-ts/db-decorators";
 import { Model } from "@decaf-ts/decorator-validation";
 import { DecafComponent } from "../ui/DecafComponent";
@@ -94,9 +94,7 @@ export abstract class UserRequestHandler<
    * @param {RenderingFacade} renderingEngine The rendering-engine surface the
    * handler drives (modal, toast, spinner and router).
    */
-  protected constructor(
-    protected readonly renderingEngine: RenderingFacade
-  ) {
+  protected constructor(protected readonly renderingEngine: RenderingFacade) {
     super();
   }
 
@@ -106,18 +104,16 @@ export abstract class UserRequestHandler<
    * decorator under `USER_REQUEST_KEY`.
    * @param {string} reference The request id/type the handler is registered
    * for.
-   * @return {import("@decaf-ts/decoration").Constructor<UserRequestHandler> | undefined}
+   * @return {.Constructor<UserRequestHandler> | undefined}
    * The registered handler constructor, or `undefined` when unknown.
    */
   static getHandler(
     reference: string
-  ): import("@decaf-ts/decoration").Constructor<UserRequestHandler> | undefined {
+  ): Constructor<UserRequestHandler> | undefined {
     return Metadata.get(
-      USER_REQUEST_KEY as unknown as import("@decaf-ts/decoration").Constructor,
+      USER_REQUEST_KEY as unknown as Constructor,
       reference
-    ) as
-      | import("@decaf-ts/decoration").Constructor<UserRequestHandler>
-      | undefined;
+    ) as Constructor<UserRequestHandler> | undefined;
   }
 
   /**
@@ -127,29 +123,12 @@ export abstract class UserRequestHandler<
    * @return {UserRequestHandlerMetadata | undefined} The recorded metadata
    * `{ reference }`, or `undefined` when the class is not decorated.
    */
-  static getMetadata(
-    target: object
-  ): UserRequestHandlerMetadata | undefined {
-    return Metadata.get(
-      target as import("@decaf-ts/decoration").Constructor,
-      USER_REQUEST_KEY
-    ) as UserRequestHandlerMetadata | undefined;
+  static getMetadata(target: object): UserRequestHandlerMetadata | undefined {
+    return Metadata.get(target as Constructor, USER_REQUEST_KEY) as
+      | UserRequestHandlerMetadata
+      | undefined;
   }
 
-  /**
-   * @description Resolves the handler class for the request, instantiates it
-   * with the given rendering-engine facade and delegates to its `handle`
-   * method. The request reference is taken from `request.type`, falling back to
-   * `request.id`. A fresh context is created for the dispatch so the call
-   * obeys the `Service` contextual-args contract.
-   * @param {UserRequest<T>} request The request to handle.
- * @param {RenderingFacade} renderingEngine The facade to instantiate the
- * handler with.
- * @return {Promise<T>} A promise resolving to the handler's result.
- * @throws {InternalError} When no handler is registered for the request
- * reference.
- * @template T The resolved payload type the handler returns.
- */
   static async handle<T = unknown>(
     request: UserRequest<T>,
     renderingEngine: RenderingFacade
@@ -157,9 +136,7 @@ export abstract class UserRequestHandler<
     const id = request.type || request.id;
     const Handler = UserRequestHandler.getHandler(id);
     if (!Handler)
-      throw new InternalError(
-        `No user request handler registered for "${id}"`
-      );
+      throw new InternalError(`No user request handler registered for "${id}"`);
     const instance = new Handler(
       renderingEngine
     ) as unknown as UserRequestHandler<T>;
@@ -167,31 +144,15 @@ export abstract class UserRequestHandler<
     return instance.handle(request, ctx);
   }
 
-  /**
-   * @description Obtains user input for the request through the rendering
-   * engine and resolves with the user's submission. Presents a modal via the
-   * engine's `getModal`, bridging the real `IDecafModal` submit (confirm) and
-   * cancel/dismiss lifecycle: a submit resolves with the submitted data, a
-   * cancel/dismiss rejects with `CancelledError`. Golden rule: obtains its
-   * `{ log, ... }` via `this.logCtx([request, ...args], this.getInput, true)`.
- * @param {UserRequest<T>} request The request whose input is being asked.
- * @param {...ContextualArgs<C>} args Rest contextual args.
- * @return {Promise<T>} A promise resolving with the submitted input.
- * @throws {CancelledError} When the request was cancelled.
- * @template T The resolved payload type the handler returns.
- * @template C The decaf context the service runs under.
- */
   protected async getInput(
     request: UserRequest<T>,
     ...args: ContextualArgs<C>
   ): Promise<T> {
-    const { log } = await this.logCtx(
-      [request, ...args],
-      this.getInput,
-      true
-    );
+    const { log } = await this.logCtx([request, ...args], this.getInput, true);
     const component = { props: { request } } as Partial<DecafComponent<Model>>;
-    log.info(`Requesting input for user request "${request.type || request.id}"`);
+    log.info(
+      `Requesting input for user request "${request.type || request.id}"`
+    );
     const modal = await this.renderingEngine.getModal(component);
     this.currentModal = modal;
     if (this.cancelled) {
@@ -205,16 +166,7 @@ export abstract class UserRequestHandler<
     return this.awaitDismissal(request, modal);
   }
 
-  /**
-   * @description Bridges the presented modal's confirm/cancel lifecycle to the
-   * pending request promise.
- * @param {UserRequest<T>} request The request being await.
- * @param {IDecafModal} modal The presented modal.
- * @return {Promise<T>} A promise resolving on confirm with the submitted
- * data or rejecting with `CancelledError` (or the thrown confirmation
- * error).
- * @template T The resolved payload type the handler returns.
- */
+
   private awaitDismissal(
     request: UserRequest<T>,
     modal: IDecafModal
@@ -251,18 +203,6 @@ export abstract class UserRequestHandler<
     });
   }
 
-  /**
-   * @description Wires mid-request cancellation: rejects the pending `handle`
-   * call with `CancelledError` and dismisses the active modal. Safe to call
-   * before the modal resolves — the flag makes the modal lookup reject
-   * instead. Golden rule: obtains its `{ log, ... }` via
-   * `this.logCtx(args, this.cancel, true)`.
- * @param {...ContextualArgs<C> | []} args Rest contextual args (may be
- * empty).
- * @return {Promise<void>} A promise resolving once the pending request is
- * rejected and the modal dismissed.
- * @template C The decaf context the service runs under.
- */
   async cancel(...args: ContextualArgs<C> | []): Promise<void> {
     const { log } = await this.logCtx(args, this.cancel, true);
     log.info("Cancelling active user request");
@@ -282,19 +222,6 @@ export abstract class UserRequestHandler<
     log.error("User request cancelled");
   }
 
-  /**
-   * @description Handles a user request. Must be async and either return the
-   * resolved value or throw (a `CancelledError` when the request is
-   * cancelled). Golden rule: obtain `{ log, ctx, ctxArgs }` via
-   * `this.logCtx([request, ...args], this.handle, true)`, log the entry and
-   * resolution at `info`, transitions at `verbose`, payload details at `debug`
-   * and failures/cancellations at `error`.
- * @param {UserRequest<T>} request The request to handle.
- * @param {...ContextualArgs<C>} args Rest contextual args.
- * @return {Promise<T>} A promise resolving with the resolved value.
- * @template T The resolved payload type the handler returns.
- * @template C The decaf context the service runs under.
- */
   abstract handle(
     request: UserRequest<T>,
     ...args: ContextualArgs<C>
@@ -309,14 +236,14 @@ export abstract class UserRequestHandler<
    * @param {METHOD} operation The operation the context is created for.
    * @param {boolean} allowCreate Whether a context is created when none is
    * provided.
- * @param {Partial<FlagsOf<CONTEXT>>} overrides Optional flag overrides.
- * @return {UserRequestLogContext<C, ARGS> | Promise<UserRequestLogContext<C, ARGS>>}
- * The contextual surface (or a promise of it when `allowCreate` is true).
- * @template C The decaf context the service runs under.
- * @template ARGS The contextual argument tuple passed to the call.
- * @template CONTEXT The context type to promote to when creating one.
- * @template METHOD The operation the context is created for.
- */
+   * @param {Partial<FlagsOf<CONTEXT>>} overrides Optional flag overrides.
+   * @return {UserRequestLogContext<C, ARGS> | Promise<UserRequestLogContext<C, ARGS>>}
+   * The contextual surface (or a promise of it when `allowCreate` is true).
+   * @template C The decaf context the service runs under.
+   * @template ARGS The contextual argument tuple passed to the call.
+   * @template CONTEXT The context type to promote to when creating one.
+   * @template METHOD The operation the context is created for.
+   */
   protected override logCtx<
     ARGS extends any[] = any[],
     METHOD extends MethodOrOperation = MethodOrOperation,
@@ -372,12 +299,10 @@ export abstract class UserRequestHandler<
   /**
    * @description Decorates the base contextual surface with the rendering
    * engine methods exposed as `modal`/`toast`/`spinner`/`router` bound getters.
- * @param {ContextualizedArgs<C, ARGS>} base The `{ log, ctx, ctxArgs }`
- * surface from `Service.logCtx`.
- * @return {UserRequestLogContext<C, ARGS>} The decorated contextual surface.
- * @template C The decaf context the service runs under.
- * @template ARGS The contextual argument tuple passed to the call.
- */
+   * @return {UserRequestLogContext<C, ARGS>} The decorated contextual surface.
+   * @template C The decaf context the service runs under.
+   * @template ARGS The contextual argument tuple passed to the call.
+   */
   private wrapLogContext<ARGS extends any[] = any[]>(
     base: ContextualizedArgs<C, ARGS>
   ): UserRequestLogContext<C, ARGS> {
