@@ -25,6 +25,17 @@
         "default": "./lib/cjs/graph/index.cjs"
       },
       "default": "./lib/esm/graph/index.js"
+    },
+    "./user-requests": {
+      "import": {
+        "types": "./lib/types/user-requests/index.d.mts",
+        "default": "./lib/esm/user-requests/index.js"
+      },
+      "require": {
+        "types": "./lib/types/user-requests/index.d.cts",
+        "default": "./lib/cjs/user-requests/index.cjs"
+      },
+      "default": "./lib/esm/user-requests/index.js"
     }
   },
   "types": "./lib/types/index.d.mts",
@@ -108,6 +119,7 @@
     "@types/jest": "^30.0.0"
   },
   "dependencies": {
+    "@decaf-ts/core": "latest",
     "@decaf-ts/db-decorators": "latest",
     "@decaf-ts/decoration": "latest",
     "@decaf-ts/decorator-validation": "latest"
