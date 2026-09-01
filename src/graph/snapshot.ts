@@ -8,6 +8,35 @@ import {
   GraphWorkflowRelationMetadata,
 } from "./constants";
 import { graphLeafPortsOf, graphWorkflowDefinitionOf } from "./reader";
+import type {
+  GraphWorkflowDocument,
+  GraphWorkflowPortInstance,
+} from "./document/GraphWorkflowDocument";
+import type { GraphNodeInstance } from "./document/GraphNodeInstance";
+import type { GraphEdgeInstance } from "./document/GraphEdgeInstance";
+import type {
+  GraphEndpoint,
+  GraphWorkflowEndpoint,
+} from "./document/GraphEndpoint";
+import type { GraphInputBinding } from "./document/GraphNodeBinding";
+import type { GraphJsonValue } from "./document/GraphJsonValue";
+import { isGraphJsonSafeValue } from "./document/GraphJsonValue";
+import type { GraphNodeUiState, GraphWorkflowUiState } from "./document/GraphWorkflowUiState";
+import {
+  graphValueSchemaFromValidation,
+  type GraphValidationRecord,
+} from "./catalog/GraphValueSchemaDerivation";
+
+const GRAPH_LEGACY_BOUNDARY_ALIASES = ["$workflow", "workflow", "graph"];
+
+const GRAPH_CONSTRUCTOR_DATA_KEYS = [
+  "node",
+  "modelClass",
+  "sourceClass",
+  "constructor",
+  "definition",
+  "executor",
+];
 
 type GraphModelLike<M extends Model = Model> = Constructor<M> | M;
 
@@ -102,7 +131,14 @@ export type GraphWorkflowSnapshotState = {
   metadata: Record<string, unknown>;
 };
 
-export type GraphWorkflowSnapshot = {
+/**
+ * Legacy persisted snapshot (`{ version, definition, state }`). Kept only for
+ * loading/compatibility of persisted data; the canonical snapshot is
+ * {@link GraphWorkflowSnapshot} (`{ document, editor?, metadata? }`).
+ * Convert with {@link graphWorkflowSnapshotFromLegacy} /
+ * {@link graphWorkflowSnapshotToLegacy}.
+ */
+export type LegacyGraphWorkflowSnapshot = {
   version: typeof GRAPH_WORKFLOW_SNAPSHOT_VERSION;
   definition: GraphWorkflowSnapshotDefinition;
   state: GraphWorkflowSnapshotState;
@@ -390,7 +426,7 @@ export function graphWorkflowSnapshotDefinitionOf<M extends Model>(
 export function graphWorkflowSnapshotOf<M extends Model>(
   model: GraphModelLike<M> | GraphWorkflowDefinition | GraphWorkflowSnapshotDefinition,
   input?: GraphWorkflowSnapshotInput
-): GraphWorkflowSnapshot {
+): LegacyGraphWorkflowSnapshot {
   const normalizedDefinition = normalizeWorkflowDefinition(
     graphWorkflowSnapshotDefinitionOf(model as any),
     input?.definition
@@ -413,9 +449,9 @@ export function graphWorkflowSnapshotOf<M extends Model>(
 }
 
 export function graphWorkflowSnapshotRestore<M extends Model>(
-  snapshot: GraphWorkflowSnapshot | GraphWorkflowSnapshotInput,
+  snapshot: LegacyGraphWorkflowSnapshot | GraphWorkflowSnapshotInput,
   model?: GraphModelLike<M> | GraphWorkflowDefinition | GraphWorkflowSnapshotDefinition
-): GraphWorkflowSnapshot {
+): LegacyGraphWorkflowSnapshot {
   if (!("version" in snapshot)) {
     return graphWorkflowSnapshotOf(
       model ??
@@ -428,7 +464,7 @@ export function graphWorkflowSnapshotRestore<M extends Model>(
     );
   }
 
-  const fullSnapshot = snapshot as GraphWorkflowSnapshot;
+  const fullSnapshot = snapshot as LegacyGraphWorkflowSnapshot;
   const definition = model
     ? graphWorkflowSnapshotDefinitionOf(model)
     : fullSnapshot.definition;
@@ -444,23 +480,23 @@ export function graphWorkflowSnapshotRestore<M extends Model>(
 }
 
 export function graphWorkflowSnapshotToJSON(
-  snapshot: GraphWorkflowSnapshot,
+  snapshot: LegacyGraphWorkflowSnapshot,
   space?: number
 ): string {
   return JSON.stringify(snapshot, undefined, space);
 }
 
 export function graphWorkflowSnapshotFromJSON(
-  input: string | GraphWorkflowSnapshot,
+  input: string | LegacyGraphWorkflowSnapshot,
   model?: GraphModelLike | GraphWorkflowDefinition | GraphWorkflowSnapshotDefinition
-): GraphWorkflowSnapshot {
+): LegacyGraphWorkflowSnapshot {
   const snapshot =
-    typeof input === "string" ? (JSON.parse(input) as GraphWorkflowSnapshot) : input;
+    typeof input === "string" ? (JSON.parse(input) as LegacyGraphWorkflowSnapshot) : input;
   return graphWorkflowSnapshotRestore(snapshot, model);
 }
 
 export function graphWorkflowSnapshotInputValuesOf(
-  snapshot: GraphWorkflowSnapshot
+  snapshot: LegacyGraphWorkflowSnapshot
 ): Record<string, unknown> {
   return Object.fromEntries(
     snapshot.state.inputs.map((entry) => [entry.path, cloneValue(entry.value)])
@@ -468,9 +504,407 @@ export function graphWorkflowSnapshotInputValuesOf(
 }
 
 export function graphWorkflowSnapshotOutputValuesOf(
-  snapshot: GraphWorkflowSnapshot
+  snapshot: LegacyGraphWorkflowSnapshot
 ): Record<string, unknown> {
   return Object.fromEntries(
     snapshot.state.outputs.map((entry) => [entry.path, cloneValue(entry.value)])
   );
+}
+
+/**
+ * Editor-only state that the canonical {@link GraphWorkflowDocument} cannot
+ * express (layout beyond node positions, config-store values, per-port modes,
+ * workflow boundary values, and duplicate counts). Stored as JSON-safe values
+ * only; constructors and `modelClass`/`sourceClass` references are dropped.
+ */
+export type GraphSnapshotEditorState = {
+  viewport?: { x: number; y: number; scale: number };
+  duplicateCounts?: Record<string, number>;
+  boundaryInputValues?: Record<string, GraphJsonValue>;
+  boundaryOutputValues?: Record<string, GraphJsonValue>;
+  nodePorts?: Record<string, Record<string, GraphJsonValue>>;
+  nodeConfigs?: Record<string, GraphJsonValue>;
+  diagramMetadata?: Record<string, GraphJsonValue>;
+  definitionDisplay?: Record<string, GraphJsonValue>;
+  legacy?: GraphJsonValue;
+} & { [key: string]: GraphJsonValue | undefined };
+
+/**
+ * Canonical document-first snapshot. `document` is the executable semantic
+ * truth; `editor` preserves legacy editor-only state for lossless round trips.
+ */
+export type GraphWorkflowSnapshot = {
+  document: GraphWorkflowDocument;
+  editor?: GraphSnapshotEditorState;
+  metadata?: Record<string, GraphJsonValue>;
+};
+
+export type GraphWorkflowSnapshotLike =
+  | LegacyGraphWorkflowSnapshot
+  | GraphWorkflowSnapshot;
+
+function dropUnsafeEntries(
+  source: Record<string, unknown>
+): Record<string, GraphJsonValue> {
+  const result: Record<string, GraphJsonValue> = {};
+  for (const [key, value] of Object.entries(source)) {
+    if (GRAPH_CONSTRUCTOR_DATA_KEYS.includes(key)) continue;
+    const sanitized = sanitizeToGraphJsonValue(value);
+    if (sanitized !== undefined) result[key] = sanitized;
+  }
+  return result;
+}
+
+/**
+ * Sanitizes a legacy snapshot into a JSON-safe payload while preserving its
+ * structural keys (`version`, `definition`, `state`). Constructor-key stripping
+ * still applies to the payload contents inside, so the canonical→legacy
+ * round trip stays lossless for persisted data.
+ */
+function sanitizeLegacySnapshotPayload(
+  snapshot: LegacyGraphWorkflowSnapshot
+): GraphJsonValue {
+  return {
+    version: snapshot.version,
+    definition: dropUnsafeEntries(
+      (snapshot.definition ?? {}) as unknown as Record<string, unknown>
+    ),
+    state: dropUnsafeEntries(
+      (snapshot.state ?? {}) as unknown as Record<string, unknown>
+    ),
+  };
+}
+
+function sanitizeToGraphJsonValue(value: unknown): GraphJsonValue | undefined {
+  if (value === null) return null;
+  const type = typeof value;
+  if (type === "string" || type === "boolean") return value as GraphJsonValue;
+  if (type === "number") return Number.isFinite(value as number) ? (value as number) : undefined;
+  if (Array.isArray(value)) {
+    const items: GraphJsonValue[] = [];
+    for (const item of value) {
+      const sanitized = sanitizeToGraphJsonValue(item);
+      if (sanitized !== undefined) items.push(sanitized);
+    }
+    return items;
+  }
+  if (type === "object") {
+    return dropUnsafeEntries(value as Record<string, unknown>);
+  }
+  return undefined;
+}
+
+function boundaryAliasesFor(definition: GraphWorkflowSnapshotDefinition): Set<string> {
+  const aliases = new Set<string>(GRAPH_LEGACY_BOUNDARY_ALIASES);
+  if (definition.tag) aliases.add(definition.tag);
+  if (definition.name) aliases.add(definition.name);
+  return aliases;
+}
+
+function legacyEndpoint(
+  refId: string | undefined,
+  port: string | undefined,
+  aliases: Set<string>
+): GraphEndpoint {
+  const resolvedPort = port ?? "";
+  if (!refId || aliases.has(refId)) {
+    return { scope: "workflow", port: resolvedPort } satisfies GraphWorkflowEndpoint;
+  }
+  return { scope: "node", nodeId: refId, port: resolvedPort } satisfies GraphEndpoint;
+}
+
+function endpointToLegacyRef(endpoint: GraphEndpoint): { refId: string; port: string } {
+  if (endpoint.scope === "workflow") {
+    return { refId: "$workflow", port: endpoint.port };
+  }
+  return { refId: endpoint.nodeId, port: endpoint.port };
+}
+
+function portInstanceFromDefinition(
+  port: GraphPortDefinition,
+  value?: GraphJsonValue
+): GraphWorkflowPortInstance {
+  const instance: GraphWorkflowPortInstance = {
+    id: port.property,
+    label: port.label,
+  };
+  instance.schema = graphValueSchemaFromValidation(
+    port.validation as GraphValidationRecord | undefined,
+    port.type,
+    port.model
+  );
+  if (port.required) instance.required = true;
+  if (value !== undefined) instance.defaultValue = value;
+  const metadata = sanitizeToGraphJsonValue(port.graph ?? {}) as Record<string, GraphJsonValue> | undefined;
+  if (metadata && Object.keys(metadata).length) instance.metadata = metadata;
+  return instance;
+}
+
+function inputBindingsFromPorts(
+  ports: Record<string, GraphWorkflowSnapshotPortState> | undefined
+): Record<string, GraphInputBinding> | undefined {
+  if (!ports) return undefined;
+  const bindings: Record<string, GraphInputBinding> = {};
+  for (const [property, port] of Object.entries(ports)) {
+    if (port?.mode === "port") {
+      bindings[property] = { mode: "edge" };
+    } else if ("value" in (port ?? {})) {
+      const value = sanitizeToGraphJsonValue(port.value);
+      bindings[property] = { mode: "literal", value: value ?? null };
+    }
+  }
+  return Object.keys(bindings).length ? bindings : undefined;
+}
+
+function nodeInstanceFromLegacy(node: GraphWorkflowSnapshotNode): GraphNodeInstance {
+  const instance: GraphNodeInstance = {
+    id: node.id,
+    kind: node.kind ?? node.ref?.kind ?? node.id,
+    parameters: dropUnsafeEntries(node.data ?? {}),
+  };
+  if (node.label) instance.label = node.label;
+  const bindings = inputBindingsFromPorts(node.ports);
+  if (bindings) instance.inputBindings = bindings;
+  const metadata = sanitizeToGraphJsonValue(node.metadata ?? {}) as Record<string, GraphJsonValue> | undefined;
+  if (metadata && Object.keys(metadata).length) instance.metadata = metadata;
+  if (node.position || node.size || node.expanded !== undefined) {
+    const ui: GraphNodeUiState = {
+      position: node.position ? { x: node.position.x, y: node.position.y } : { x: 0, y: 0 },
+    };
+    if (node.size) ui.size = { width: node.size.width, height: node.size.height };
+    if (node.expanded !== undefined) ui.expanded = node.expanded;
+    instance.ui = ui;
+  }
+  return instance;
+}
+
+function edgeInstanceFromLegacy(
+  edge: GraphWorkflowSnapshotEdge,
+  aliases: Set<string>
+): GraphEdgeInstance {
+  const source = legacyEndpoint(edge.sourceRef ?? edge.source, edge.sourcePort, aliases);
+  const target = legacyEndpoint(edge.targetRef ?? edge.target, edge.targetPort, aliases);
+  const instance: GraphEdgeInstance = {
+    id: edge.id,
+    type: "data",
+    source,
+    target,
+  };
+  if (edge.label) instance.label = edge.label;
+  const metadata = sanitizeToGraphJsonValue(edge.metadata ?? {}) as Record<string, GraphJsonValue> | undefined;
+  if (metadata && Object.keys(metadata).length) instance.metadata = metadata;
+  return instance;
+}
+
+/** Maps a legacy snapshot to the canonical {@link GraphWorkflowDocument}. */
+export function graphWorkflowDocumentFromLegacySnapshot(
+  snapshot: LegacyGraphWorkflowSnapshot
+): GraphWorkflowDocument {
+  const aliases = boundaryAliasesFor(snapshot.definition);
+  const inputs = Object.fromEntries(
+    snapshot.state.inputs.map((entry) => [entry.path, sanitizeToGraphJsonValue(entry.value)])
+  );
+  const outputs = Object.fromEntries(
+    snapshot.state.outputs.map((entry) => [entry.path, sanitizeToGraphJsonValue(entry.value)])
+  );
+  const document: GraphWorkflowDocument = {
+    id: snapshot.definition.tag || snapshot.definition.name,
+    name: snapshot.definition.name,
+    inputs: snapshot.definition.inputs.map((port) =>
+      portInstanceFromDefinition(port, inputs[port.property])
+    ),
+    outputs: snapshot.definition.outputs.map((port) =>
+      portInstanceFromDefinition(port, outputs[port.property])
+    ),
+    nodes: snapshot.state.nodes.map(nodeInstanceFromLegacy),
+    edges: snapshot.state.edges.map((edge) => edgeInstanceFromLegacy(edge, aliases)),
+  };
+  if (snapshot.definition.metadata) {
+    const metadata = sanitizeToGraphJsonValue(
+      snapshot.definition.metadata
+    ) as Record<string, GraphJsonValue> | undefined;
+    if (metadata && Object.keys(metadata).length) document.metadata = metadata;
+  }
+  const ui: GraphWorkflowUiState = {};
+  const viewport = snapshot.state.ui?.["diagramMetadata"] as
+    | Record<string, unknown>
+    | undefined;
+  const parsedViewport = viewport?.["viewport"];
+  if (parsedViewport && typeof parsedViewport === "object") {
+    const v = parsedViewport as Record<string, unknown>;
+    const x = typeof v["x"] === "number" ? v["x"] : Number(v["x"]) || 0;
+    const y = typeof v["y"] === "number" ? v["y"] : Number(v["y"]) || 0;
+    const zoom = typeof v["scale"] === "number" ? v["scale"] : Number(v["scale"]) || 1;
+    ui.viewport = { x, y, zoom };
+  }
+  if (ui.viewport) document.ui = ui;
+  return document;
+}
+
+/**
+ * Converts a legacy persisted snapshot into the canonical wrapper. The canonical
+ * `document` carries executable semantics; `editor.legacy` keeps the sanitized
+ * (constructor-free) legacy payload so a canonical→legacy round trip is lossless
+ * for persisted data.
+ */
+export function graphWorkflowSnapshotFromLegacy(
+  snapshot: LegacyGraphWorkflowSnapshot
+): GraphWorkflowSnapshot {
+  const document = graphWorkflowDocumentFromLegacySnapshot(snapshot);
+  const editor: GraphSnapshotEditorState = {};
+  const sanitizedLegacy = sanitizeLegacySnapshotPayload(snapshot);
+  if (sanitizedLegacy && isGraphJsonSafeValue(sanitizedLegacy)) editor.legacy = sanitizedLegacy;
+  const ui = snapshot.state.ui;
+  if (ui) {
+    const duplicateCounts = ui["duplicateCounts"];
+    if (duplicateCounts && typeof duplicateCounts === "object") {
+      editor.duplicateCounts = duplicateCounts as Record<string, number>;
+    }
+    const diagramMetadata = ui["diagramMetadata"];
+    if (diagramMetadata && typeof diagramMetadata === "object") {
+      editor.diagramMetadata = sanitizeToGraphJsonValue(
+        diagramMetadata as Record<string, unknown>
+      ) as Record<string, GraphJsonValue>;
+    }
+    const nodeConfigs = ui["nodeConfigs"];
+    if (nodeConfigs && typeof nodeConfigs === "object") {
+      editor.nodeConfigs = sanitizeToGraphJsonValue(
+        nodeConfigs as Record<string, unknown>
+      ) as Record<string, GraphJsonValue>;
+    }
+  }
+  editor.nodePorts = {};
+  for (const node of snapshot.state.nodes) {
+    if (node.ports) {
+      editor.nodePorts[node.id] = sanitizeToGraphJsonValue(
+        node.ports as unknown as Record<string, unknown>
+      ) as Record<string, GraphJsonValue>;
+    }
+  }
+  if (!Object.keys(editor.nodePorts).length) delete editor.nodePorts;
+  const definitionDisplay = dropUnsafeEntries(
+    snapshot.definition as unknown as Record<string, unknown>
+  );
+  delete definitionDisplay["inputs"];
+  delete definitionDisplay["outputs"];
+  delete definitionDisplay["nodes"];
+  delete definitionDisplay["relations"];
+  editor.definitionDisplay = definitionDisplay;
+  const metadata = sanitizeToGraphJsonValue(
+    snapshot.state.metadata ?? {}
+  ) as Record<string, GraphJsonValue>;
+  return { document, editor, metadata: Object.keys(metadata).length ? metadata : undefined };
+}
+
+/**
+ * Reconstructs a legacy snapshot from a canonical wrapper. Uses the
+ * `editor.legacy` payload when present for exact round trips; otherwise it
+ * rebuilds a best-effort legacy snapshot from the document + editor state
+ * (constructors are never restored).
+ */
+export function graphWorkflowSnapshotToLegacy(
+  snapshot: GraphWorkflowSnapshot
+): LegacyGraphWorkflowSnapshot {
+  if (snapshot.editor?.legacy && isGraphJsonSafeValue(snapshot.editor.legacy)) {
+    return cloneValue(snapshot.editor.legacy) as unknown as LegacyGraphWorkflowSnapshot;
+  }
+  const { document, editor } = snapshot;
+  const aliases = new Set<string>(GRAPH_LEGACY_BOUNDARY_ALIASES);
+  if (document.id) aliases.add(document.id);
+  if (document.name) aliases.add(document.name);
+  const display = (editor?.definitionDisplay ?? {}) as Record<string, unknown>;
+  const definition = {
+    ...cloneValue(display),
+    name: document.name,
+    tag: document.id || (display["tag"] as string | undefined) || document.name,
+    inputs: document.inputs.map((port) => portToLegacyDefinition(port)),
+    outputs: document.outputs.map((port) => portToLegacyDefinition(port)),
+    nodes: document.nodes.map((node) => ({ id: node.id, kind: node.kind })),
+    relations: document.edges.map((edge) => ({
+      id: edge.id,
+      source: endpointToLegacyRef(edge.source).refId,
+      sourcePort: edge.source.port,
+      target: endpointToLegacyRef(edge.target).refId,
+      targetPort: edge.target.port,
+      label: edge.label,
+    })),
+  } as unknown as LegacyGraphWorkflowSnapshot["definition"];
+
+  const state: LegacyGraphWorkflowSnapshot["state"] = {
+    inputs: document.inputs.map((port) => ({
+      path: port.id,
+      value: cloneValue(port.defaultValue) as never,
+      label: port.label,
+      required: port.required,
+    })),
+    outputs: document.outputs.map((port) => ({
+      path: port.id,
+      value: cloneValue(port.defaultValue) as never,
+      label: port.label,
+      required: port.required,
+    })),
+    nodes: document.nodes.map((node) => ({
+      id: node.id,
+      ref: { id: node.id, kind: node.kind },
+      label: node.label,
+      kind: node.kind,
+      position: node.ui?.position ? { x: node.ui.position.x, y: node.ui.position.y } : undefined,
+      size: node.ui?.size ? { width: node.ui.size.width, height: node.ui.size.height } : undefined,
+      expanded: node.ui?.expanded,
+      ports: (editor?.nodePorts?.[node.id] as never) ?? undefined,
+      data: cloneValue(node.parameters ?? {}) as never,
+      metadata: cloneValue(node.metadata ?? {}) as never,
+    })),
+    edges: document.edges.map((edge) => {
+      const source = endpointToLegacyRef(edge.source);
+      const target = endpointToLegacyRef(edge.target);
+      const isBoundary = source.refId === "$workflow" || target.refId === "$workflow";
+      const isConnection = edge.type === "connection";
+      return {
+        id: edge.id,
+        source: source.refId,
+        sourceRef: source.refId,
+        sourcePort: source.port,
+        target: target.refId,
+        targetRef: target.refId,
+        targetPort: target.port,
+        label: edge.label,
+        type: isConnection ? "connection" : isBoundary ? "output" : "data",
+        metadata: cloneValue(edge.metadata ?? {}) as never,
+      } as never;
+    }),
+    ui: cloneValue({
+      ...(editor?.duplicateCounts ? { duplicateCounts: editor.duplicateCounts } : {}),
+      ...(editor?.diagramMetadata ? { diagramMetadata: editor.diagramMetadata } : {}),
+      ...(editor?.nodeConfigs ? { nodeConfigs: editor.nodeConfigs } : {}),
+    }) as never,
+    metadata: cloneValue(snapshot.metadata ?? {}) as never,
+  };
+  return {
+    version: GRAPH_WORKFLOW_SNAPSHOT_VERSION,
+    definition,
+    state,
+  };
+}
+
+function portToLegacyDefinition(port: GraphWorkflowPortInstance): GraphPortDefinition {
+  return {
+    property: port.id,
+    label: port.label,
+    required: port.required,
+    metadata: cloneValue(port.metadata ?? {}) as never,
+  } as unknown as GraphPortDefinition;
+}
+
+/** Normalizes any accepted snapshot/document form to a canonical wrapper. */
+export function graphWorkflowSnapshotLikeToCanonical(
+  value: GraphWorkflowSnapshotLike | GraphWorkflowDocument
+): GraphWorkflowSnapshot {
+  if ("document" in value) {
+    return value as GraphWorkflowSnapshot;
+  }
+  if ("state" in value || "definition" in value) {
+    return graphWorkflowSnapshotFromLegacy(value as LegacyGraphWorkflowSnapshot);
+  }
+  return { document: value as GraphWorkflowDocument };
 }

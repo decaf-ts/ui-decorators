@@ -13,6 +13,7 @@ export type {
 } from "./constants";
 export type {
   GraphWorkflowSnapshot,
+  LegacyGraphWorkflowSnapshot,
   GraphWorkflowSnapshotDefinition,
   GraphWorkflowSnapshotEdge,
   GraphWorkflowSnapshotInput,
@@ -23,4 +24,6 @@ export type {
   GraphWorkflowSnapshotState,
   GraphWorkflowSnapshotValue,
   GraphWorkflowSnapshotPortState,
+  GraphWorkflowSnapshotLike,
+  GraphSnapshotEditorState,
 } from "./snapshot";
