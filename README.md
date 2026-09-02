@@ -478,18 +478,6 @@ if (errors) {
 This example demonstrates how to create a complete registration form with various input types and validation rules, all defined declaratively using decorators.
 
 
-## Graph Decorators and Contracts (DECAF-50)
-
-`src/graph` ships the shared, browser-safe graph workspace contracts that back the canonical graph frontend (DECAF-50 §4.4.4–§4.12) — engine-free, with no executor/catalogue-runtime/validator/run-store imports reaching here (§4.20 bundle bar):
-
-- **Manifests (§4.9–§4.12):** `GraphNodeManifest`/`GraphResolvedNodeManifest` types plus the `graphNodeManifest` compiler that turns `@node`-decorated classes into the published JSON shape (ports, parameters, display, metadata) — the same shape the NestJS catalogue serves and the Angular palette consumes as data, never constructors.
-- **Document/instance model:** `GraphWorkflowDocument`, `GraphNodeInstance`, `GraphInputBinding` (`edge | literal | expression`), and the byte-consistent `GraphWorkflowDocumentSnapshot` the document store persists.
-- **Switch cases:** `SwitchCase`/`SwitchCaseCondition` live under `metadata["switch"]` / the `parameters["switch"]` block — the backend executor reads the same shape, so the editor's case grid and the engine stay aligned.
-- **Builder + legacy serializer:** `GraphWorkflowDocumentBuilder` composes documents fluently; `graphWorkflowDocumentFromLegacySnapshot` converts legacy (pre-P7) canvas snapshots — legacy `node.data` maps into instance `parameters`, legacy `node.metadata` into instance `metadata` — so previously persisted workflows keep reading under the new document store unchanged.
-- **Decorated workflow compiler:** `GraphDecoratedWorkflowCompiler` compiles a decorated workflow class (node defaults plus loop/switch metadata blocks) into a document, letting `@node` classes seed demo graphs without node constructors in the browser path.
-
-Detailed walkthroughs live in [workdocs/tutorials/For Developers.md](./workdocs/tutorials/For%20Developers.md).
-
 ## Coding Principles
 
 - group similar functionality in folders (analog to namespaces but without any namespace declaration)
