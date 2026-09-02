@@ -367,6 +367,10 @@ function normalizeEdges(
         sourceRef: entry.sourceRef ?? current.sourceRef ?? entry.source ?? current.source,
         target: entry.target || current.target,
         targetRef: entry.targetRef ?? current.targetRef ?? entry.target ?? current.target,
+        // Labels are document-carried display semantics (§4.4.7): a row merged
+        // from a canvas clone that never carried its own label must not erase
+        // the relation row's label.
+        label: entry.label ?? current.label,
         metadata: {
           ...(current.metadata || {}),
           ...(entry.metadata || {}),
@@ -604,13 +608,70 @@ function boundaryAliasesFor(definition: GraphWorkflowSnapshotDefinition): Set<st
 function legacyEndpoint(
   refId: string | undefined,
   port: string | undefined,
-  aliases: Set<string>
+  aliases: Set<string>,
+  boundaryPortIds?: ReadonlyMap<string, string>
 ): GraphEndpoint {
   const resolvedPort = port ?? "";
   if (!refId || aliases.has(refId)) {
     return { scope: "workflow", port: resolvedPort } satisfies GraphWorkflowEndpoint;
   }
+  // The legacy decorated-root canvas rendered workflow input ports as draggable
+  // boundary badges (`input-{port}`, port handle `value`). Those bindings stay
+  // lossless only when the badge id folds back onto the workflow port it was
+  // drawn for (DECAF-50 §4.11); otherwise a workflow port would collapse into
+  // one shared boundary endpoint and drop real edges (§4.4.6 canonical form).
+  if (refId.startsWith("input-")) {
+    const workflowPortId = boundaryPortIds?.get(refId.slice("input-".length) ?? "");
+    if (workflowPortId) {
+      return {
+        scope: "workflow",
+        port: workflowPortId,
+      } satisfies GraphWorkflowEndpoint;
+    }
+  }
   return { scope: "node", nodeId: refId, port: resolvedPort } satisfies GraphEndpoint;
+}
+
+/**
+ * Maps workflow input-property names to their legacy boundary-badge ids
+ * (`input-{property}`), so badges drawn on the canvas resolve back to the
+ * workflow port they represent (§4.11).
+ */
+function boundaryPortIdsFor(snapshot: LegacyGraphWorkflowSnapshot): ReadonlyMap<string, string> {
+  const map = new Map<string, string>();
+  for (const port of snapshot.definition.inputs) {
+    map.set(`input-${port.property}`, port.property);
+  }
+  return map;
+}
+
+/**
+ * Resolves the decorated definition's own edge labels by canonical endpoint
+ * pair, so converted legacy edges that never carried a label on the edge row
+ * (canvas-drawn clones merged over the relation rows) still restore the
+ * document-carried {@link GraphEdgeInstance.label} (§4.4.7) instead of losing
+ * the display affordance on save/reload.
+ */
+function legacyRelationLabelByEndpoint(
+  snapshot: LegacyGraphWorkflowSnapshot,
+  aliases: Set<string>,
+  boundaryPortIds: ReadonlyMap<string, string>
+): ReadonlyMap<string, string> {
+  const map = new Map<string, string>();
+  for (const relation of snapshot.definition.relations) {
+    const label = typeof relation.label === "string" ? relation.label : undefined;
+    if (!label) continue;
+    const sourceRef = typeof relation.source === "string" ? relation.source : undefined;
+    const targetRef = typeof relation.target === "string" ? relation.target : undefined;
+    map.set(
+      edgePairKeyOf({
+        source: legacyEndpoint(sourceRef, relation.sourcePort, aliases, boundaryPortIds),
+        target: legacyEndpoint(targetRef, relation.targetPort, aliases, boundaryPortIds),
+      }),
+      label
+    );
+  }
+  return map;
 }
 
 function endpointToLegacyRef(endpoint: GraphEndpoint): { refId: string; port: string } {
@@ -680,27 +741,58 @@ function nodeInstanceFromLegacy(node: GraphWorkflowSnapshotNode): GraphNodeInsta
 
 function edgeInstanceFromLegacy(
   edge: GraphWorkflowSnapshotEdge,
-  aliases: Set<string>
+  aliases: Set<string>,
+  boundaryPortIds?: ReadonlyMap<string, string>,
+  relationLabelByPair?: ReadonlyMap<string, string>
 ): GraphEdgeInstance {
-  const source = legacyEndpoint(edge.sourceRef ?? edge.source, edge.sourcePort, aliases);
-  const target = legacyEndpoint(edge.targetRef ?? edge.target, edge.targetPort, aliases);
+  const source = legacyEndpoint(
+    edge.sourceRef ?? edge.source,
+    edge.sourcePort,
+    aliases,
+    boundaryPortIds
+  );
+  const target = legacyEndpoint(
+    edge.targetRef ?? edge.target,
+    edge.targetPort,
+    aliases,
+    boundaryPortIds
+  );
   const instance: GraphEdgeInstance = {
     id: edge.id,
     type: "data",
     source,
     target,
   };
-  if (edge.label) instance.label = edge.label;
+  const label = edge.label ?? relationLabelByPair?.get(edgePairKeyOf({ source, target }));
+  if (label) instance.label = label;
   const metadata = sanitizeToGraphJsonValue(edge.metadata ?? {}) as Record<string, GraphJsonValue> | undefined;
   if (metadata && Object.keys(metadata).length) instance.metadata = metadata;
   return instance;
 }
 
-/** Maps a legacy snapshot to the canonical {@link GraphWorkflowDocument}. */
+/** Endpoint-pair key for edge identity (canonical `GraphEndpoint` shape). */
+function edgePairKeyOf(edge: { source: GraphEndpoint; target: GraphEndpoint }): string {
+  const keyOf = (endpoint: GraphEndpoint): string =>
+    endpoint.scope === "node"
+      ? `node:${endpoint.nodeId}:${endpoint.port}`
+      : `workflow:${endpoint.port}`;
+  return `${keyOf(edge.source)}->${keyOf(edge.target)}`;
+}
+
+/**
+ * Maps a legacy (pre-P7) canvas snapshot to the canonical
+ * {@link GraphWorkflowDocument} (DECAF-50 §4.4.6): legacy `node.data` becomes
+ * instance `parameters`, legacy `node.metadata` becomes instance `metadata`,
+ * workflow boundary badges (`input-{port}`) fold back onto their workflow
+ * ports, and edge labels missing from cloned edge rows are restored from the
+ * decorated definition's relation labels (§4.4.7).
+ */
 export function graphWorkflowDocumentFromLegacySnapshot(
   snapshot: LegacyGraphWorkflowSnapshot
 ): GraphWorkflowDocument {
   const aliases = boundaryAliasesFor(snapshot.definition);
+  const boundaryPortIds = boundaryPortIdsFor(snapshot);
+  const relationLabelByPair = legacyRelationLabelByEndpoint(snapshot, aliases, boundaryPortIds);
   const inputs = Object.fromEntries(
     snapshot.state.inputs.map((entry) => [entry.path, sanitizeToGraphJsonValue(entry.value)])
   );
@@ -717,7 +809,9 @@ export function graphWorkflowDocumentFromLegacySnapshot(
       portInstanceFromDefinition(port, outputs[port.property])
     ),
     nodes: snapshot.state.nodes.map(nodeInstanceFromLegacy),
-    edges: snapshot.state.edges.map((edge) => edgeInstanceFromLegacy(edge, aliases)),
+    edges: snapshot.state.edges.map((edge) =>
+      edgeInstanceFromLegacy(edge, aliases, boundaryPortIds, relationLabelByPair)
+    ),
   };
   if (snapshot.definition.metadata) {
     const metadata = sanitizeToGraphJsonValue(
