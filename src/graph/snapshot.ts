@@ -131,6 +131,9 @@ export type GraphWorkflowSnapshotState = {
   metadata: Record<string, unknown>;
 };
 
+/** Snapshot schema version literal type ({@link GRAPH_WORKFLOW_SNAPSHOT_VERSION}). */
+export type GraphWorkflowSnapshotVersion = typeof GRAPH_WORKFLOW_SNAPSHOT_VERSION;
+
 /**
  * Legacy persisted snapshot (`{ version, definition, state }`). Kept only for
  * loading/compatibility of persisted data; the canonical snapshot is
@@ -139,7 +142,7 @@ export type GraphWorkflowSnapshotState = {
  * {@link graphWorkflowSnapshotToLegacy}.
  */
 export type LegacyGraphWorkflowSnapshot = {
-  version: typeof GRAPH_WORKFLOW_SNAPSHOT_VERSION;
+  version: GraphWorkflowSnapshotVersion;
   definition: GraphWorkflowSnapshotDefinition;
   state: GraphWorkflowSnapshotState;
 };

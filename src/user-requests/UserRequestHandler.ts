@@ -104,7 +104,7 @@ export abstract class UserRequestHandler<
    * decorator under `USER_REQUEST_KEY`.
    * @param {string} reference The request id/type the handler is registered
    * for.
-   * @return {.Constructor<UserRequestHandler> | undefined}
+   * @return {Constructor<UserRequestHandler> | undefined}
    * The registered handler constructor, or `undefined` when unknown.
    */
   static getHandler(

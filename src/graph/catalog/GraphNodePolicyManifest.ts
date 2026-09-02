@@ -42,6 +42,8 @@ export type GraphNodePolicyInputMode = "any" | "single" | "multiple";
  * Type guard for {@link GraphNodePolicyManifest}: accepts objects whose
  * `inputMode` (when present) is one of the declared
  * {@link GraphNodePolicyInputMode} values.
+ *
+ * @returns {boolean} Whether the value is a {@link GraphNodePolicyManifest}.
  */
 export function isGraphNodePolicyManifest(value: unknown): value is GraphNodePolicyManifest {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
