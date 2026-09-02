@@ -5,22 +5,6 @@ export enum GraphKeys {
   PORT = `${GraphKeys.GRAPH}.port`,
 }
 
-/**
- * Rollout gate for the canonical document pipeline (DECAF-50/P1). Defaults to
- * off so existing legacy snapshot/definition flows keep working until the
- * save/history cutover. Overridable at runtime via the browser-safe global
- * `__DECAF_GRAPH_CANONICAL_DOCUMENT__` flag (no Node/`process` dependency).
- */
-export const GRAPH_CANONICAL_DOCUMENT_ENABLED_DEFAULT = false;
-
-export function graphCanonicalDocumentEnabled(): boolean {
-  const flag = (globalThis as Record<string, unknown>)[
-    "__DECAF_GRAPH_CANONICAL_DOCUMENT__"
-  ];
-  if (typeof flag === "boolean") return flag;
-  return GRAPH_CANONICAL_DOCUMENT_ENABLED_DEFAULT;
-}
-
 export enum PortDirection {
   INPUT = "input",
   OUTPUT = "output",

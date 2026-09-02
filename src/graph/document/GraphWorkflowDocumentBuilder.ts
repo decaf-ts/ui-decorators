@@ -19,16 +19,30 @@ import type {
 } from "./GraphWorkflowDocument";
 import { isGraphValueSchema } from "../catalog/GraphValueSchema";
 
+/** A workflow boundary port accepted by {@link GraphWorkflowDocumentBuilder}. */
 export type GraphWorkflowPortInput = GraphWorkflowPortInstance;
 
+/** Options for constructing a {@link GraphWorkflowDocumentBuilder}. */
 export interface GraphWorkflowDocumentBuilderOptions {
+  /** Document id; defaults to an empty string when omitted. */
   id?: string;
+  /** Human-readable document name; defaults to an empty string when omitted. */
   name?: string;
 }
 
+/**
+ * Fluent builder for the canonical {@link GraphWorkflowDocument}
+ * (DECAF-50 §4.4.4). Collects boundary ports, node instances, edges, and
+ * optional settings/metadata/UI state, then validates and freezes a
+ * defensively-copied document on {@link GraphWorkflowDocumentBuilder.build}.
+ */
 export class GraphWorkflowDocumentBuilder {
   private readonly document: GraphWorkflowDocument;
 
+  /**
+   * @param id Document id.
+   * @param name Optional document name; defaults to an empty string.
+   */
   constructor(id: string, name?: string) {
     this.document = {
       id,
@@ -40,16 +54,19 @@ export class GraphWorkflowDocumentBuilder {
     };
   }
 
+  /** Appends a workflow input port. */
   addInput(port: GraphWorkflowPortInput): this {
     this.document.inputs.push(port);
     return this;
   }
 
+  /** Appends a workflow output port. */
   addOutput(port: GraphWorkflowPortInput): this {
     this.document.outputs.push(port);
     return this;
   }
 
+  /** Appends a node instance, defaulting `parameters` to an empty object. */
   addNode(node: GraphNodeInstance): this {
     this.document.nodes.push({
       ...node,
@@ -58,46 +75,80 @@ export class GraphWorkflowDocumentBuilder {
     return this;
   }
 
+  /** Appends an edge instance. */
   addEdge(edge: GraphEdgeInstance): this {
     this.document.edges.push(edge);
     return this;
   }
 
+  /** Sets (or clears) the document's free-form settings bag. */
   setSettings(settings?: GraphWorkflowSettings): this {
     this.document.settings = settings;
     return this;
   }
 
+  /** Sets (or clears) the document's metadata bag. */
   setMetadata(metadata?: Record<string, GraphJsonValue>): this {
     this.document.metadata = metadata;
     return this;
   }
 
+  /** Sets (or clears) the document's editor UI state. */
   setUi(ui?: GraphWorkflowUiState): this {
     this.document.ui = ui;
     return this;
   }
 
+  /**
+   * Validates the accumulated document with
+   * {@link assertGraphWorkflowDocumentValid} and returns a deep-ish copy:
+   * ports, nodes, and edges are cloned per entry, and the optional
+   * `settings`/`metadata`/`ui` bags are only present when explicitly set, so
+   * callers never observe builder-internal `undefined` fields.
+   *
+   * @throws ValidationError when the document fails validation.
+   */
   build(): GraphWorkflowDocument {
     assertGraphWorkflowDocumentValid(this.document);
-    return {
+    const document: GraphWorkflowDocument = {
       id: this.document.id,
       name: this.document.name,
       inputs: this.document.inputs.map((port) => ({ ...port })),
       outputs: this.document.outputs.map((port) => ({ ...port })),
       nodes: this.document.nodes.map((node) => ({ ...node })),
       edges: this.document.edges.map((edge) => ({ ...edge })),
-      settings: this.document.settings,
-      metadata: this.document.metadata,
-      ui: this.document.ui,
     };
+    if (this.document.settings !== undefined) {
+      document.settings = this.document.settings;
+    }
+    if (this.document.metadata !== undefined) {
+      document.metadata = this.document.metadata;
+    }
+    if (this.document.ui !== undefined) {
+      document.ui = this.document.ui;
+    }
+    return document;
   }
 }
 
+/**
+ * Shared validation context for
+ * {@link assertGraphWorkflowDocumentValid}: tracks documents already visited
+ * on the current nesting path so cyclic loop bodies are detected.
+ */
 export interface GraphWorkflowDocumentValidationContext {
   seen: unknown[];
 }
 
+/**
+ * Structural validation gate for a canonical {@link GraphWorkflowDocument}
+ * (shared by the frontend builder and the backend nine-stage validator,
+ * DECAF-50 §4.8 stage 1 shape rules). Checks unique port/node/edge ids,
+ * valid schemas, binding shapes, edge endpoints, and recursively validates
+ * nested loop-body documents.
+ *
+ * @throws ValidationError describing the first invalid aspect found.
+ */
 export function assertGraphWorkflowDocumentValid(
   document: GraphWorkflowDocument,
   context: GraphWorkflowDocumentValidationContext = { seen: [] }

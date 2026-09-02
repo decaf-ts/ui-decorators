@@ -6,6 +6,7 @@ import { ValidationError } from "@decaf-ts/db-decorators";
 import {
   assertGraphWorkflowDocumentValid,
   GraphWorkflowDocumentBuilder,
+  isGraphJsonSafeValue,
 } from "../../../src/graph";
 import type { GraphWorkflowDocument } from "../../../src/graph";
 
@@ -45,6 +46,20 @@ function expectValidationError(build: () => unknown, match?: RegExp): void {
     return;
   }
   throw new Error("expected a ValidationError but nothing was thrown");
+}
+
+function findUndefinedOwnKeyPaths(value: unknown, path = "document"): string[] {
+  if (value === null || typeof value !== "object") return [];
+  const paths: string[] = [];
+  for (const key of Object.keys(value)) {
+    const child = (value as Record<string, unknown>)[key];
+    if (child === undefined) {
+      paths.push(`${path}.${key}`);
+    } else {
+      paths.push(...findUndefinedOwnKeyPaths(child, `${path}.${key}`));
+    }
+  }
+  return paths;
 }
 
 describe("document builder", () => {
@@ -308,5 +323,57 @@ describe("document builder", () => {
       () => assertGraphWorkflowDocumentValid(document),
       /valid GraphValueSchema/
     );
+  });
+
+  it("omits undefined-valued settings/metadata/ui keys from raw builder output (JSON-safe and boundary-valid without a JSON clone)", () => {
+    const probeEdge = {
+      id: "re0",
+      type: "data" as const,
+      source: { scope: "workflow" as const, port: "in1" },
+      target: { scope: "node" as const, nodeId: "n1", port: "value" },
+    };
+
+    const raw = new GraphWorkflowDocumentBuilder("probe-doc", "Probe Doc")
+      .addInput({ id: "in1" })
+      .addOutput({ id: "out1" })
+      .addNode({ id: "n1", kind: "core.transform", parameters: {} })
+      .addEdge(probeEdge)
+      .build();
+    expect(Object.hasOwn(raw, "settings")).toBe(false);
+    expect(Object.hasOwn(raw, "metadata")).toBe(false);
+    expect(Object.hasOwn(raw, "ui")).toBe(false);
+    expect(findUndefinedOwnKeyPaths(raw)).toEqual([]);
+    expect(isGraphJsonSafeValue(raw)).toBe(true);
+    expect(JSON.parse(JSON.stringify(raw))).toEqual(raw);
+
+    const unset = new GraphWorkflowDocumentBuilder("probe-doc", "Probe Doc")
+      .addInput({ id: "in1" })
+      .addOutput({ id: "out1" })
+      .addNode({ id: "n1", kind: "core.transform", parameters: {} })
+      .addEdge(probeEdge)
+      .setSettings({ retries: 2 })
+      .setSettings(undefined)
+      .setUi({ viewport: { x: 1, y: 2, zoom: 3 } })
+      .setUi(undefined)
+      .build();
+    expect(Object.hasOwn(unset, "settings")).toBe(false);
+    expect(Object.hasOwn(unset, "metadata")).toBe(false);
+    expect(Object.hasOwn(unset, "ui")).toBe(false);
+    expect(findUndefinedOwnKeyPaths(unset)).toEqual([]);
+    expect(isGraphJsonSafeValue(unset)).toBe(true);
+    expect(JSON.parse(JSON.stringify(unset))).toEqual(unset);
+
+    const populated = new GraphWorkflowDocumentBuilder("probe-doc", "Probe Doc")
+      .setSettings({ retries: 2 })
+      .setMetadata({ team: "core" })
+      .setUi({ viewport: { x: 1, y: 2, zoom: 1 } })
+      .build();
+    expect(Object.hasOwn(populated, "settings")).toBe(true);
+    expect(Object.hasOwn(populated, "metadata")).toBe(true);
+    expect(Object.hasOwn(populated, "ui")).toBe(true);
+    expect(populated.settings).toEqual({ retries: 2 });
+    expect(populated.metadata).toEqual({ team: "core" });
+    expect(populated.ui).toEqual({ viewport: { x: 1, y: 2, zoom: 1 } });
+    expect(JSON.parse(JSON.stringify(populated))).toEqual(populated);
   });
 });

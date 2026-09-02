@@ -27,13 +27,22 @@ import {
 } from "../catalog/GraphValueSchemaDerivation";
 import { GraphWorkflowDocumentBuilder } from "./GraphWorkflowDocumentBuilder";
 
+/**
+ * Options for compiling a decorated workflow into a canonical
+ * {@link GraphWorkflowDocument}.
+ */
 export interface GraphDecoratedWorkflowCompileOptions {
+  /** Document id; defaults to the workflow's tag or name. */
   id?: string;
+  /** Human-readable document name; defaults to the workflow's name. */
   name?: string;
+  /** Canvas positions per node id, carried into the document's UI state. */
   positions?: Record<string, { x: number; y: number }>;
+  /** Initial canvas viewport carried into the document's UI state. */
   viewport?: GraphWorkflowViewport;
 }
 
+/** Anything the compiler can resolve into a {@link GraphWorkflowDefinition}: a decorated workflow class (constructor), a model instance, or a definition. */
 export type GraphDecoratedWorkflowInput = Constructor | Model | GraphWorkflowDefinition;
 
 const GRAPH_BOUNDARY_ALIASES = ["$workflow", "workflow", "graph"];
@@ -54,6 +63,18 @@ type GraphNodeDefinitionShim = {
   graph?: { metadata?: Record<string, unknown> } & Record<string, unknown>;
 };
 
+/**
+ * Compiles a decorated workflow (or an already-resolved
+ * {@link GraphWorkflowDefinition}) into a canonical
+ * {@link GraphWorkflowDocument}: workflow boundary ports, one instance per
+ * node (input-port defaults and loop/switch metadata folded into
+ * `parameters`/`metadata`), one edge per relation, plus UI state. Browser-safe:
+ * node constructors are never invoked, so `@node` classes can seed demo
+ * graphs without engine imports (DECAF-50 §4.4.4).
+ *
+ * @throws ValidationError when the input cannot be resolved to a decorated
+ * graph workflow definition.
+ */
 export function graphDecoratedWorkflowCompiler(
   workflow: GraphDecoratedWorkflowInput,
   options: GraphDecoratedWorkflowCompileOptions = {}
@@ -154,7 +175,7 @@ function graphNodeInstanceOf(
       nodeDefinition?.kind ??
       nodeDefinition?.name ??
       nodeMetadata.id,
-    parameters: graphNodeParametersOf(nodeDefinition),
+    parameters: graphNodeParametersOf(nodeMetadata, nodeDefinition),
   };
   if (nodeMetadata.label !== undefined) instance.label = nodeMetadata.label;
   const metadata = graphNodeMetadataCollectionOf(nodeMetadata, nodeDefinition);
@@ -201,19 +222,71 @@ function reflectJsonSafeValue(
   }
 }
 
+/**
+ * Loop-configuration fields of legacy `graph.metadata.loop` bags that are
+ * node configuration rather than loop-body settings. Per DECAF-50 §4.4.5
+ * rule 6 (non-port operation/configuration fields belong in `parameters`),
+ * these are carried into the instance's `parameters` so legacy loop
+ * round-trips stay lossless; `body`/`maxIterations`/`timeoutMs`/
+ * `concurrency` live on {@link GraphLoopConfiguration}.
+ */
+const GRAPH_LOOP_PARAMETER_KEYS = [
+  "condition",
+  "inputPort",
+  "outputPort",
+  "itemPort",
+  "resultPort",
+  "statePort",
+  "slice",
+] as const;
+
 function graphNodeParametersOf(
+  nodeMetadata: GraphWorkflowNodeMetadata,
   nodeDefinition: GraphNodeDefinitionShim | undefined
 ): Record<string, GraphJsonValue> {
-  if (!nodeDefinition) return {};
   const parameters: Record<string, GraphJsonValue> = {};
-  for (const port of graphLeafPortsOf(nodeDefinition.ports)) {
-    if (port.direction !== "input") continue;
-    const defaultValue = graphPortDefaultValueOf(port);
-    if (defaultValue !== undefined) {
-      parameters[port.path ?? port.property] = defaultValue;
+  if (nodeDefinition) {
+    for (const port of graphLeafPortsOf(nodeDefinition.ports)) {
+      if (port.direction !== "input") continue;
+      const defaultValue = graphPortDefaultValueOf(port);
+      if (defaultValue !== undefined) {
+        parameters[port.path ?? port.property] = defaultValue;
+      }
+    }
+  }
+  const loopMetadata = graphLegacyLoopMetadataOf(nodeMetadata, nodeDefinition);
+  if (loopMetadata) {
+    for (const key of GRAPH_LOOP_PARAMETER_KEYS) {
+      const value = loopMetadata[key];
+      if (value === undefined || typeof value === "function") continue;
+      if (!isGraphJsonSafeValue(value)) continue;
+      try {
+        parameters[key] = JSON.parse(JSON.stringify(value)) as GraphJsonValue;
+      } catch {
+        // skip non-serializable legacy values
+      }
     }
   }
   return parameters;
+}
+
+/**
+ * Reads the legacy `graph.metadata.loop` bag from either the node metadata or
+ * the node definition shim, so loop-configuration fields can be split between
+ * {@link GraphLoopConfiguration} and instance `parameters` (§4.4.5 rule 6).
+ */
+function graphLegacyLoopMetadataOf(
+  nodeMetadata: GraphWorkflowNodeMetadata,
+  nodeDefinition: GraphNodeDefinitionShim | undefined
+): Record<string, unknown> | undefined {
+  const loopMetadata =
+    ((nodeMetadata.metadata as Record<string, unknown> | undefined)?.["loop"] as
+      | Record<string, unknown>
+      | undefined) ??
+    (nodeDefinition?.graph?.metadata as Record<string, unknown> | undefined)?.["loop"];
+  return loopMetadata && typeof loopMetadata === "object"
+    ? (loopMetadata as Record<string, unknown>)
+    : undefined;
 }
 
 function graphLoopConfigurationOf(
