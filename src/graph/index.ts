@@ -10,4 +10,7 @@ export * from "./reader";
 export * from "./document";
 export * from "./catalog";
 export * from "./types";
+export * from "./GraphExecutionStateMapper";
+export * from "./GraphResolution";
+export * from "./nodes";
 export * from "./overrides";
