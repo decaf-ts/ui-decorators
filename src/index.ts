@@ -11,6 +11,7 @@ import { Metadata } from "@decaf-ts/decoration";
 export * from "./overrides";
 export * from "./model";
 export * from "./ui";
+export * from "./dashboard";
 
 /**
  * @description Current package version string
