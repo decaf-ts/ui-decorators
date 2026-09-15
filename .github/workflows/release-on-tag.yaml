@@ -1,33 +1,22 @@
-name: Release
+name: "Release on Tag"
+
+# Triggered by the tag pushed from release-on-merge-pr.yml. Runs the snyk +
+# trivy release gates, then creates a GitHub Release, which in turn triggers
+# publish-on-release (npm publish). A failing gate blocks the release.
+# Thin caller of decaf-ts/reusable-actions/.github/workflows/release-on-tag.yaml.
 
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
-      - '!*-alpha'
+      - '[0-9]+.[0-9]+.[0-9]+'
       - '!*-no-ci'
+  workflow_dispatch:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Get the version
-        id: get_version
-        run: echo "::set-output name=VERSION::${GITHUB_REF}"
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ steps.get_version.outputs.VERSION }}
-          prerelease: false
-          files: |
-            Release.txt
-            README.md
-            LICENSE.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.CONSECUTIVE_ACTION_TRIGGER }}
+    uses: decaf-ts/reusable-actions/.github/workflows/release-on-tag.yaml@master
+    permissions:
+      contents: write
+      security-events: write
+    secrets: inherit

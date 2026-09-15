@@ -1,16 +1,14 @@
-name: 'coverage'
+name: 'Test Coverage'
+
+# Thin caller of decaf-ts/reusable-actions/.github/workflows/jest-coverage.yaml.
+# Boots integration-test infra via 'npm run prepare-it-tests' before testing.
+
 on:
   pull_request:
-    branches:
-      - master
-      - main
+    branches: [ master, main ]
+  workflow_dispatch:
+
 jobs:
   coverage:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - uses: actions/checkout@v1
-      - uses: artiomtr/jest-coverage-report-action@v2.0-rc.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          threshold: 80 # optional parameter
+    uses: decaf-ts/reusable-actions/.github/workflows/jest-coverage.yaml@master
+    secrets: inherit

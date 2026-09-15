@@ -1,27 +1,420 @@
-import {ValidationKeys} from "@tvenceslau/decorator-validation/lib";
+/**
+ * @description Constants and enums for UI rendering and validation
+ * @summary Defines keys, mappings, and HTML5 input types for UI components
+ * This module provides constants used throughout the UI decorators library for
+ * rendering, validation, and HTML element generation.
+ * @module ui/constants
+ * @memberOf module:ui-decorators
+ */
+
+import {
+  DateValidator,
+  DiffValidator,
+  EmailValidator,
+  EqualsValidator,
+  GreaterThanOrEqualValidator,
+  GreaterThanValidator,
+  LessThanOrEqualValidator,
+  LessThanValidator,
+  MaxLengthValidator,
+  MaxValidator,
+  MinLengthValidator,
+  MinValidator,
+  PasswordValidator,
+  PatternValidator,
+  RequiredValidator,
+  StepValidator,
+  URLValidator,
+  ValidationKeys,
+  Validator,
+} from "@decaf-ts/decorator-validation";
+import { Constructor } from "@decaf-ts/decoration";
+import { OperationKeys } from "@decaf-ts/db-decorators";
+
+export enum UIMediaBreakPoints {
+  SMALL = "small",
+  MEDIUM = "medium",
+  LARGE = "large",
+  XLARGE = "xlarge",
+}
 
 /**
- * @enum UIKeys
- * @category Constants
+ * @description Key constants used for UI metadata and rendering
+ * @summary Collection of string constants used as keys for UI-related metadata
+ * These keys are used throughout the library to store and retrieve metadata related to
+ * UI models, elements, properties, and validation rules.
+ *
+ * @typedef {Object} UIKeysType
+ * @property {string} REFLECT - Base reflection key for UI metadata
+ * @property {string} UIMODEL - Key for UI model metadata
+ * @property {string} RENDERED_BY - Key for specifying rendering engine
+ * @property {string} ELEMENT - Key for element metadata
+ * @property {string} PROP - Key for property metadata
+ * @property {string} NAME - Key for name attribute
+ * @property {string} NAME_PREFIX - Prefix for input names
+ * @property {string} CUSTOM_PROPS - Key for custom validation properties
+ * @property {string} UILISTMODEL - Key for list item metadata
+ * @property {string} UILISTPROP - Key for list property metadata
+ * @property {string} TYPE - Key for type metadata
+ * @property {string} SUB_TYPE - Key for subtype metadata
+ * @property {string} HIDDEN - Key for hidden attribute
+ * @property {string} FORMAT - Key for format metadata
+ * @property {string} READ_ONLY - Key for readonly attribute
+ * @property {string} REQUIRED - Key for required validation
+ * @property {string} MIN - Key for minimum value validation
+ * @property {string} MIN_LENGTH - Key for minimum length validation
+ * @property {string} MAX - Key for maximum value validation
+ * @property {string} MAX_LENGTH - Key for maximum length validation
+ * @property {string} PATTERN - Key for pattern validation
+ * @property {string} URL - Key for URL validation
+ * @property {string} STEP - Key for step validation
+ * @property {string} DATE - Key for date validation
+ * @property {string} EMAIL - Key for email validation
+ * @property {string} PASSWORD - Key for password validation
+ * @property {string} EQUALS - Key for equality validation
+ * @property {string} DIFF - Key for difference validation
+ * @property {string} LESS_THAN - Key for less than validation
+ * @property {string} LESS_THAN_OR_EQUAL - Key for less than or equal validation
+ * @property {string} GREATER_THAN - Key for greater than validation
+ * @property {string} GREATER_THAN_OR_EQUAL - Key for greater than or equal validation
+ *
+ * @const UIKeys
+ * @type {UIKeysType}
+ * @readonly
+ * @memberOf module:ui-decorators
  */
 export const UIKeys = {
-    REFLECT: 'model.ui.',
-    UIMODEL: 'uimodel',
-    ELEMENT: 'element',
-    NAME: 'name',
-    NAME_PREFIX: 'input-',
+  REFLECT: `ui`,
+  UIMODEL: "uimodel",
+  RENDERED_BY: "rendered-by",
+  ELEMENT: "uielement",
+  PROP: "uiprop",
+  CHILD: "uichild",
+  NAME: "name",
+  NAME_PREFIX: "input-",
+  VALIDATION_MESSAGE: "validationMessage",
 
-    TYPE: 'type',
-    SUB_TYPE: 'subtype',
+  UILISTMODEL: "uilistmodel",
+  UILISTPROP: "uilistprop",
+  UILAYOUT: "uilayout",
+  UILAYOUTPROP: "uilayoutprop",
+  HANDLERS: "handlers",
 
-    REQUIRED: ValidationKeys.REQUIRED,
-    MIN: ValidationKeys.MIN,
-    MIN_LENGTH: ValidationKeys.MIN_LENGTH,
-    MAX: ValidationKeys.MAX,
-    MAX_LENGTH: ValidationKeys.MAX_LENGTH,
-    PATTERN: ValidationKeys.PATTERN,
-    URL: ValidationKeys.URL,
-    STEP: ValidationKeys.STEP,
-    DATE: ValidationKeys.DATE,
-    EMAIL: ValidationKeys.EMAIL
-}
+  TYPE: "type",
+  SUB_TYPE: "subType",
+
+  HIDDEN: "hidden",
+  HIDE_FOR: "hide-for",
+  SHOW_FOR: "show-for",
+  RENDER_IF: "render-if",
+  FORMAT: "format",
+  ORDER: "order",
+  PAGE: "page",
+  EVENTS: "events",
+
+  FIRST: "first",
+  LAST: "last",
+
+  READ_ONLY: "readonly",
+  SEQUENCE: "sequence",
+  REQUIRED: ValidationKeys.REQUIRED,
+  MIN: ValidationKeys.MIN,
+  MIN_LENGTH: ValidationKeys.MIN_LENGTH,
+  MAX: ValidationKeys.MAX,
+  MAX_LENGTH: ValidationKeys.MAX_LENGTH,
+  PATTERN: ValidationKeys.PATTERN,
+  URL: ValidationKeys.URL,
+  STEP: ValidationKeys.STEP,
+  DATE: ValidationKeys.DATE,
+  EMAIL: ValidationKeys.EMAIL,
+  PASSWORD: ValidationKeys.PASSWORD,
+  EQUALS: ValidationKeys.EQUALS,
+  DIFF: ValidationKeys.DIFF,
+  LESS_THAN: ValidationKeys.LESS_THAN,
+  LESS_THAN_OR_EQUAL: ValidationKeys.LESS_THAN_OR_EQUAL,
+  GREATER_THAN: ValidationKeys.GREATER_THAN,
+  GREATER_THAN_OR_EQUAL: ValidationKeys.GREATER_THAN_OR_EQUAL,
+};
+
+/**
+ * @description Mapping of input types to their corresponding validators
+ * @summary Maps special input types to their validator classes
+ * This constant maps input types like email, URL, date, and password to their
+ * corresponding validator classes from the decorator-validation library.
+ *
+ * @typedef {Object.<string, Constructor<Validator>>} ValidatableByTypeMap
+ * @property {Constructor<EmailValidator>} email - Validator for email inputs
+ * @property {Constructor<URLValidator>} url - Validator for URL inputs
+ * @property {Constructor<DateValidator>} date - Validator for date inputs
+ * @property {Constructor<PasswordValidator>} password - Validator for password inputs
+ *
+ * @const ValidatableByType
+ * @type {ValidatableByTypeMap}
+ * @readonly
+ * @memberOf module:ui-decorators
+ */
+export const ValidatableByType: Record<string, Constructor<Validator>> = {
+  [UIKeys.EMAIL]: EmailValidator,
+  [UIKeys.URL]: URLValidator,
+  [UIKeys.DATE]: DateValidator,
+  [UIKeys.PASSWORD]: PasswordValidator,
+};
+
+/**
+ * @description Mapping of validation attributes to their corresponding validators
+ * @summary Maps HTML validation attributes to their validator classes
+ * This constant maps HTML validation attributes like required, min, max, pattern, etc.
+ * to their corresponding validator classes from the decorator-validation library.
+ *
+ * @typedef {Object.<string, Constructor<Validator>>} ValidatableByAttributeMap
+ * @property {Constructor<RequiredValidator>} required - Validator for required fields
+ * @property {Constructor<MinValidator>} min - Validator for minimum value
+ * @property {Constructor<MaxValidator>} max - Validator for maximum value
+ * @property {Constructor<StepValidator>} step - Validator for step value
+ * @property {Constructor<MinLengthValidator>} minlength - Validator for minimum length
+ * @property {Constructor<MaxLengthValidator>} maxlength - Validator for maximum length
+ * @property {Constructor<PatternValidator>} pattern - Validator for regex pattern
+ * @property {Constructor<EqualsValidator>} equals - Validator for equality
+ * @property {Constructor<DiffValidator>} diff - Validator for difference
+ * @property {Constructor<LessThanValidator>} lessthan - Validator for less than comparison
+ * @property {Constructor<LessThanOrEqualValidator>} lessthanorequal - Validator for less than or equal comparison
+ * @property {Constructor<GreaterThanValidator>} greaterthan - Validator for greater than comparison
+ * @property {Constructor<GreaterThanOrEqualValidator>} greaterthanorequal - Validator for greater than or equal comparison
+ *
+ * @const ValidatableByAttribute
+ * @type {ValidatableByAttributeMap}
+ * @readonly
+ * @memberOf module:ui-decorators
+ */
+export const ValidatableByAttribute: Record<string, Constructor<Validator>> = {
+  [UIKeys.REQUIRED]: RequiredValidator,
+  [UIKeys.MIN]: MinValidator,
+  [UIKeys.MAX]: MaxValidator,
+  [UIKeys.STEP]: StepValidator,
+  [UIKeys.MIN_LENGTH]: MinLengthValidator,
+  [UIKeys.MAX_LENGTH]: MaxLengthValidator,
+  [UIKeys.PATTERN]: PatternValidator,
+  [UIKeys.EQUALS]: EqualsValidator,
+  [UIKeys.DIFF]: DiffValidator,
+  [UIKeys.LESS_THAN]: LessThanValidator,
+  [UIKeys.LESS_THAN_OR_EQUAL]: LessThanOrEqualValidator,
+  [UIKeys.GREATER_THAN]: GreaterThanValidator,
+  [UIKeys.GREATER_THAN_OR_EQUAL]: GreaterThanOrEqualValidator,
+};
+
+/**
+ * @description Standard date format string for HTML5 date inputs
+ * @summary Format string for HTML5 date inputs (yyyy-MM-dd)
+ * This constant defines the standard date format string used for HTML5 date inputs.
+ *
+ * @const HTML5DateFormat
+ * @type {string}
+ * @readonly
+ * @memberOf module:ui-decorators
+ */
+export const HTML5DateFormat = "yyyy-MM-dd";
+
+/**
+ * @description Collection of HTML5 input type values
+ * @summary Maps input type constants to their HTML attribute values
+ * This constant provides a mapping of input type constants to their corresponding
+ * HTML attribute values for use in form elements.
+ *
+ * @typedef {Object} HTML5InputTypesMap
+ * @property {string} BUTTON - Button input type
+ * @property {string} CHECKBOX - Checkbox input type
+ * @property {string} COLOR - Color picker input type
+ * @property {string} DATE - Date picker input type
+ * @property {string} DATETIME_LOCAL - Local datetime picker input type
+ * @property {string} EMAIL - Email input type with validation
+ * @property {string} FILE - File upload input type
+ * @property {string} HIDDEN - Hidden input type
+ * @property {string} IMAGE - Image input type
+ * @property {string} MONTH - Month picker input type
+ * @property {string} NUMBER - Numeric input type
+ * @property {string} PASSWORD - Password input type with masked text
+ * @property {string} RADIO - Radio button input type
+ * @property {string} RANGE - Range slider input type
+ * @property {string} RESET - Form reset button input type
+ * @property {string} SEARCH - Search input type
+ * @property {string} SUBMIT - Form submit button input type
+ * @property {string} TEL - Telephone number input type
+ * @property {string} TEXT - Basic text input type
+ * @property {string} TIME - Time picker input type
+ * @property {string} URL - URL input type with validation
+ * @property {string} WEEK - Week picker input type
+ *
+ * @const HTML5InputTypes
+ * @type {HTML5InputTypesMap}
+ * @readonly
+ * @memberOf module:ui-decorators
+ */
+export const HTML5InputTypes = {
+  BUTTON: "button",
+  CHECKBOX: "checkbox",
+  COLOR: "color",
+  DATE: UIKeys.DATE,
+  DATETIME_LOCAL: "datetime-local",
+  EMAIL: UIKeys.EMAIL,
+  FILE: "file",
+  HIDDEN: "hidden",
+  IMAGE: "image",
+  MONTH: "month",
+  NUMBER: "number",
+  PASSWORD: UIKeys.PASSWORD,
+  RADIO: "radio",
+  RANGE: "range",
+  RESET: "reset",
+  SEARCH: "search",
+  SUBMIT: "submit",
+  TEL: "tel",
+  TEXT: "text",
+  TEXTAREA: "textarea",
+  SELECT: "select",
+  TIME: "time",
+  URL: UIKeys.URL,
+  WEEK: "week",
+};
+
+/**
+ * @description Array of HTML5 input types that use checkboxes
+ * @summary List of input types that represent checkable controls
+ * This constant defines an array of HTML5 input types that represent
+ * checkable controls (checkbox and radio).
+ *
+ * @const HTML5CheckTypes
+ * @type {string[]}
+ * @readonly
+ * @memberOf module:ui-decorators
+ */
+export const HTML5CheckTypes: string[] = [
+  HTML5InputTypes.CHECKBOX,
+  HTML5InputTypes.RADIO,
+];
+
+/**
+ * @description Event name constants.
+ * @summary Contains constants for standardized event names used throughout the application.
+ * These constants ensure consistent event naming across components and make it easier to
+ * track and handle events. Each constant represents a specific application event type.
+ * @typedef {Object} ComponentEventNames
+ * @property {string} BackButtonClickEvent - Event fired when back button navigation ends
+ * @property {string} Render - Event after component initialize action occurs
+ * @property {string} Refresh - Event fired when a refresh action occurs
+ * @property {string} Click - Event fired when a click action occurs
+ * @property {string} Change - Event fired when a change action occurs
+ * @property {string} Submit - Event fired when a form submission occurs
+ * @property {string} ValidationError - Event fired when a validation error occurs
+ * @property {string} ThemeChange - Event fired when a theme change occurs
+ * @property {string} FormGroupLoaded - Event fired when a reactve form group is loaded
+ * @const ComponentEventNames
+ */
+export const ComponentEventNames = {
+  Render: "render",
+  BackButtonClickEvent: "backButtonNavigationEndEvent",
+  Refresh: "RefreshEvent",
+  Click: "ClickEvent",
+  Change: "ChangeEvent",
+  Submit: "SubmitEvent",
+  ValidationError: "validationErrorEvent",
+  ThemeChange: "themeChangeEvent",
+  FormGroupLoaded: "formGroupLoadedEvent",
+} as const;
+
+/**
+ * @description Lifecycle hook labels for repository transactions.
+ * @summary Provides canonical names for CRUD lifecycle callbacks so decorators and
+ * components can register work before or after repository operations in a consistent way.
+ * Each key maps to the string used when wiring transaction middleware.
+ * @const TransactionHooks
+ */
+export const TransactionHooks = {
+  BeforeRead: "beforeRead",
+  AfterRead: "afterRead",
+  BeforeCreate: "beforeCreate",
+  AfterCreate: "afterCreate",
+  BeforeUpdate: "beforeUpdate",
+  AfterUpdate: "afterUpdate",
+  BeforeDelete: "beforeDelete",
+  AfterDelete: "afterDelete",
+} as const;
+
+/**
+ * @description Standardized size tokens for UI elements.
+ * @summary Defines the semantic size keywords supported by layout and form decorators.
+ * These values feed rendering engines so components can express sizing in a uniform vocabulary.
+ * @const ElementSizes
+ */
+export const ElementSizes = {
+  xsmall: "xsmall",
+  small: "small",
+  medium: "medium",
+  default: "default",
+  large: "large",
+  xLarge: "xlarge",
+  "2xLarge": "2xlarge",
+  auto: "auto",
+  expand: "expand",
+  block: "block",
+  half: "half",
+  full: "full",
+} as const;
+
+/**
+ * @description Alignment keywords for element positioning.
+ * @summary Supplies canonical position values (horizontal and vertical) that decorators can
+ * use when aligning labels, controls, or helper text across components.
+ * @const ElementPositions
+ */
+export const ElementPositions = {
+  left: "left",
+  center: "center",
+  right: "right",
+  top: "top",
+  bottom: "bottom",
+} as const;
+
+/**
+ * @description Grid spacing presets for layout decorators.
+ * @summary Maps human-readable gap sizes to the tokens interpreted by the rendering engine
+ * when building CSS grid layouts, enabling predictable spacing across components.
+ * @const LayoutGridGaps
+ */
+export const LayoutGridGaps = {
+  small: "small",
+  medium: "medium",
+  large: "large",
+  collapse: "collapse",
+  none: "",
+} as const;
+
+/**
+ * @description Canonical action role identifiers for UI controls.
+ * @summary Enumerates the semantic roles a button or action may represent so decorators and
+ * renderers can attach consistent behaviors and styling (including CRUD verbs tied to
+ * `OperationKeys`).
+ * @const ActionRoles
+ */
+export const ActionRoles = {
+  cancel: "cancel",
+  confirm: "confirm",
+  submit: "submit",
+  clear: "clear",
+  back: "back",
+  [OperationKeys.CREATE]: OperationKeys.CREATE,
+  [OperationKeys.READ]: OperationKeys.READ,
+  [OperationKeys.UPDATE]: OperationKeys.UPDATE,
+  [OperationKeys.DELETE]: OperationKeys.DELETE,
+} as const;
+
+/**
+ * @description Allowed color scheme tokens for windowed surfaces.
+ * @summary Provides the supported theme identifiers exposed to consuming apps so they
+ * can target light, dark, or unset window color schemes in a predictable way.
+ * @const WindowColorSchemes
+ */
+export const WindowColorSchemes = {
+  light: "light",
+  dark: "dark",
+  undefined: "undefined",
+} as const;
