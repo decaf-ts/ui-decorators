@@ -1,0 +1,5815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decaf's UI Decorator Library DecafComponent</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">ui-decorators</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-Contributing.html">
+                                Contributing
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-Documentation.html">
+                                Documentation
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-For Developers.html">
+                                For Developers
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/html/test-report.html"
+                        >
+                            Test Results
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/coverage"
+                        >
+                            Test Coverage
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts/ui-decorators#readme"
+                        >
+                            Github Repository
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts"
+                        >
+                            Github Profile
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li><li><a href="module-ui-decorators.module_ui_constants.html">ui/constants</a></li><li><a href="module-ui-decorators_model.module_model_overrides.html">model/overrides</a></li><li><a href="module-ui-decorators_overrides.html">ui-decorators/overrides</a></li></ul><h3>Classes</h3><ul><li><a href="DecafComponent.html">DecafComponent</a></li><li><a href="DecafEventHandler_DecafEventHandler.html">DecafEventHandler</a></li><li><a href="RenderingEngine.html">RenderingEngine</a></li><li><a href="RenderingError_RenderingError.html">RenderingError</a></li><li><a href="module-ui-decorators_ui.EventHandler.html">EventHandler</a></li></ul><h3>Interfaces</h3><ul><li><a href="GraphCategoryStyle.html">GraphCategoryStyle</a></li><li><a href="GraphPinnableOptions.html">GraphPinnableOptions</a></li><li><a href="GraphPinningMetadata.html">GraphPinningMetadata</a></li><li><a href="module-ui-decorators.CrudFormField.html">CrudFormField</a></li><li><a href="module-ui-decorators.FieldDefinition.html">FieldDefinition</a></li><li><a href="module-ui-decorators.FieldProperties.html">FieldProperties</a></li><li><a href="module-ui-decorators.IPagedComponentProperties.html">IPagedComponentProperties</a></li><li><a href="module-ui-decorators_model.Renderable.html">Renderable</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafRouter.html">IDecafRouter</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafSpinner.html">IDecafSpinner</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafToast.html">IDecafToast</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GRAPH_CATEGORY_STYLE_REGISTRY">GRAPH_CATEGORY_STYLE_REGISTRY</a></li><li><a href="global.html#GRAPH_DEFAULT_CATEGORY_STYLE">GRAPH_DEFAULT_CATEGORY_STYLE</a></li><li><a href="global.html#connection">connection</a></li><li><a href="global.html#getUIAttributeKey">getUIAttributeKey</a></li><li><a href="global.html#graphCategoryStyleOf">graphCategoryStyleOf</a></li><li><a href="global.html#isClassConstructor">isClassConstructor</a></li><li><a href="global.html#pinnable">pinnable</a></li><li><a href="global.html#registerGraphCategoryStyle">registerGraphCategoryStyle</a></li><li><a href="global.html#resolveEffectiveColor">resolveEffectiveColor</a></li><li><a href="global.html#resolveEffectiveIcon">resolveEffectiveIcon</a></li><li><a href="global.html#resolvePortGroups">resolvePortGroups</a></li><li><a href="global.html#schemaGroupPorts">schemaGroupPorts</a></li><li><a href="global.html#uionclick">uionclick</a></li><li><a href="global.html#uionrender">uionrender</a></li></ul></div><div class="category"><h2>Class Decorators</h2><h3>Global</h3><ul><li><a href="global.html#renderedBy">renderedBy</a></li><li><a href="global.html#uihandlers">uihandlers</a></li><li><a href="global.html#uilayout">uilayout</a></li><li><a href="global.html#uilistmodel">uilistmodel</a></li><li><a href="global.html#uimodel">uimodel</a></li><li><a href="global.html#uisteppedmodel">uisteppedmodel</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="RenderingError.html">RenderingError</a></li></ul></div><div class="category"><h2>Property Decorators</h2><h3>Global</h3><ul><li><a href="global.html#hidden">hidden</a></li><li><a href="global.html#hideOn">hideOn</a></li><li><a href="global.html#uichild">uichild</a></li><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uilayoutprop">uilayoutprop</a></li><li><a href="global.html#uilistprop">uilistprop</a></li><li><a href="global.html#uiorder">uiorder</a></li><li><a href="global.html#uipageprop">uipageprop</a></li><li><a href="global.html#uiprop">uiprop</a></li><li><a href="global.html#uitablecol">uitablecol</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Class</p>
+                    <h1>DecafComponent</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>DecafComponent<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="DecafComponent">
+        <a class="href-link" href="#DecafComponent">#</a>
+        
+        <span class="code-name">
+            
+                new DecafComponent<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Base class for all Decaf UI components, providing common state management,
+logging, localization, navigation hooks, CRUD context metadata, and
+repository integration used by higher-level decorators and renderers.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Base class for all Decaf UI components</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line11">line 11</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="DecafComponent.html">DecafComponent</a></dt>
+            <dd><p>Base class for all Decaf UI components, providing common state management,
+logging, localization, navigation hooks, CRUD context metadata, and
+repository integration used by higher-level decorators and renderers.</p></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="OperationKeys">
+    <a class="href-link" href="#OperationKeys">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        OperationKeys
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Exposes the OperationKeys enum to the component template, enabling
+conditional rendering and behavior based on operation types. This protected
+readonly property ensures that template logic can access operation constants
+while maintaining encapsulation and preventing accidental modification.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Reference to CRUD operation constants for template usage.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line206">line 206</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="OperationKeys">
+    <a class="href-link" href="#OperationKeys">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        OperationKeys
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Exposes the OperationKeys enum to the component template, enabling
+conditional rendering and behavior based on operation types. This protected
+readonly property ensures that template logic can access operation constants
+while maintaining encapsulation and preventing accidental modification.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Reference to CRUD operation constants for template usage.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line592">line 592</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="_repository">
+    <a class="href-link" href="#_repository">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        _repository
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a connection to the data layer for retrieving and manipulating data.
+This is an instance of the DecafRepository class, initialized lazily in the repository getter.
+The repository is used to perform CRUD (Create, Read, Update, Delete) operations on the
+data model and provides methods for querying and filtering data based on specific criteria.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Repository instance for data layer operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line227">line 227</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">IRepository.&lt;M></code>
+
+
+    </span>
+
+<h4 class="name" id="_repository">
+    <a class="href-link" href="#_repository">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        _repository
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a connection to the data layer for retrieving and manipulating data.
+This is an instance of the DecafRepository class, initialized lazily in the repository getter.
+The repository is used to perform CRUD (Create, Read, Update, Delete) operations on the
+data model and provides methods for querying and filtering data based on specific criteria.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Repository instance for data layer operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line616">line 616</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="borders">
+    <a class="href-link" href="#borders">#</a>
+    
+    <span class="code-name">
+        borders
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Boolean flag that determines if the component should be visually outlined with borders.
+When true, borders are shown to visually separate the component from surrounding content.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Controls whether borders are displayed around the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line176">line 176</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="borders">
+    <a class="href-link" href="#borders">#</a>
+    
+    <span class="code-name">
+        borders
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Boolean flag that determines if the component should be visually outlined with borders.
+When true, borders are shown to visually separate the component from surrounding content.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Controls whether borders are displayed around the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line556">line 556</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="changeDetectorRef">
+    <a class="href-link" href="#changeDetectorRef">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        changeDetectorRef
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides manual control over change detection cycles.
+This is essential for ensuring that programmatic DOM changes (like setting accordion
+attributes) are properly reflected in the component's state and trigger appropriate
+view updates when modifications occur outside the normal Angular change detection flow.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Angular change detection service for manual change detection control.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line104">line 104</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">any</code>
+
+
+    </span>
+
+<h4 class="name" id="changeDetectorRef">
+    <a class="href-link" href="#changeDetectorRef">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        changeDetectorRef
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides manual control over change detection cycles.
+This is essential for ensuring that programmatic DOM changes (like setting accordion
+attributes) are properly reflected in the component's state and trigger appropriate
+view updates when modifications occur outside the normal Angular change detection flow.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Angular change detection service for manual change detection control.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line472">line 472</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="childOf">
+    <a class="href-link" href="#childOf">#</a>
+    
+    <span class="code-name">
+        childOf
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the identifier of the parent component in a hierarchical component structure.
+This property establishes a parent-child relationship between components, allowing for
+proper nesting and organization of components within a layout. It can be used to track
+component dependencies and establish component hierarchies for rendering and event propagation.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Parent component identifier for hierarchical component relationships.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line73">line 73</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+|
+
+<code class="param-type">undefined</code>
+
+
+    </span>
+
+<h4 class="name" id="childOf">
+    <a class="href-link" href="#childOf">#</a>
+    
+    <span class="code-name">
+        childOf
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the identifier of the parent component in a hierarchical component structure.
+This property establishes a parent-child relationship between components, allowing for
+proper nesting and organization of components within a layout. It can be used to track
+component dependencies and establish component hierarchies for rendering and event propagation.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Parent component identifier for hierarchical component relationships.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line435">line 435</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="componentName">
+    <a class="href-link" href="#componentName">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        componentName
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Stores the component's name which is used as a key for logging contexts
+and as a base for locale resolution.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Component name identifier for logging and localization contexts.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line183">line 183</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="componentName">
+    <a class="href-link" href="#componentName">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        componentName
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Stores the component's name which is used as a key for logging contexts
+and as a base for locale resolution.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Component name identifier for logging and localization contexts.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line565">line 565</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="enableDarkMode">
+    <a class="href-link" href="#enableDarkMode">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        enableDarkMode
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>When enabled, the component will automatically detect the system's dark mode
+preference using the media service and apply appropriate styling classes. This flag
+controls whether the component should respond to dark mode changes and apply the
+dark palette class to its DOM element. By default, dark mode support is disabled.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag to enable or disable dark mode support for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line127">line 127</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="enableDarkMode">
+    <a class="href-link" href="#enableDarkMode">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        enableDarkMode
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>When enabled, the component will automatically detect the system's dark mode
+preference using the media service and apply appropriate styling classes. This flag
+controls whether the component should respond to dark mode changes and apply the
+dark palette class to its DOM element. By default, dark mode support is disabled.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag to enable or disable dark mode support for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line500">line 500</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="filter">
+    <a class="href-link" href="#filter">#</a>
+    
+    <span class="code-name">
+        filter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Supply a custom <code>AttributeOption</code> to control how records are constrained. When omitted,
+the directive derives a condition from <code>filterBy</code> or <code>pk</code>, comparing it against <code>modelId</code>.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Pre-built filtering expression applied to repository queries.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line33">line 33</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">any</code>
+
+
+    </span>
+
+<h4 class="name" id="filter">
+    <a class="href-link" href="#filter">#</a>
+    
+    <span class="code-name">
+        filter
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Supply a custom <code>AttributeOption</code> to control how records are constrained. When omitted,
+the directive derives a condition from <code>filterBy</code> or <code>pk</code>, comparing it against <code>modelId</code>.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Pre-built filtering expression applied to repository queries.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line390">line 390</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="filterBy">
+    <a class="href-link" href="#filterBy">#</a>
+    
+    <span class="code-name">
+        filterBy
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Indicates which key should be compared to <code>modelId</code> when <code>filter</code> is not provided.
+Defaults to the configured primary key so overrides are only needed for custom lookups.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Model field used when generating the default condition.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line39">line 39</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="filterBy">
+    <a class="href-link" href="#filterBy">#</a>
+    
+    <span class="code-name">
+        filterBy
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Indicates which key should be compared to <code>modelId</code> when <code>filter</code> is not provided.
+Defaults to the configured primary key so overrides are only needed for custom lookups.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Model field used when generating the default condition.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line397">line 397</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="hidden">
+    <a class="href-link" href="#hidden">#</a>
+    
+    <span class="code-name">
+        hidden
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Can be a boolean or an array of operation keys where the field should be hidden.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Controls field visibility based on CRUD operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line109">line 109</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+|
+
+<code class="param-type">Array</code>
+
+
+    </span>
+
+<h4 class="name" id="hidden">
+    <a class="href-link" href="#hidden">#</a>
+    
+    <span class="code-name">
+        hidden
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Can be a boolean or an array of operation keys where the field should be hidden.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Controls field visibility based on CRUD operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line478">line 478</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Tracks whether the component has completed its initialization process.
+This flag is used to prevent duplicate initialization and to determine if
+certain operations that require initialization can be performed.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Initialization status flag for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line235">line 235</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Tracks whether the component has completed its initialization process.
+This flag is used to prevent duplicate initialization and to determine if
+certain operations that require initialization can be performed.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Initialization status flag for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line626">line 626</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="isDarkMode">
+    <a class="href-link" href="#isDarkMode">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        isDarkMode
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>When enabled, the component will automatically detect the system's dark mode
+preference using the media service and apply appropriate styling classes. This flag
+controls whether the component should respond to dark mode changes and apply the
+dark palette class to its DOM element. By default, dark mode support is disabled.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag to enable or disable dark mode support for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line136">line 136</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="isDarkMode">
+    <a class="href-link" href="#isDarkMode">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        isDarkMode
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>When enabled, the component will automatically detect the system's dark mode
+preference using the media service and apply appropriate styling classes. This flag
+controls whether the component should respond to dark mode changes and apply the
+dark palette class to its DOM element. By default, dark mode support is disabled.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag to enable or disable dark mode support for the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line511">line 511</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="item">
+    <a class="href-link" href="#item">#</a>
+    
+    <span class="code-name">
+        item
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines how list items should be rendered in the component.
+This property holds a configuration object that specifies the tag name
+and other properties needed to render list items correctly. The tag property
+identifies which component should be used to render each item in a list.
+Additional properties can be included to customize the rendering behavior.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Configuration for list item rendering behavior.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line153">line 153</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+    </span>
+
+<h4 class="name" id="item">
+    <a class="href-link" href="#item">#</a>
+    
+    <span class="code-name">
+        item
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines how list items should be rendered in the component.
+This property holds a configuration object that specifies the tag name
+and other properties needed to render list items correctly. The tag property
+identifies which component should be used to render each item in a list.
+Additional properties can be included to customize the rendering behavior.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Configuration for list item rendering behavior.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line530">line 530</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="label">
+    <a class="href-link" href="#label">#</a>
+    
+    <span class="code-name">
+        label
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a user-friendly label for the file upload input.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Label for the file upload field.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line114">line 114</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="label">
+    <a class="href-link" href="#label">#</a>
+    
+    <span class="code-name">
+        label
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a user-friendly label for the file upload input.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Label for the file upload field.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line484">line 484</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="locale">
+    <a class="href-link" href="#locale">#</a>
+    
+    <span class="code-name">
+        locale
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the locale code (e.g., 'en-US', 'pt-BR') used for translating UI text
+and formatting data according to regional conventions. This property can be set to override
+the default application locale for this specific component instance, enabling per-component
+localization when needed.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Current locale identifier for component internationalization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line144">line 144</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="locale">
+    <a class="href-link" href="#locale">#</a>
+    
+    <span class="code-name">
+        locale
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the locale code (e.g., 'en-US', 'pt-BR') used for translating UI text
+and formatting data according to regional conventions. This property can be set to override
+the default application locale for this specific component instance, enabling per-component
+localization when needed.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Current locale identifier for component internationalization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line520">line 520</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="localeRoot">
+    <a class="href-link" href="#localeRoot">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        localeRoot
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines the base key used to resolve localization contexts for this component.
+If not explicitly provided, it defaults to the component's name. This key is used to
+load appropriate translation resources and locale-specific configurations.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Root key for component locale context resolution.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line191">line 191</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="localeRoot">
+    <a class="href-link" href="#localeRoot">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        localeRoot
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines the base key used to resolve localization contexts for this component.
+If not explicitly provided, it defaults to the component's name. This key is used to
+load appropriate translation resources and locale-specific configurations.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Root key for component locale context resolution.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line575">line 575</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="location">
+    <a class="href-link" href="#location">#</a>
+    
+    <span class="code-name">
+        location
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides direct access to the browser's URL and history.
+Unlike the Router, Location allows for low-level manipulation of the browser's history stack
+and URL path, such as programmatically navigating back or forward, or updating the URL without
+triggering a route change. This is useful for scenarios where you need to interact with the
+browser history or URL outside of Angular's routing system, such as closing modals, handling
+popstate events, or supporting custom navigation logic.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Angular Location service.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line217">line 217</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">any</code>
+
+
+    </span>
+
+<h4 class="name" id="location">
+    <a class="href-link" href="#location">#</a>
+    
+    <span class="code-name">
+        location
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides direct access to the browser's URL and history.
+Unlike the Router, Location allows for low-level manipulation of the browser's history stack
+and URL path, such as programmatically navigating back or forward, or updating the URL without
+triggering a route change. This is useful for scenarios where you need to interact with the
+browser history or URL outside of Angular's routing system, such as closing modals, handling
+popstate events, or supporting custom navigation logic.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Angular Location service.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line604">line 604</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="model">
+    <a class="href-link" href="#model">#</a>
+    
+    <span class="code-name">
+        model
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>The data model that this component will use for CRUD operations. This can be provided
+as a Model instance, a model constructor, or a string representing the model's registered name.
+When set, this property provides the component with access to the model's schema, validation rules,
+and metadata needed for rendering and data operations.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Data model or model name for component operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">M</code>
+|
+
+<code class="param-type">Model</code>
+|
+
+<code class="param-type">string</code>
+|
+
+<code class="param-type">undefined</code>
+
+
+    </span>
+
+<h4 class="name" id="model">
+    <a class="href-link" href="#model">#</a>
+    
+    <span class="code-name">
+        model
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>The data model that this component will use for CRUD operations. This can be provided
+as a Model instance, a model constructor, or a string representing the model's registered name.
+When set, this property provides the component with access to the model's schema, validation rules,
+and metadata needed for rendering and data operations.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Data model or model name for component operations.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line374">line 374</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="modelId">
+    <a class="href-link" href="#modelId">#</a>
+    
+    <span class="code-name">
+        modelId
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the primary key value for the current model record being displayed or
+manipulated by the component. This identifier is used for CRUD operations that target
+specific records, such as read, update, and delete operations. The value corresponds to
+the field designated as the primary key in the model definition.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Primary key value of the current model instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line27">line 27</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">PrimaryKeyType</code>
+|
+
+<code class="param-type">Array</code>
+
+
+    </span>
+
+<h4 class="name" id="modelId">
+    <a class="href-link" href="#modelId">#</a>
+    
+    <span class="code-name">
+        modelId
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies the primary key value for the current model record being displayed or
+manipulated by the component. This identifier is used for CRUD operations that target
+specific records, such as read, update, and delete operations. The value corresponds to
+the field designated as the primary key in the model definition.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Primary key value of the current model instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line383">line 383</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="name">
+    <a class="href-link" href="#name">#</a>
+    
+    <span class="code-name">
+        name
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a string identifier that can be used to name or label the component
+instance. This name can be used for debugging purposes, logging, or to identify specific
+component instances within a larger application structure. It serves as a human-readable
+identifier that helps distinguish between multiple instances of the same component type.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Name identifier for the component instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line65">line 65</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="name">
+    <a class="href-link" href="#name">#</a>
+    
+    <span class="code-name">
+        name
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides a string identifier that can be used to name or label the component
+instance. This name can be used for debugging purposes, logging, or to identify specific
+component instances within a larger application structure. It serves as a human-readable
+identifier that helps distinguish between multiple instances of the same component type.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Name identifier for the component instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line426">line 426</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">OperationKeys</code>
+
+
+    </span>
+
+<h4 class="name" id="operation">
+    <a class="href-link" href="#operation">#</a>
+    
+    <span class="code-name">
+        operation
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies which operation (Create, Read, Update, Delete) this component instance
+should perform. This determines the UI behavior, form configuration, and available actions.
+The operation affects form validation, field availability, and the specific repository
+method called during data submission.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>The CRUD operation type to be performed on the model.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line49">line 49</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">OperationKeys</code>
+
+
+    </span>
+
+<h4 class="name" id="operation">
+    <a class="href-link" href="#operation">#</a>
+    
+    <span class="code-name">
+        operation
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies which operation (Create, Read, Update, Delete) this component instance
+should perform. This determines the UI behavior, form configuration, and available actions.
+The operation affects form validation, field availability, and the specific repository
+method called during data submission.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>The CRUD operation type to be performed on the model.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line408">line 408</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="pk">
+    <a class="href-link" href="#pk">#</a>
+    
+    <span class="code-name">
+        pk
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies which field in the model should be used as the primary key.
+This is typically used for identifying unique records in operations like update and delete.
+If not explicitly set, it defaults to the repository's configured primary key or 'id'.
+1</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Primary key field name for the data model.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line87">line 87</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="pk">
+    <a class="href-link" href="#pk">#</a>
+    
+    <span class="code-name">
+        pk
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Specifies which field in the model should be used as the primary key.
+This is typically used for identifying unique records in operations like update and delete.
+If not explicitly set, it defaults to the repository's configured primary key or 'id'.
+1</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Primary key field name for the data model.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line452">line 452</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="props">
+    <a class="href-link" href="#props">#</a>
+    
+    <span class="code-name">
+        props
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Contains key-value pairs of dynamic properties that can be applied to the component
+at runtime. This flexible configuration object allows for dynamic property assignment without
+requiring explicit input bindings for every possible configuration option. Properties from
+this object are parsed and applied to the component instance through the parseProps method,
+enabling customizable component behavior based on external configuration.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Dynamic properties configuration for runtime customization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line162">line 162</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+    </span>
+
+<h4 class="name" id="props">
+    <a class="href-link" href="#props">#</a>
+    
+    <span class="code-name">
+        props
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Contains key-value pairs of dynamic properties that can be applied to the component
+at runtime. This flexible configuration object allows for dynamic property assignment without
+requiring explicit input bindings for every possible configuration option. Properties from
+this object are parsed and applied to the component instance through the parseProps method,
+enabling customizable component behavior based on external configuration.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Dynamic properties configuration for runtime customization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line540">line 540</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="readonly">
+    <a class="href-link" href="#readonly">#</a>
+    
+    <span class="code-name">
+        readonly
+    </span>
+    
+</h4>
+
+
+<p class="summary">Whether the field is read-only.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Whether the field is read-only.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line118">line 118</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="readonly">
+    <a class="href-link" href="#readonly">#</a>
+    
+    <span class="code-name">
+        readonly
+    </span>
+    
+</h4>
+
+
+<p class="summary">Whether the field is read-only.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Whether the field is read-only.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line489">line 489</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="route">
+    <a class="href-link" href="#route">#</a>
+    
+    <span class="code-name">
+        route
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines the base route path used for navigation actions related to this component.
+This is often used as a prefix for constructing navigation URLs when transitioning between
+different operations or views. The route helps establish the component's position in the
+application's routing hierarchy.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Base route path for component navigation.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line170">line 170</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">string</code>
+
+
+    </span>
+
+<h4 class="name" id="route">
+    <a class="href-link" href="#route">#</a>
+    
+    <span class="code-name">
+        route
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines the base route path used for navigation actions related to this component.
+This is often used as a prefix for constructing navigation URLs when transitioning between
+different operations or views. The route helps establish the component's position in the
+application's routing hierarchy.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Base route path for component navigation.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line549">line 549</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="router">
+    <a class="href-link" href="#router">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        router
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected Router service used for programmatic navigation between routes
+in the application. This service enables navigation to different views and operations,
+handles route parameters, and manages the browser's navigation history.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Router instance for programmatic navigation.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line57">line 57</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">any</code>
+
+
+    </span>
+
+<h4 class="name" id="router">
+    <a class="href-link" href="#router">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        router
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected Router service used for programmatic navigation between routes
+in the application. This service enables navigation to different views and operations,
+handles route parameters, and manages the browser's navigation history.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Router instance for programmatic navigation.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line417">line 417</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="translateService">
+    <a class="href-link" href="#translateService">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        translateService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides translation capabilities for UI text.
+Used to translate button labels, validation messages, and other text content based
+on the current locale setting, enabling multilingual support throughout the application.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Translation service for application internationalization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line95">line 95</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">DecafTranslateService</code>
+
+
+    </span>
+
+<h4 class="name" id="translateService">
+    <a class="href-link" href="#translateService">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        translateService
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Injected service that provides translation capabilities for UI text.
+Used to translate button labels, validation messages, and other text content based
+on the current locale setting, enabling multilingual support throughout the application.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Translation service for application internationalization.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line461">line 461</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="uid">
+    <a class="href-link" href="#uid">#</a>
+    
+    <span class="code-name">
+        uid
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>A unique identifier automatically generated for each component instance.
+This UID is used for DOM element identification, component tracking, and debugging purposes.
+By default, it generates a random 16-character value, but it can be explicitly set via input.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Unique identifier for the component instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line80">line 80</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">PrimaryKeyType</code>
+
+
+    </span>
+
+<h4 class="name" id="uid">
+    <a class="href-link" href="#uid">#</a>
+    
+    <span class="code-name">
+        uid
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>A unique identifier automatically generated for each component instance.
+This UID is used for DOM element identification, component tracking, and debugging purposes.
+By default, it generates a random 16-character value, but it can be explicitly set via input.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Unique identifier for the component instance.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line443">line 443</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="value">
+    <a class="href-link" href="#value">#</a>
+    
+    <span class="code-name">
+        value
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Can be a string, number, date, or array of string or objects.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Current value of the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line196">line 196</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">any</code>
+
+
+    </span>
+
+<h4 class="name" id="value">
+    <a class="href-link" href="#value">#</a>
+    
+    <span class="code-name">
+        value
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Can be a string, number, date, or array of string or objects.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Current value of the component.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line581">line 581</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="initialize">
+        <a class="href-link" href="#initialize">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+        
+        <span class="code-name">
+            
+                initialize<span class="signature">(args)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Asynchronously initializes the component with the provided arguments.</p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Asynchronously initializes the component with the provided arguments.
+This method sets the <code>initialized</code> property to <code>true</code> once the initialization is complete.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>A variable number of arguments of unknown types that can be used for initialization.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line636">line 636</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when the initialization is complete.</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="parseEvents">
+        <a class="href-link" href="#parseEvents">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                parseEvents<span class="signature">(events, instance)</span><span class="type-signature"> &rarr; {UIEventProperty}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Processes an events map produced by decorators where each value can be a factory
+returning a function or a component constructor. When a constructor is returned, the method
+matching the event key is instantiated and stored; otherwise the produced function is
+assigned directly. This enables flexible event binding definitions for derived components.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Registers event callbacks on the component instance.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>events</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Dictionary of event names mapped to function factories or component constructors.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>instance</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Optional component instance to receive the events; defaults to <code>this</code>.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line683">line 683</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">UIEventProperty</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="parseHandlers">
+        <a class="href-link" href="#parseHandlers">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                parseHandlers<span class="signature">(handlers, instance)</span><span class="type-signature"> &rarr; {UIEventProperty}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Iterates through a handlers map and ensures each entry is stored as a callable
+function on the component. Plain functions are stored directly, while handler classes are
+instantiated so their <code>handle</code> method (or a keyed override) becomes the registered handler.
+This allows decorators to accept either inline functions or handler classes transparently.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Normalizes handler definitions into executable functions.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>handlers</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Dictionary of handler names mapped to functions or handler constructors.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>instance</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Optional target handler instance; defaults to the current component.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line669">line 669</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">UIEventProperty</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="submit">
+        <a class="href-link" href="#submit">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+        
+        <span class="code-name">
+            
+                submit<span class="signature">(args)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Submits data or performs an action associated with the component.</p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Submits data or performs an action associated with the component.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>A variable number of arguments of any type to be passed to the submit operation.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line655">line 655</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves with the result of the submit operation.</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="translate">
+        <a class="href-link" href="#translate">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+        
+        <span class="code-name">
+            
+                translate<span class="signature">(args)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Translates content based on the provided arguments.</p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Translates content based on the provided arguments.
+Logs the translation request with the component name and arguments.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>A variable number of arguments used for translation.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_DecafComponent.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_DecafComponent.ts.html">ui/DecafComponent.ts</a>, <a href="ui_DecafComponent.ts.html#line646">line 646</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves with the translation result.</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>
