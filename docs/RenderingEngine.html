@@ -1,0 +1,5693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decaf's UI Decorator Library RenderingEngine</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">ui-decorators</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-Contributing.html">
+                                Contributing
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-Documentation.html">
+                                Documentation
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-For Developers.html">
+                                For Developers
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/html/test-report.html"
+                        >
+                            Test Results
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/coverage"
+                        >
+                            Test Coverage
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts/ui-decorators#readme"
+                        >
+                            Github Repository
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts"
+                        >
+                            Github Profile
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li><li><a href="module-ui-decorators.module_ui_constants.html">ui/constants</a></li><li><a href="module-ui-decorators_model.module_model_overrides.html">model/overrides</a></li><li><a href="module-ui-decorators_overrides.html">ui-decorators/overrides</a></li></ul><h3>Classes</h3><ul><li><a href="DecafComponent.html">DecafComponent</a></li><li><a href="DecafEventHandler_DecafEventHandler.html">DecafEventHandler</a></li><li><a href="RenderingEngine.html">RenderingEngine</a></li><li><a href="RenderingError_RenderingError.html">RenderingError</a></li><li><a href="module-ui-decorators_ui.EventHandler.html">EventHandler</a></li></ul><h3>Interfaces</h3><ul><li><a href="GraphCategoryStyle.html">GraphCategoryStyle</a></li><li><a href="GraphPinnableOptions.html">GraphPinnableOptions</a></li><li><a href="GraphPinningMetadata.html">GraphPinningMetadata</a></li><li><a href="module-ui-decorators.CrudFormField.html">CrudFormField</a></li><li><a href="module-ui-decorators.FieldDefinition.html">FieldDefinition</a></li><li><a href="module-ui-decorators.FieldProperties.html">FieldProperties</a></li><li><a href="module-ui-decorators.IPagedComponentProperties.html">IPagedComponentProperties</a></li><li><a href="module-ui-decorators_model.Renderable.html">Renderable</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafRouter.html">IDecafRouter</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafSpinner.html">IDecafSpinner</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafToast.html">IDecafToast</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GRAPH_CATEGORY_STYLE_REGISTRY">GRAPH_CATEGORY_STYLE_REGISTRY</a></li><li><a href="global.html#GRAPH_DEFAULT_CATEGORY_STYLE">GRAPH_DEFAULT_CATEGORY_STYLE</a></li><li><a href="global.html#connection">connection</a></li><li><a href="global.html#getUIAttributeKey">getUIAttributeKey</a></li><li><a href="global.html#graphCategoryStyleOf">graphCategoryStyleOf</a></li><li><a href="global.html#isClassConstructor">isClassConstructor</a></li><li><a href="global.html#pinnable">pinnable</a></li><li><a href="global.html#registerGraphCategoryStyle">registerGraphCategoryStyle</a></li><li><a href="global.html#resolveEffectiveColor">resolveEffectiveColor</a></li><li><a href="global.html#resolveEffectiveIcon">resolveEffectiveIcon</a></li><li><a href="global.html#resolvePortGroups">resolvePortGroups</a></li><li><a href="global.html#schemaGroupPorts">schemaGroupPorts</a></li><li><a href="global.html#uionclick">uionclick</a></li><li><a href="global.html#uionrender">uionrender</a></li></ul></div><div class="category"><h2>Class Decorators</h2><h3>Global</h3><ul><li><a href="global.html#renderedBy">renderedBy</a></li><li><a href="global.html#uihandlers">uihandlers</a></li><li><a href="global.html#uilayout">uilayout</a></li><li><a href="global.html#uilistmodel">uilistmodel</a></li><li><a href="global.html#uimodel">uimodel</a></li><li><a href="global.html#uisteppedmodel">uisteppedmodel</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="RenderingError.html">RenderingError</a></li></ul></div><div class="category"><h2>Property Decorators</h2><h3>Global</h3><ul><li><a href="global.html#hidden">hidden</a></li><li><a href="global.html#hideOn">hideOn</a></li><li><a href="global.html#uichild">uichild</a></li><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uilayoutprop">uilayoutprop</a></li><li><a href="global.html#uilistprop">uilistprop</a></li><li><a href="global.html#uiorder">uiorder</a></li><li><a href="global.html#uipageprop">uipageprop</a></li><li><a href="global.html#uiprop">uiprop</a></li><li><a href="global.html#uitablecol">uitablecol</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Class</p>
+                    <h1>RenderingEngine</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>RenderingEngine<span class="signature">(flavour)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="RenderingEngine">
+        <a class="href-link" href="#RenderingEngine">#</a>
+        
+        <span class="code-name">
+            
+                new RenderingEngine<span class="signature">(flavour)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>The RenderingEngine class provides a framework for converting model metadata into UI field definitions.
+It handles the translation of model properties to UI elements, applies validation rules, and manages different rendering flavors.
+This class is designed to be extended by specific rendering implementations.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Abstract class for rendering UI components based on model metadata.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>flavour</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The flavor of the rendering engine.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line8">line 8</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="RenderingEngine.html">RenderingEngine</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary">Flag indicating whether the rendering engine has been initialized.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag indicating whether the rendering engine has been initialized.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line44">line 44</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary">Flag indicating whether the rendering engine has been initialized.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag indicating whether the rendering engine has been initialized.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line591">line 591</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="initialize">
+        <a class="href-link" href="#initialize">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+        
+        <span class="code-name">
+            
+                initialize<span class="signature">(&hellip;args)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Abstract method to be implemented by subclasses for specific initialization logic.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Initializes the rendering engine.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Any additional arguments needed for initialization.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line603">line 603</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when initialization is complete.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;void></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isCustomValidator">
+        <a class="href-link" href="#isCustomValidator">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isCustomValidator<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean|boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines whether the provided key corresponds to a user-defined validator by excluding all built-in ValidationKeys and UIKeys.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a validation key represents a custom validator (i.e., not a built-in validation or UI key).</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line639">line 639</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the key is a custom validator, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the key is not a built-in validation key or UI key (i.e. is custom), false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isValidatableByAttribute">
+        <a class="href-link" href="#isValidatableByAttribute">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isValidatableByAttribute<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines if a given UI key represents a validation that can be applied as an attribute.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a type is validatable by attribute.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The UI key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line659">line 659</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the type is validatable by attribute, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isValidatableByType">
+        <a class="href-link" href="#isValidatableByType">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isValidatableByType<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines if a given UI key represents a type that is inherently validatable.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a type is validatable by its nature.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The UI key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line649">line 649</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the type is validatable, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="render">
+        <a class="href-link" href="#render">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+        
+        <span class="code-name">
+            
+                render<span class="signature">(model, globalProps, &hellip;args)</span><span class="type-signature"> &rarr; {R}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Abstract method to be implemented by subclasses to define specific rendering behavior.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Renders a model with global properties and additional arguments.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The model to be rendered.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>globalProps</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Global properties to be applied to all elements during rendering.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Additional arguments that may be required for specific rendering implementations.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line721">line 721</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The rendered result, type depends on the specific implementation.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">R</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="toAttributeValue">
+        <a class="href-link" href="#toAttributeValue">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                toAttributeValue<span class="signature">(key, value)</span><span class="type-signature"> &rarr; {string|number|boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Transforms validation metadata into a value suitable for use as an HTML attribute.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Converts validation metadata to an attribute value.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation key.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>value</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">ValidationMetadata</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation metadata.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line671">line 671</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If the given key is not validatable by attribute.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Error</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The converted attribute value.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+|
+
+<code class="param-type">number</code>
+|
+
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="toFieldDefinition">
+        <a class="href-link" href="#toFieldDefinition">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                toFieldDefinition<span class="signature">(model, globalProps<span class="signature-attributes">opt</span>, generateId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {FieldDefinition.&lt;T>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Processes a model instance, extracting UI-related metadata and validation rules to create a field definition.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Converts a model to a field definition.</p><div class="mermaid">sequenceDiagram
+ participant C as Client
+ participant RE as RenderingEngine
+ participant R as Reflection
+ participant M as Model
+ C->>RE: toFieldDefinition(model, globalProps)
+ RE->>R: getMetadata(UIKeys.UIMODEL, model.constructor)
+ R-->>RE: UIModelMetadata
+ RE->>R: getAllPropertyDecorators(model, UIKeys.REFLECT)
+ R-->>RE: Record<string, DecoratorMetadata[]>
+ RE->>R: getAllPropertyDecorators(model, ValidationKeys.REFLECT)
+ R-->>RE: Record<string, DecoratorMetadata<ValidationMetadata>[]>
+ loop For each property
+   RE->>RE: Process UI decorators
+   RE->>RE: Apply validation rules
+ end
+ RE-->>C: FieldDefinition<T></div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The model instance to convert.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>globalProps</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          {}
+      
+      </td>
+  
+
+  <td class="description last"><p>Global properties to apply to all child elements.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>generateId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>Flag indicating whether to populate the rendererId property.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line705">line 705</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If no UI definitions are set for the model or if there are invalid decorators.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type"><a href="RenderingError.html">RenderingError</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A field definition object representing the UI structure of the model.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">FieldDefinition.&lt;T></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="translate">
+        <a class="href-link" href="#translate">#</a>
+        
+        <span class="code-name">
+            
+                translate<span class="signature">(key, toView<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Converts model data types to appropriate HTML input types and vice versa.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Translates between model types and HTML input types.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The key to translate.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>toView</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>Direction of translation (true for model to view, false for view to model).</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line613">line 613</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The translated type.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".get">
+        <a class="href-link" href="#.get">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                get<span class="signature">(flavour<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="RenderingEngine.html">RenderingEngine</a>.&lt;O>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Gets the current rendering engine or a specific one by flavor.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Retrieves a rendering engine by flavor.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>flavour</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The flavor of the rendering engine to retrieve.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line759">line 759</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If the requested flavor does not exist.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The requested rendering engine.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="RenderingEngine.html">RenderingEngine</a>.&lt;O></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".register">
+        <a class="href-link" href="#.register">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                register<span class="signature">(engine)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Adds a rendering engine to the static cache and sets it as the current engine.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Registers a rendering engine instance.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>engine</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="RenderingEngine.html">RenderingEngine</a>.&lt;unknown, unknown></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The rendering engine to register.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line732">line 732</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If an engine with the same flavor already exists.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".render">
+        <a class="href-link" href="#.render">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                render<span class="signature">(model, &hellip;args)</span><span class="type-signature"> &rarr; {any}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines the correct rendering engine for a model and invokes its render method.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Renders a model using the appropriate rendering engine.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The model to render.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Additional arguments to pass to the render method.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line773">line 773</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If no registered model is found.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The result of the rendering process.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">any</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>RenderingEngine<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Represents the base abstraction for decaf rendering engines, handling engine registration,
+initialization, model-to-field translation, and runtime rendering orchestration.
+Implementations must provide initialization and rendering logic while leveraging the shared
+metadata-driven conversion utilities supplied here.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
+
+
+    
+    <h4 class="name" id="RenderingEngine">
+        <a class="href-link" href="#RenderingEngine">#</a>
+        
+        <span class="code-name">
+            
+                new RenderingEngine<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line27">line 27</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="RenderingEngine.html">RenderingEngine</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary">Flag indicating whether the rendering engine has been initialized.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag indicating whether the rendering engine has been initialized.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line44">line 44</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">boolean</code>
+
+
+    </span>
+
+<h4 class="name" id="initialized">
+    <a class="href-link" href="#initialized">#</a>
+    
+        
+            <span class='tag'>protected</span>
+        
+    
+    <span class="code-name">
+        initialized
+    </span>
+    
+</h4>
+
+
+<p class="summary">Flag indicating whether the rendering engine has been initialized.</p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Flag indicating whether the rendering engine has been initialized.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line591">line 591</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="initialize">
+        <a class="href-link" href="#initialize">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+        
+        <span class="code-name">
+            
+                initialize<span class="signature">(&hellip;args)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Abstract method to be implemented by subclasses for specific initialization logic.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Initializes the rendering engine.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Any additional arguments needed for initialization.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line603">line 603</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A promise that resolves when initialization is complete.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;void></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isCustomValidator">
+        <a class="href-link" href="#isCustomValidator">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isCustomValidator<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean|boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines whether the provided key corresponds to a user-defined validator by excluding all built-in ValidationKeys and UIKeys.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a validation key represents a custom validator (i.e., not a built-in validation or UI key).</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line639">line 639</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the key is a custom validator, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the key is not a built-in validation key or UI key (i.e. is custom), false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isValidatableByAttribute">
+        <a class="href-link" href="#isValidatableByAttribute">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isValidatableByAttribute<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines if a given UI key represents a validation that can be applied as an attribute.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a type is validatable by attribute.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The UI key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line659">line 659</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the type is validatable by attribute, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isValidatableByType">
+        <a class="href-link" href="#isValidatableByType">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                isValidatableByType<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines if a given UI key represents a type that is inherently validatable.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Checks if a type is validatable by its nature.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The UI key to check.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line649">line 649</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>True if the type is validatable, false otherwise.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="render">
+        <a class="href-link" href="#render">#</a>
+        
+            
+                <span class='tag'>abstract</span>
+            
+        
+        <span class="code-name">
+            
+                render<span class="signature">(model, globalProps, &hellip;args)</span><span class="type-signature"> &rarr; {R}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Abstract method to be implemented by subclasses to define specific rendering behavior.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Renders a model with global properties and additional arguments.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The model to be rendered.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>globalProps</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Global properties to be applied to all elements during rendering.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Additional arguments that may be required for specific rendering implementations.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line721">line 721</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The rendered result, type depends on the specific implementation.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">R</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="toAttributeValue">
+        <a class="href-link" href="#toAttributeValue">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                toAttributeValue<span class="signature">(key, value)</span><span class="type-signature"> &rarr; {string|number|boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Transforms validation metadata into a value suitable for use as an HTML attribute.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Converts validation metadata to an attribute value.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation key.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>value</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">ValidationMetadata</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The validation metadata.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line671">line 671</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If the given key is not validatable by attribute.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Error</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The converted attribute value.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+|
+
+<code class="param-type">number</code>
+|
+
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="toFieldDefinition">
+        <a class="href-link" href="#toFieldDefinition">#</a>
+        
+            
+                <span class='tag'>protected</span>
+            
+        
+        <span class="code-name">
+            
+                toFieldDefinition<span class="signature">(model, globalProps<span class="signature-attributes">opt</span>, generateId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {FieldDefinition.&lt;T>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Processes a model instance, extracting UI-related metadata and validation rules to create a field definition.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Converts a model to a field definition.</p><div class="mermaid">sequenceDiagram
+ participant C as Client
+ participant RE as RenderingEngine
+ participant R as Reflection
+ participant M as Model
+ C->>RE: toFieldDefinition(model, globalProps)
+ RE->>R: getMetadata(UIKeys.UIMODEL, model.constructor)
+ R-->>RE: UIModelMetadata
+ RE->>R: getAllPropertyDecorators(model, UIKeys.REFLECT)
+ R-->>RE: Record<string, DecoratorMetadata[]>
+ RE->>R: getAllPropertyDecorators(model, ValidationKeys.REFLECT)
+ R-->>RE: Record<string, DecoratorMetadata<ValidationMetadata>[]>
+ loop For each property
+   RE->>RE: Process UI decorators
+   RE->>RE: Apply validation rules
+ end
+ RE-->>C: FieldDefinition<T></div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The model instance to convert.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>globalProps</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Record.&lt;string, unknown></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          {}
+      
+      </td>
+  
+
+  <td class="description last"><p>Global properties to apply to all child elements.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>generateId</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>Flag indicating whether to populate the rendererId property.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line705">line 705</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If no UI definitions are set for the model or if there are invalid decorators.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type"><a href="RenderingError.html">RenderingError</a></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A field definition object representing the UI structure of the model.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">FieldDefinition.&lt;T></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="translate">
+        <a class="href-link" href="#translate">#</a>
+        
+        <span class="code-name">
+            
+                translate<span class="signature">(key, toView<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Converts model data types to appropriate HTML input types and vice versa.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Translates between model types and HTML input types.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>key</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The key to translate.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>toView</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>Direction of translation (true for model to view, false for view to model).</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line613">line 613</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The translated type.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".get">
+        <a class="href-link" href="#.get">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                get<span class="signature">(flavour<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="RenderingEngine.html">RenderingEngine</a>.&lt;O>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Gets the current rendering engine or a specific one by flavor.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Retrieves a rendering engine by flavor.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>flavour</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The flavor of the rendering engine to retrieve.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line759">line 759</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If the requested flavor does not exist.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The requested rendering engine.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type"><a href="RenderingEngine.html">RenderingEngine</a>.&lt;O></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".register">
+        <a class="href-link" href="#.register">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                register<span class="signature">(engine)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Adds a rendering engine to the static cache and sets it as the current engine.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Registers a rendering engine instance.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>engine</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="RenderingEngine.html">RenderingEngine</a>.&lt;unknown, unknown></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The rendering engine to register.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line732">line 732</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If an engine with the same flavor already exists.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".render">
+        <a class="href-link" href="#.render">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                render<span class="signature">(model, &hellip;args)</span><span class="type-signature"> &rarr; {any}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determines the correct rendering engine for a model and invokes its render method.</p></p>
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Renders a model using the appropriate rendering engine.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>model</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">M</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>The model to render.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>args</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Array.&lt;any></code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+          &lt;repeatable><br>
+      
+      </td>
+  
+
+  
+
+  <td class="description last"><p>Additional arguments to pass to the render method.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_Rendering.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_Rendering.ts.html">ui/Rendering.ts</a>, <a href="ui_Rendering.ts.html#line773">line 773</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>If no registered model is found.</p></div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">InternalError</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>The result of the rendering process.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">any</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

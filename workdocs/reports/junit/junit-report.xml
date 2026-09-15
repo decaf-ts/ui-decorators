@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="48" failures="0" errors="0" time="0.656">
+  <testsuite name="ui-decorators graph layer" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:25" time="0.175" tests="15">
+    <testcase classname="ui-decorators graph layer composes node metadata with uimodel metadata" name="ui-decorators graph layer composes node metadata with uimodel metadata" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer derives port metadata from the existing property metadata" name="ui-decorators graph layer derives port metadata from the existing property metadata" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators graph layer expands nested model ports into a composite port tree" name="ui-decorators graph layer expands nested model ports into a composite port tree" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer builds a framework-neutral graph definition" name="ui-decorators graph layer builds a framework-neutral graph definition" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators graph layer decorates a workflow root with graph metadata and derived inputs/outputs" name="ui-decorators graph layer decorates a workflow root with graph metadata and derived inputs/outputs" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators graph layer exposes renderAsNode as a graph definition reader" name="ui-decorators graph layer exposes renderAsNode as a graph definition reader" time="0.015">
+    </testcase>
+    <testcase classname="ui-decorators graph layer serializes workflow graph state into a framework-neutral snapshot" name="ui-decorators graph layer serializes workflow graph state into a framework-neutral snapshot" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer restores a saved snapshot against the current workflow definition" name="ui-decorators graph layer restores a saved snapshot against the current workflow definition" time="0.003">
+    </testcase>
+    <testcase classname="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" name="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" time="0.003">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output flattens a Schema-typed @input / @output into unprefixed ports" name="ui-decorators graph layer schema-flattening @input / @output flattens a Schema-typed @input / @output into unprefixed ports" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" name="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output exposes the one-vs-all portGroups on the node definition" name="ui-decorators graph layer schema-flattening @input / @output exposes the one-vs-all portGroups on the node definition" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" name="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" time="0.003">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" name="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" time="0">
+    </testcase>
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" name="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.084" tests="12">
+    <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.005">
+    </testcase>
+    <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.011">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.002">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.003">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" time="0.002">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" name="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" time="0.004">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" name="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" time="0.004">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue regular keys" name="Rendering Engine toAttributeValue regular keys" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue comparison keys" name="Rendering Engine toAttributeValue comparison keys" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.05" tests="16">
+    <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils formatByType should return the value directly if type is not DATE" name="UI Utils formatByType should return the value directly if type is not DATE" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should convert a numeric string to a number" name="UI Utils parseValueByType should convert a numeric string to a number" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should convert a numeric timestamp to Date" name="UI Utils parseValueByType should convert a numeric timestamp to Date" time="0">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should parse a string date with format" name="UI Utils parseValueByType should parse a string date with format" time="0">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.005">
+    </testcase>
+    <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0">
+    </testcase>
+    <testcase classname="UI Utils parseToNumber should parse a numeric string to number" name="UI Utils parseToNumber should parse a numeric string to number" time="0">
+    </testcase>
+    <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0">
+    </testcase>
+    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0">
+    </testcase>
+    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and ID" name="UI Utils generateUIModelID should generate an ID using the model class name and ID" time="0">
+    </testcase>
+    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0.001">
+    </testcase>
+    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.046" tests="4">
+    <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.001">
+    </testcase>
+    <testcase classname="UI decorators Test Decorates the properties properly" name="UI decorators Test Decorates the properties properly" time="0.001">
+    </testcase>
+    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0.001">
+    </testcase>
+    <testcase classname="UI decorators Test Adds the render method properly" name="UI decorators Test Adds the render method properly" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.021" tests="1">
+    <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

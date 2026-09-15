@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decaf's UI Decorator Library ui/constants</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">ui-decorators</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-Contributing.html">
+                                Contributing
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-Documentation.html">
+                                Documentation
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-For Developers.html">
+                                For Developers
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/html/test-report.html"
+                        >
+                            Test Results
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/coverage"
+                        >
+                            Test Coverage
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts/ui-decorators#readme"
+                        >
+                            Github Repository
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts"
+                        >
+                            Github Profile
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li><li><a href="module-ui-decorators.module_ui_constants.html">ui/constants</a></li><li><a href="module-ui-decorators_model.module_model_overrides.html">model/overrides</a></li><li><a href="module-ui-decorators_overrides.html">ui-decorators/overrides</a></li></ul><h3>Classes</h3><ul><li><a href="DecafComponent.html">DecafComponent</a></li><li><a href="DecafEventHandler_DecafEventHandler.html">DecafEventHandler</a></li><li><a href="RenderingEngine.html">RenderingEngine</a></li><li><a href="RenderingError_RenderingError.html">RenderingError</a></li><li><a href="module-ui-decorators_ui.EventHandler.html">EventHandler</a></li></ul><h3>Interfaces</h3><ul><li><a href="GraphCategoryStyle.html">GraphCategoryStyle</a></li><li><a href="GraphPinnableOptions.html">GraphPinnableOptions</a></li><li><a href="GraphPinningMetadata.html">GraphPinningMetadata</a></li><li><a href="module-ui-decorators.CrudFormField.html">CrudFormField</a></li><li><a href="module-ui-decorators.FieldDefinition.html">FieldDefinition</a></li><li><a href="module-ui-decorators.FieldProperties.html">FieldProperties</a></li><li><a href="module-ui-decorators.IPagedComponentProperties.html">IPagedComponentProperties</a></li><li><a href="module-ui-decorators_model.Renderable.html">Renderable</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafRouter.html">IDecafRouter</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafSpinner.html">IDecafSpinner</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafToast.html">IDecafToast</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GRAPH_CATEGORY_STYLE_REGISTRY">GRAPH_CATEGORY_STYLE_REGISTRY</a></li><li><a href="global.html#GRAPH_DEFAULT_CATEGORY_STYLE">GRAPH_DEFAULT_CATEGORY_STYLE</a></li><li><a href="global.html#connection">connection</a></li><li><a href="global.html#getUIAttributeKey">getUIAttributeKey</a></li><li><a href="global.html#graphCategoryStyleOf">graphCategoryStyleOf</a></li><li><a href="global.html#isClassConstructor">isClassConstructor</a></li><li><a href="global.html#pinnable">pinnable</a></li><li><a href="global.html#registerGraphCategoryStyle">registerGraphCategoryStyle</a></li><li><a href="global.html#resolveEffectiveColor">resolveEffectiveColor</a></li><li><a href="global.html#resolveEffectiveIcon">resolveEffectiveIcon</a></li><li><a href="global.html#resolvePortGroups">resolvePortGroups</a></li><li><a href="global.html#schemaGroupPorts">schemaGroupPorts</a></li><li><a href="global.html#uionclick">uionclick</a></li><li><a href="global.html#uionrender">uionrender</a></li></ul></div><div class="category"><h2>Class Decorators</h2><h3>Global</h3><ul><li><a href="global.html#renderedBy">renderedBy</a></li><li><a href="global.html#uihandlers">uihandlers</a></li><li><a href="global.html#uilayout">uilayout</a></li><li><a href="global.html#uilistmodel">uilistmodel</a></li><li><a href="global.html#uimodel">uimodel</a></li><li><a href="global.html#uisteppedmodel">uisteppedmodel</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="RenderingError.html">RenderingError</a></li></ul></div><div class="category"><h2>Property Decorators</h2><h3>Global</h3><ul><li><a href="global.html#hidden">hidden</a></li><li><a href="global.html#hideOn">hideOn</a></li><li><a href="global.html#uichild">uichild</a></li><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uilayoutprop">uilayoutprop</a></li><li><a href="global.html#uilistprop">uilistprop</a></li><li><a href="global.html#uiorder">uiorder</a></li><li><a href="global.html#uipageprop">uipageprop</a></li><li><a href="global.html#uiprop">uiprop</a></li><li><a href="global.html#uitablecol">uitablecol</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>ui/constants</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Constants and enums for UI rendering and validation</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line2">line 2</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="~ActionRoles">
+    <a class="href-link" href="#~ActionRoles">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ActionRoles
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Enumerates the semantic roles a button or action may represent so decorators and
+renderers can attach consistent behaviors and styling (including CRUD verbs tied to
+<code>OperationKeys</code>).</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Canonical action role identifiers for UI controls.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line350">line 350</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">Object</code>
+
+
+    </span>
+
+<h4 class="name" id="~ComponentEventNames">
+    <a class="href-link" href="#~ComponentEventNames">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ComponentEventNames
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Contains constants for standardized event names used throughout the application.
+These constants ensure consistent event naming across components and make it easier to
+track and handle events. Each constant represents a specific application event type.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Event name constants.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>BackButtonClickEvent</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when back button navigation ends</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>Render</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event after component initialize action occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>Refresh</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a refresh action occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>Click</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a click action occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>Change</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a change action occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>Submit</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a form submission occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>ValidationError</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a validation error occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>ThemeChange</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a theme change occurs</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>FormGroupLoaded</code></td>
+    
+
+    <td class="type">
+    
+        
+<code class="param-type">string</code>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Event fired when a reactve form group is loaded</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line259">line 259</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~ElementPositions">
+    <a class="href-link" href="#~ElementPositions">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ElementPositions
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Supplies canonical position values (horizontal and vertical) that decorators can
+use when aligning labels, controls, or helper text across components.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Alignment keywords for element positioning.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line324">line 324</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~ElementSizes">
+    <a class="href-link" href="#~ElementSizes">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        ElementSizes
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Defines the semantic size keywords supported by layout and form decorators.
+These values feed rendering engines so components can express sizing in a uniform vocabulary.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Standardized size tokens for UI elements.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line304">line 304</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~LayoutGridGaps">
+    <a class="href-link" href="#~LayoutGridGaps">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        LayoutGridGaps
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Maps human-readable gap sizes to the tokens interpreted by the rendering engine
+when building CSS grid layouts, enabling predictable spacing across components.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Grid spacing presets for layout decorators.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line337">line 337</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~TransactionHooks">
+    <a class="href-link" href="#~TransactionHooks">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        TransactionHooks
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides canonical names for CRUD lifecycle callbacks so decorators and
+components can register work before or after repository operations in a consistent way.
+Each key maps to the string used when wiring transaction middleware.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Lifecycle hook labels for repository transactions.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line287">line 287</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id="~WindowColorSchemes">
+    <a class="href-link" href="#~WindowColorSchemes">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        WindowColorSchemes
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Provides the supported theme identifiers exposed to consuming apps so they
+can target light, dark, or unset window color schemes in a predictable way.</p></p>
+
+
+
+<div class="description">
+    <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Allowed color scheme tokens for windowed surfaces.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="ui_constants.ts.html" class="button">View Source</a>
+            <span>
+                <a href="ui_constants.ts.html">ui/constants.ts</a>, <a href="ui_constants.ts.html#line368">line 368</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decaf's UI Decorator Library model/Renderable.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">ui-decorators</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-Contributing.html">
+                                Contributing
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-Documentation.html">
+                                Documentation
+                            </a>
+                        
+                            <a class="dropdown-item" href="tutorial-For Developers.html">
+                                For Developers
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/html/test-report.html"
+                        >
+                            Test Results
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="workdocs/reports/coverage"
+                        >
+                            Test Coverage
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts/ui-decorators#readme"
+                        >
+                            Github Repository
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/decaf-ts"
+                        >
+                            Github Profile
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-ui-decorators.html">ui-decorators</a></li><li><a href="module-ui-decorators.module_ui_constants.html">ui/constants</a></li><li><a href="module-ui-decorators_model.module_model_overrides.html">model/overrides</a></li><li><a href="module-ui-decorators_overrides.html">ui-decorators/overrides</a></li></ul><h3>Classes</h3><ul><li><a href="DecafComponent.html">DecafComponent</a></li><li><a href="DecafEventHandler_DecafEventHandler.html">DecafEventHandler</a></li><li><a href="RenderingEngine.html">RenderingEngine</a></li><li><a href="RenderingError_RenderingError.html">RenderingError</a></li><li><a href="module-ui-decorators_ui.EventHandler.html">EventHandler</a></li></ul><h3>Interfaces</h3><ul><li><a href="GraphCategoryStyle.html">GraphCategoryStyle</a></li><li><a href="GraphPinnableOptions.html">GraphPinnableOptions</a></li><li><a href="GraphPinningMetadata.html">GraphPinningMetadata</a></li><li><a href="module-ui-decorators.CrudFormField.html">CrudFormField</a></li><li><a href="module-ui-decorators.FieldDefinition.html">FieldDefinition</a></li><li><a href="module-ui-decorators.FieldProperties.html">FieldProperties</a></li><li><a href="module-ui-decorators.IPagedComponentProperties.html">IPagedComponentProperties</a></li><li><a href="module-ui-decorators_model.Renderable.html">Renderable</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafRouter.html">IDecafRouter</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafSpinner.html">IDecafSpinner</a></li><li><a href="module-ui-decorators_ui_interfaces.IDecafToast.html">IDecafToast</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GRAPH_CATEGORY_STYLE_REGISTRY">GRAPH_CATEGORY_STYLE_REGISTRY</a></li><li><a href="global.html#GRAPH_DEFAULT_CATEGORY_STYLE">GRAPH_DEFAULT_CATEGORY_STYLE</a></li><li><a href="global.html#connection">connection</a></li><li><a href="global.html#getUIAttributeKey">getUIAttributeKey</a></li><li><a href="global.html#graphCategoryStyleOf">graphCategoryStyleOf</a></li><li><a href="global.html#isClassConstructor">isClassConstructor</a></li><li><a href="global.html#pinnable">pinnable</a></li><li><a href="global.html#registerGraphCategoryStyle">registerGraphCategoryStyle</a></li><li><a href="global.html#resolveEffectiveColor">resolveEffectiveColor</a></li><li><a href="global.html#resolveEffectiveIcon">resolveEffectiveIcon</a></li><li><a href="global.html#resolvePortGroups">resolvePortGroups</a></li><li><a href="global.html#schemaGroupPorts">schemaGroupPorts</a></li><li><a href="global.html#uionclick">uionclick</a></li><li><a href="global.html#uionrender">uionrender</a></li></ul></div><div class="category"><h2>Class Decorators</h2><h3>Global</h3><ul><li><a href="global.html#renderedBy">renderedBy</a></li><li><a href="global.html#uihandlers">uihandlers</a></li><li><a href="global.html#uilayout">uilayout</a></li><li><a href="global.html#uilistmodel">uilistmodel</a></li><li><a href="global.html#uimodel">uimodel</a></li><li><a href="global.html#uisteppedmodel">uisteppedmodel</a></li></ul></div><div class="category"><h2>Errors</h2><h3>Classes</h3><ul><li><a href="RenderingError.html">RenderingError</a></li></ul></div><div class="category"><h2>Property Decorators</h2><h3>Global</h3><ul><li><a href="global.html#hidden">hidden</a></li><li><a href="global.html#hideOn">hideOn</a></li><li><a href="global.html#uichild">uichild</a></li><li><a href="global.html#uielement">uielement</a></li><li><a href="global.html#uilayoutprop">uilayoutprop</a></li><li><a href="global.html#uilistprop">uilistprop</a></li><li><a href="global.html#uiorder">uiorder</a></li><li><a href="global.html#uipageprop">uipageprop</a></li><li><a href="global.html#uiprop">uiprop</a></li><li><a href="global.html#uitablecol">uitablecol</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>model/Renderable.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @description Interface for objects that can be rendered
+ * @summary Defines the contract for objects that can be rendered to a specific output format
+ * This interface provides a generic render method that can transform the implementing object
+ * into any desired output format.
+ * @interface Renderable
+ * @memberOf module:ui-decorators/model
+ */
+export interface Renderable {
+  /**
+   * @description Renders the object to a specific output format
+   * @summary Transforms the object into the desired output representation
+   * @template R The return type of the render operation
+   * @param {any[]} args Additional arguments needed for rendering
+   * @return {R} The rendered output in the specified format
+   */
+  render&lt;R>(...args: any[]): R;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+
+</body>
+</html>
