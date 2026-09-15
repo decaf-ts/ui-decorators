@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="48" failures="0" errors="0" time="0.656">
-  <testsuite name="ui-decorators graph layer" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:25" time="0.175" tests="15">
+<testsuites name="jest tests" tests="178" failures="0" errors="0" time="6.228">
+  <testsuite name="ui-decorators graph layer" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:50" time="2.26" tests="18">
     <testcase classname="ui-decorators graph layer composes node metadata with uimodel metadata" name="ui-decorators graph layer composes node metadata with uimodel metadata" time="0.002">
     </testcase>
     <testcase classname="ui-decorators graph layer derives port metadata from the existing property metadata" name="ui-decorators graph layer derives port metadata from the existing property metadata" time="0.001">
@@ -11,43 +11,91 @@
     </testcase>
     <testcase classname="ui-decorators graph layer decorates a workflow root with graph metadata and derived inputs/outputs" name="ui-decorators graph layer decorates a workflow root with graph metadata and derived inputs/outputs" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators graph layer exposes renderAsNode as a graph definition reader" name="ui-decorators graph layer exposes renderAsNode as a graph definition reader" time="0.015">
+    <testcase classname="ui-decorators graph layer exposes renderAsNode as a graph definition reader" name="ui-decorators graph layer exposes renderAsNode as a graph definition reader" time="0.009">
     </testcase>
     <testcase classname="ui-decorators graph layer serializes workflow graph state into a framework-neutral snapshot" name="ui-decorators graph layer serializes workflow graph state into a framework-neutral snapshot" time="0.002">
     </testcase>
-    <testcase classname="ui-decorators graph layer restores a saved snapshot against the current workflow definition" name="ui-decorators graph layer restores a saved snapshot against the current workflow definition" time="0.003">
+    <testcase classname="ui-decorators graph layer restores a saved snapshot against the current workflow definition" name="ui-decorators graph layer restores a saved snapshot against the current workflow definition" time="0.002">
     </testcase>
-    <testcase classname="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" name="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" time="0.003">
+    <testcase classname="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" name="ui-decorators graph layer round-trips snapshots through JSON without losing graph state" time="0.002">
     </testcase>
     <testcase classname="ui-decorators graph layer schema-flattening @input / @output flattens a Schema-typed @input / @output into unprefixed ports" name="ui-decorators graph layer schema-flattening @input / @output flattens a Schema-typed @input / @output into unprefixed ports" time="0.002">
     </testcase>
-    <testcase classname="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" name="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" time="0.002">
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" name="ui-decorators graph layer schema-flattening @input / @output returns undefined for the Schema group carrier from the singular reader" time="0">
     </testcase>
     <testcase classname="ui-decorators graph layer schema-flattening @input / @output exposes the one-vs-all portGroups on the node definition" name="ui-decorators graph layer schema-flattening @input / @output exposes the one-vs-all portGroups on the node definition" time="0.002">
     </testcase>
-    <testcase classname="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" name="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" time="0.003">
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" name="ui-decorators graph layer schema-flattening @input / @output defaults unlisted Schema groups to toggle: &apos;all&apos;" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" name="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" time="0">
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" name="ui-decorators graph layer schema-flattening @input / @output keeps @port (non-schema) Schema-typed properties as composite (legacy)" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" name="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" time="0">
+    <testcase classname="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" name="ui-decorators graph layer schema-flattening @input / @output does not flatten a primitive @input / @output property" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors Metadata.nodes() returns all @node-decorated constructors" name="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors Metadata.nodes() returns all @node-decorated constructors" time="0.002">
+    </testcase>
+    <testcase classname="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors Metadata.workflows() returns all @graph-decorated constructors" name="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors Metadata.workflows() returns all @graph-decorated constructors" time="0">
+    </testcase>
+    <testcase classname="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors re-decorating the same class does not duplicate registry entries" name="ui-decorators graph layer Metadata.nodes() and Metadata.workflows() accessors re-decorating the same class does not duplicate registry entries" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.084" tests="12">
+  <testsuite name="document builder" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:52" time="0.124" tests="20">
+    <testcase classname="document builder produces a canonical document with defaults applied" name="document builder produces a canonical document with defaults applied" time="0.002">
+    </testcase>
+    <testcase classname="document builder requires a non-empty document id" name="document builder requires a non-empty document id" time="0">
+    </testcase>
+    <testcase classname="document builder requires a non-empty document name" name="document builder requires a non-empty document name" time="0">
+    </testcase>
+    <testcase classname="document builder requires every node to declare a non-empty kind" name="document builder requires every node to declare a non-empty kind" time="0">
+    </testcase>
+    <testcase classname="document builder requires node parameters to be present (empty object allowed)" name="document builder requires node parameters to be present (empty object allowed)" time="0">
+    </testcase>
+    <testcase classname="document builder enforces unique node ids" name="document builder enforces unique node ids" time="0.001">
+    </testcase>
+    <testcase classname="document builder enforces unique edge ids" name="document builder enforces unique edge ids" time="0">
+    </testcase>
+    <testcase classname="document builder enforces unique workflow port ids across inputs and outputs" name="document builder enforces unique workflow port ids across inputs and outputs" time="0.001">
+    </testcase>
+    <testcase classname="document builder rejects endpoints that are not tagged {scope} objects" name="document builder rejects endpoints that are not tagged {scope} objects" time="0">
+    </testcase>
+    <testcase classname="document builder rejects endpoints with extra keys or missing port identifiers" name="document builder rejects endpoints with extra keys or missing port identifiers" time="0.001">
+    </testcase>
+    <testcase classname="document builder rejects edges referencing undeclared workflow ports or unknown nodes" name="document builder rejects edges referencing undeclared workflow ports or unknown nodes" time="0">
+    </testcase>
+    <testcase classname="document builder rejects edge types other than data and connection" name="document builder rejects edge types other than data and connection" time="0">
+    </testcase>
+    <testcase classname="document builder rejects invalid node input bindings and unsafe binding keys" name="document builder rejects invalid node input bindings and unsafe binding keys" time="0.001">
+    </testcase>
+    <testcase classname="document builder rejects expression bindings without an expression body" name="document builder rejects expression bindings without an expression body" time="0">
+    </testcase>
+    <testcase classname="document builder validates loop configuration numbers" name="document builder validates loop configuration numbers" time="0.001">
+    </testcase>
+    <testcase classname="document builder validates loop mapping reference shapes" name="document builder validates loop mapping reference shapes" time="0.001">
+    </testcase>
+    <testcase classname="document builder rejects self-referential (cyclic) loop bodies" name="document builder rejects self-referential (cyclic) loop bodies" time="0">
+    </testcase>
+    <testcase classname="document builder validates nested loop bodies recursively" name="document builder validates nested loop bodies recursively" time="0">
+    </testcase>
+    <testcase classname="document builder rejects workflow port schemas that are not GraphValueSchema" name="document builder rejects workflow port schemas that are not GraphValueSchema" time="0">
+    </testcase>
+    <testcase classname="document builder omits undefined-valued settings/metadata/ui keys from raw builder output (JSON-safe and boundary-valid without a JSON clone)" name="document builder omits undefined-valued settings/metadata/ui keys from raw builder output (JSON-safe and boundary-valid without a JSON clone)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:53" time="0.118" tests="13">
     <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.005">
     </testcase>
-    <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.011">
+    <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.013">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.002">
+    <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.008">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.003">
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.002">
     </testcase>
     <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" time="0.002">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" name="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" time="0.004">
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" name="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" time="0.002">
     </testcase>
     <testcase classname="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" name="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" time="0.004">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.001">
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.002">
     </testcase>
     <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0.001">
     </testcase>
@@ -57,13 +105,235 @@
     </testcase>
     <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.006">
     </testcase>
+    <testcase classname="Rendering Engine hides and shows fields by namespace metadata" name="Rendering Engine hides and shows fields by namespace metadata" time="0.002">
+    </testcase>
   </testsuite>
-  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.05" tests="16">
-    <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0.001">
+  <testsuite name="user-requests" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:53" time="0.332" tests="14">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" time="0">
     </testcase>
-    <testcase classname="UI Utils formatByType should return the value directly if type is not DATE" name="UI Utils formatByType should return the value directly if type is not DATE" time="0.001">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" time="0">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should convert a numeric string to a number" name="UI Utils parseValueByType should convert a numeric string to a number" time="0.001">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" time="0">
+    </testcase>
+    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" time="0.002">
+    </testcase>
+    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" time="0.007">
+    </testcase>
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" time="0.001">
+    </testcase>
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" time="0.008">
+    </testcase>
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" time="0.002">
+    </testcase>
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" time="0.002">
+    </testcase>
+    <testcase classname="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" name="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" time="0.006">
+    </testcase>
+    <testcase classname="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" name="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" time="0.001">
+    </testcase>
+    <testcase classname="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" name="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" time="0.001">
+    </testcase>
+    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" time="0.001">
+    </testcase>
+    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="value schema variants" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:53" time="0.119" tests="17">
+    <testcase classname="value schema variants recognizes every schema variant" name="value schema variants recognizes every schema variant" time="0.001">
+    </testcase>
+    <testcase classname="value schema variants rejects unknown types and non-objects" name="value schema variants rejects unknown types and non-objects" time="0">
+    </testcase>
+    <testcase classname="value schema variants keeps every variant JSON-safe (functions cannot appear inside them)" name="value schema variants keeps every variant JSON-safe (functions cannot appear inside them)" time="0.005">
+    </testcase>
+    <testcase classname="schema derivation from validation maps type names to schema types" name="schema derivation from validation maps type names to schema types" time="0.001">
+    </testcase>
+    <testcase classname="schema derivation from validation maps date-ish type names to formats" name="schema derivation from validation maps date-ish type names to formats" time="0">
+    </testcase>
+    <testcase classname="schema derivation from validation derives enum schemas from enum validation values" name="schema derivation from validation derives enum schemas from enum validation values" time="0.001">
+    </testcase>
+    <testcase classname="schema derivation from validation ignores enum records whose raw value is not a primitive list" name="schema derivation from validation ignores enum records whose raw value is not a primitive list" time="0">
+    </testcase>
+    <testcase classname="schema derivation from validation derives numeric schemas with min/max constraints and integer flags" name="schema derivation from validation derives numeric schemas with min/max constraints and integer flags" time="0">
+    </testcase>
+    <testcase classname="schema derivation from validation derives model schemas from custom type validation or model names" name="schema derivation from validation derives model schemas from custom type validation or model names" time="0">
+    </testcase>
+    <testcase classname="schema derivation from validation derives array schemas, including model item lists and size constraints" name="schema derivation from validation derives array schemas, including model item lists and size constraints" time="0.001">
+    </testcase>
+    <testcase classname="schema derivation from validation falls back to base schemas for scalar and object types" name="schema derivation from validation falls back to base schemas for scalar and object types" time="0">
+    </testcase>
+    <testcase classname="visibility expressions accepts the full operator grammar with exact key sets" name="visibility expressions accepts the full operator grammar with exact key sets" time="0.001">
+    </testcase>
+    <testcase classname="visibility expressions rejects malformed expressions" name="visibility expressions rejects malformed expressions" time="0">
+    </testcase>
+    <testcase classname="visibility expressions keeps function values out of serialized expressions via the JSON guard" name="visibility expressions keeps function values out of serialized expressions via the JSON guard" time="0.001">
+    </testcase>
+    <testcase classname="dynamic port rules recognizes the declared rule types" name="dynamic port rules recognizes the declared rule types" time="0.001">
+    </testcase>
+    <testcase classname="dynamic port rules accepts valid repeat and toggle rules" name="dynamic port rules accepts valid repeat and toggle rules" time="0">
+    </testcase>
+    <testcase classname="dynamic port rules rejects malformed rules" name="dynamic port rules rejects malformed rules" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="legacy snapshot conversion" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:53" time="0.12" tests="8">
+    <testcase classname="legacy snapshot conversion maps legacy boundary references to tagged scope endpoints" name="legacy snapshot conversion maps legacy boundary references to tagged scope endpoints" time="0.001">
+    </testcase>
+    <testcase classname="legacy snapshot conversion carries port values, bindings, editor state and viewport across" name="legacy snapshot conversion carries port values, bindings, editor state and viewport across" time="0.001">
+    </testcase>
+    <testcase classname="legacy snapshot conversion keeps the canonical payload JSON-safe and free of $workflow" name="legacy snapshot conversion keeps the canonical payload JSON-safe and free of $workflow" time="0">
+    </testcase>
+    <testcase classname="legacy snapshot conversion strips constructor-reference keys from legacy node data" name="legacy snapshot conversion strips constructor-reference keys from legacy node data" time="0.001">
+    </testcase>
+    <testcase classname="legacy snapshot conversion round-trips canonical→legacy→canonical losslessly for persisted data" name="legacy snapshot conversion round-trips canonical→legacy→canonical losslessly for persisted data" time="0.002">
+    </testcase>
+    <testcase classname="legacy snapshot conversion builds a best-effort legacy snapshot when no editor.legacy is present" name="legacy snapshot conversion builds a best-effort legacy snapshot when no editor.legacy is present" time="0.001">
+    </testcase>
+    <testcase classname="legacy snapshot conversion preserves node/edge/port semantics through the best-effort round trip" name="legacy snapshot conversion preserves node/edge/port semantics through the best-effort round trip" time="0">
+    </testcase>
+    <testcase classname="legacy snapshot conversion normalizes any accepted snapshot-like value to the canonical wrapper" name="legacy snapshot conversion normalizes any accepted snapshot-like value to the canonical wrapper" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="manifest compilation" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:53" time="0.154" tests="14">
+    <testcase classname="manifest compilation resolves kind and display metadata from the decorated node" name="manifest compilation resolves kind and display metadata from the decorated node" time="0.001">
+    </testcase>
+    <testcase classname="manifest compilation falls back to kind defaulting and the default icon for minimal nodes" name="manifest compilation falls back to kind defaulting and the default icon for minimal nodes" time="0.001">
+    </testcase>
+    <testcase classname="manifest compilation refuses a model class that is not decorated with @node (contract)" name="manifest compilation refuses a model class that is not decorated with @node (contract)" time="0.001">
+    </testcase>
+    <testcase classname="manifest compilation picks up the node description from graph metadata" name="manifest compilation picks up the node description from graph metadata" time="0.001">
+    </testcase>
+    <testcase classname="manifest compilation buckets ports by direction with schema, category and handle" name="manifest compilation buckets ports by direction with schema, category and handle" time="0">
+    </testcase>
+    <testcase classname="manifest compilation propagates node connection rules as port connection policies" name="manifest compilation propagates node connection rules as port connection policies" time="0">
+    </testcase>
+    <testcase classname="manifest compilation derives one parameter per input port with the right parameter type" name="manifest compilation derives one parameter per input port with the right parameter type" time="0">
+    </testcase>
+    <testcase classname="manifest compilation maps code ports to code parameters: language pinned to the code-language union with a javascript default" name="manifest compilation maps code ports to code parameters: language pinned to the code-language union with a javascript default" time="0.003">
+    </testcase>
+    <testcase classname="manifest compilation honors compile-time overrides for kind, name, category and icon" name="manifest compilation honors compile-time overrides for kind, name, category and icon" time="0.003">
+    </testcase>
+    <testcase classname="manifest compilation accepts a model instance as well as a constructor" name="manifest compilation accepts a model instance as well as a constructor" time="0.004">
+    </testcase>
+    <testcase classname="manifest serialization round-trips losslessly through object and string forms" name="manifest serialization round-trips losslessly through object and string forms" time="0.001">
+    </testcase>
+    <testcase classname="manifest serialization produces serialized payloads free of functions and sentinels" name="manifest serialization produces serialized payloads free of functions and sentinels" time="0">
+    </testcase>
+    <testcase classname="manifest serialization asserts serializability and refuses function members" name="manifest serialization asserts serializability and refuses function members" time="0.005">
+    </testcase>
+    <testcase classname="manifest serialization refuses deserializing non-catalog payloads" name="manifest serialization refuses deserializing non-catalog payloads" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="JSON safety" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="0.119" tests="17">
+    <testcase classname="JSON safety primitive classification classifies JSON primitives and rejects non-finite numbers" name="JSON safety primitive classification classifies JSON primitives and rejects non-finite numbers" time="0">
+    </testcase>
+    <testcase classname="JSON safety primitive classification rejects non-finite numbers structurally at the value and safety gates" name="JSON safety primitive classification rejects non-finite numbers structurally at the value and safety gates" time="0">
+    </testcase>
+    <testcase classname="JSON safety isGraphJsonValue accepts plain JSON structures and rejects non-JSON members" name="JSON safety isGraphJsonValue accepts plain JSON structures and rejects non-JSON members" time="0.001">
+    </testcase>
+    <testcase classname="JSON safety isGraphJsonValue rejects objects carrying unsafe prototype-pollutant keys" name="JSON safety isGraphJsonValue rejects objects carrying unsafe prototype-pollutant keys" time="0">
+    </testcase>
+    <testcase classname="JSON safety isGraphJsonSafeValue refuses undefined, functions, non-finite numbers and class instances" name="JSON safety isGraphJsonSafeValue refuses undefined, functions, non-finite numbers and class instances" time="0.001">
+    </testcase>
+    <testcase classname="JSON safety isGraphJsonSafeValue accepts nested plain JSON structures" name="JSON safety isGraphJsonSafeValue accepts nested plain JSON structures" time="0">
+    </testcase>
+    <testcase classname="JSON safety isGraphJsonSafeValue refuses unsafe structures nested at any depth and unsafe keys" name="JSON safety isGraphJsonSafeValue refuses unsafe structures nested at any depth and unsafe keys" time="0.001">
+    </testcase>
+    <testcase classname="JSON safety cloneGraphJsonValue produces structurally equal, independent copies" name="JSON safety cloneGraphJsonValue produces structurally equal, independent copies" time="0">
+    </testcase>
+    <testcase classname="JSON safety cloneGraphJsonValue passes primitives through unchanged" name="JSON safety cloneGraphJsonValue passes primitives through unchanged" time="0.001">
+    </testcase>
+    <testcase classname="JSON safety graph JSON (de)serialization round-trips JSON-safe values" name="JSON safety graph JSON (de)serialization round-trips JSON-safe values" time="0">
+    </testcase>
+    <testcase classname="JSON safety graph JSON (de)serialization throws ValidationError (not raw Error) for unsafe values" name="JSON safety graph JSON (de)serialization throws ValidationError (not raw Error) for unsafe values" time="0.005">
+    </testcase>
+    <testcase classname="JSON safety graph JSON (de)serialization rejects serialized payloads that inject unsafe prototype keys" name="JSON safety graph JSON (de)serialization rejects serialized payloads that inject unsafe prototype keys" time="0">
+    </testcase>
+    <testcase classname="JSON safety graph JSON (de)serialization accepts an already-safe object when passed through the parser" name="JSON safety graph JSON (de)serialization accepts an already-safe object when passed through the parser" time="0">
+    </testcase>
+    <testcase classname="JSON safety document-level enforcement refuses unsafe members in metadata, settings and ui at build time" name="JSON safety document-level enforcement refuses unsafe members in metadata, settings and ui at build time" time="0.004">
+    </testcase>
+    <testcase classname="JSON safety document-level enforcement refuses document settings holding non-finite numbers through the structural guard (JSON.stringify would lose the value)" name="JSON safety document-level enforcement refuses document settings holding non-finite numbers through the structural guard (JSON.stringify would lose the value)" time="0">
+    </testcase>
+    <testcase classname="JSON safety document-level enforcement refuses node parameters holding function values" name="JSON safety document-level enforcement refuses node parameters holding function values" time="0.001">
+    </testcase>
+    <testcase classname="JSON safety document-level enforcement refuses literal bindings holding non-finite numbers" name="JSON safety document-level enforcement refuses literal bindings holding non-finite numbers" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="decorated workflow compilation" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="0.151" tests="11">
+    <testcase classname="decorated workflow compilation maps identity, ports, and metadata from the decorated workflow" name="decorated workflow compilation maps identity, ports, and metadata from the decorated workflow" time="0.001">
+    </testcase>
+    <testcase classname="decorated workflow compilation maps every decorated node to a node instance with parameters from defaults" name="decorated workflow compilation maps every decorated node to a node instance with parameters from defaults" time="0.001">
+    </testcase>
+    <testcase classname="decorated workflow compilation applies editor position and viewport options" name="decorated workflow compilation applies editor position and viewport options" time="0">
+    </testcase>
+    <testcase classname="decorated workflow compilation compiles every boundary sentinel to a workflow-scoped endpoint" name="decorated workflow compilation compiles every boundary sentinel to a workflow-scoped endpoint" time="0.001">
+    </testcase>
+    <testcase classname="decorated workflow compilation compiles the workflow-name alias to a workflow-scoped endpoint" name="decorated workflow compilation compiles the workflow-name alias to a workflow-scoped endpoint" time="0">
+    </testcase>
+    <testcase classname="decorated workflow compilation marks edges touching connection ports with the connection type" name="decorated workflow compilation marks edges touching connection ports with the connection type" time="0">
+    </testcase>
+    <testcase classname="decorated workflow compilation compiles loop configuration with its body document, recursing into nested loops" name="decorated workflow compilation compiles loop configuration with its body document, recursing into nested loops" time="0">
+    </testcase>
+    <testcase classname="decorated workflow compilation never emits the $workflow sentinel or string boundary references" name="decorated workflow compilation never emits the $workflow sentinel or string boundary references" time="0.001">
+    </testcase>
+    <testcase classname="decorated workflow compilation resolves node class references in relations to node-scoped endpoints" name="decorated workflow compilation resolves node class references in relations to node-scoped endpoints" time="0.004">
+    </testcase>
+    <testcase classname="decorated workflow compilation keeps nested loop body documents canonical and buildable independently" name="decorated workflow compilation keeps nested loop body documents canonical and buildable independently" time="0.002">
+    </testcase>
+    <testcase classname="decorated workflow compilation reports relation errors as ValidationError" name="decorated workflow compilation reports relation errors as ValidationError" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="ui-decorators dashboard" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="0.046" tests="14">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" name="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" name="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" name="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" name="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" name="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" name="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" name="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" time="0.007">
+    </testcase>
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" time="0.001">
+    </testcase>
+    <testcase classname="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" name="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" time="0">
+    </testcase>
+    <testcase classname="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" name="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="endpoint shape" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="0.117" tests="7">
+    <testcase classname="endpoint shape accepts exactly the two tagged endpoint shapes" name="endpoint shape accepts exactly the two tagged endpoint shapes" time="0.001">
+    </testcase>
+    <testcase classname="endpoint shape rejects every other endpoint shape" name="endpoint shape rejects every other endpoint shape" time="0.001">
+    </testcase>
+    <testcase classname="document serialization round-trips the canonical document exactly (including nested loop bodies)" name="document serialization round-trips the canonical document exactly (including nested loop bodies)" time="0.001">
+    </testcase>
+    <testcase classname="document serialization serializes without a $workflow sentinel anywhere" name="document serialization serializes without a $workflow sentinel anywhere" time="0">
+    </testcase>
+    <testcase classname="document serialization refuses documents that do not have the canonical shape" name="document serialization refuses documents that do not have the canonical shape" time="0.004">
+    </testcase>
+    <testcase classname="document serialization refuses non-JSON and unsafe payloads on deserialization" name="document serialization refuses non-JSON and unsafe payloads on deserialization" time="0.001">
+    </testcase>
+    <testcase classname="document serialization refuses payload documents whose nested content fails document validation" name="document serialization refuses payload documents whose nested content fails document validation" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="0.041" tests="16">
+    <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0">
+    </testcase>
+    <testcase classname="UI Utils formatByType should return the value directly if type is not DATE" name="UI Utils formatByType should return the value directly if type is not DATE" time="0">
+    </testcase>
+    <testcase classname="UI Utils parseValueByType should convert a numeric string to a number" name="UI Utils parseValueByType should convert a numeric string to a number" time="0">
     </testcase>
     <testcase classname="UI Utils parseValueByType should convert a numeric timestamp to Date" name="UI Utils parseValueByType should convert a numeric timestamp to Date" time="0">
     </testcase>
@@ -71,38 +341,48 @@
     </testcase>
     <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.005">
+    <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.004">
     </testcase>
-    <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0">
+    <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0.001">
     </testcase>
     <testcase classname="UI Utils parseToNumber should parse a numeric string to number" name="UI Utils parseToNumber should parse a numeric string to number" time="0">
     </testcase>
-    <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0.001">
+    <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0">
+    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0.001">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0.001">
+    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0">
     </testcase>
-    <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0">
+    <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0.001">
     </testcase>
     <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and ID" name="UI Utils generateUIModelID should generate an ID using the model class name and ID" time="0">
     </testcase>
     <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0.001">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0.001">
+    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.046" tests="4">
+  <testsuite name="graph document/catalog boundary wall" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:54" time="1.819" tests="4">
+    <testcase classname="graph document/catalog boundary wall blocks framework, host-node, and integrations imports in document/ modules" name="graph document/catalog boundary wall blocks framework, host-node, and integrations imports in document/ modules" time="0.389">
+    </testcase>
+    <testcase classname="graph document/catalog boundary wall blocks the same imports in catalog/ modules" name="graph document/catalog boundary wall blocks the same imports in catalog/ modules" time="0.386">
+    </testcase>
+    <testcase classname="graph document/catalog boundary wall leaves the rest of src/graph unrestricted for the same imports" name="graph document/catalog boundary wall leaves the rest of src/graph unrestricted for the same imports" time="0.392">
+    </testcase>
+    <testcase classname="graph document/catalog boundary wall lints the real document/ and catalog/ modules with zero errors" name="graph document/catalog boundary wall lints the real document/ and catalog/ modules with zero errors" time="0.632">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:56" time="0.054" tests="4">
     <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.001">
     </testcase>
     <testcase classname="UI decorators Test Decorates the properties properly" name="UI decorators Test Decorates the properties properly" time="0.001">
     </testcase>
-    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0.001">
+    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0.005">
     </testcase>
     <testcase classname="UI decorators Test Adds the render method properly" name="UI decorators Test Adds the render method properly" time="0.011">
     </testcase>
   </testsuite>
-  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-07-07T16:34:26" time="0.021" tests="1">
+  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-09-15T01:54:56" time="0.027" tests="1">
     <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.001">
     </testcase>
   </testsuite>
