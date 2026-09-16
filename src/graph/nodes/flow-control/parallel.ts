@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.flow.parallel", {
   kind: "core.flow.parallel",
   category: "Flow Control",
-  color: "#06b6d4",
+  color: "#f59e0b",
   icon: "ti-arrows-vertical",
   width: 96,
   height: 96,

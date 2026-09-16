@@ -275,6 +275,16 @@ function displayOf(
   if (typeof definition.height === "number" && Number.isFinite(definition.height)) {
     display.height = definition.height;
   }
+  if (typeof definition.shape === "string") display.shape = definition.shape;
+  if (
+    typeof definition.cornerRadius === "number" &&
+    Number.isFinite(definition.cornerRadius)
+  ) {
+    display.cornerRadius = definition.cornerRadius;
+  }
+  if (Array.isArray(definition.sizeRules)) {
+    display.sizeRules = definition.sizeRules;
+  }
   return display;
 }
 

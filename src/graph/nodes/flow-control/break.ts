@@ -17,7 +17,7 @@ import "../category-styles";
 @node("core.flow.break", {
   kind: "core.flow.break",
   category: "Flow Control",
-  color: "#ef4444",
+  color: "#f59e0b",
   icon: "ti-square-arrow-right",
   width: 96,
   height: 96,

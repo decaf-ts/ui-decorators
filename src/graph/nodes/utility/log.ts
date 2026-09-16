@@ -15,7 +15,7 @@ import "../category-styles";
 @node("core.flow.log", {
   kind: "core.flow.log",
   category: "Utility",
-  color: "#6366f1",
+  color: "#0d9488",
   icon: "ti-terminal",
   width: 96,
   height: 96,

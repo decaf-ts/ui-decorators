@@ -19,6 +19,7 @@ import {
 } from "../../decorators";
 import {
   PortDirection,
+  graphNodeSizeOf,
   type GraphPortDefinition,
 } from "../../constants";
 import { graphDefinitionOf } from "../../reader";
@@ -31,10 +32,18 @@ import "../category-styles";
 @node("core.flow.switch", {
   kind: "core.flow.switch",
   category: "Flow Control",
-  color: "#f97316",
+  color: "#f59e0b",
   icon: "ti-arrows-shuffle",
   width: 120,
   height: 140,
+  sizeRules: [
+    {
+      type: "parameterCount",
+      parameter: "cases",
+      dimension: "height",
+      perItem: 24,
+    },
+  ],
   labels: ["flow", "switch", "multi-branch"],
   metadata: {
     title: "Switch",
@@ -105,10 +114,7 @@ export class SwitchFlowNode extends GraphNode {
     const caseCount = meta.cases.length;
     return {
       ports,
-      size: {
-        width: definition.width ?? 120,
-        height: caseCount > 0 ? 140 + caseCount * 24 : definition.height ?? 140,
-      },
+      size: graphNodeSizeOf(definition, { cases: caseCount }),
       dataPatch: { switchMetadata: meta },
     };
   }

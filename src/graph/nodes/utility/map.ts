@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.flow.map", {
   kind: "core.flow.map",
   category: "Utility",
-  color: "#84cc16",
+  color: "#0d9488",
   icon: "ti-arrows-right-left",
   width: 96,
   height: 96,

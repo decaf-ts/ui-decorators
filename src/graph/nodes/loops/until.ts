@@ -18,7 +18,7 @@ import "../category-styles";
 @node('graph-until-loop-node', {
   kind: 'core.loop.until',
   category: 'Loop',
-  color: '#db2777',
+  color: '#eab308',
   icon: 'ti-player-stop',
   width: 96,
   height: 96,

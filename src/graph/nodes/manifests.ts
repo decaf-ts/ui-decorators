@@ -77,12 +77,16 @@ export const FOREACH_GRAPH_NODE_MANIFEST: GraphNodeManifest = {
     name: "Foreach",
     description:
       "Runs the loop body once per item (or per slice of items) of the input array, collecting the results in order.",
-    category: "Flow Control",
-    color: "#8b5cf6",
+    // Single manifest display source per kind (G3-23): the hand-authored
+    // manifest remains the backend executor-port authority, but its display is
+    // mirrored from the decorated `GraphForeachLoopNode` class so the two
+    // authorities never diverge on category/colour/icon/labels.
+    category: "Loop",
+    color: "#eab308",
     icon: { type: "catalogue", name: "ti-repeat" },
     width: 120,
     height: 140,
-    labels: ["flow", "loop", "foreach", "iteration"],
+    labels: ["loop", "iteration", "foreach"],
   },
   inputs: [
     port("items", "Items", "input", {
@@ -149,12 +153,12 @@ export const WHILE_GRAPH_NODE_MANIFEST: GraphNodeManifest = {
     name: "While",
     description:
       "Runs the loop body while the configured condition evaluates to true, threading the state between iterations.",
-    category: "Flow Control",
-    color: "#8b5cf6",
-    icon: { type: "catalogue", name: "ti-repeat-once" },
+    category: "Loop",
+    color: "#eab308",
+    icon: { type: "catalogue", name: "ti-arrows-loop" },
     width: 120,
     height: 140,
-    labels: ["flow", "loop", "while", "condition"],
+    labels: ["loop", "conditional", "while"],
   },
   inputs: [port("state", "Initial state", "input", { schema: { type: "any" } })],
   outputs: [
@@ -201,12 +205,12 @@ export const UNTIL_GRAPH_NODE_MANIFEST: GraphNodeManifest = {
     name: "Until",
     description:
       "Runs the loop body at least once, then repeats until the configured condition evaluates to true.",
-    category: "Flow Control",
-    color: "#8b5cf6",
-    icon: { type: "catalogue", name: "ti-repeat" },
+    category: "Loop",
+    color: "#eab308",
+    icon: { type: "catalogue", name: "ti-player-stop" },
     width: 120,
     height: 140,
-    labels: ["flow", "loop", "until", "condition"],
+    labels: ["loop", "conditional", "until"],
   },
   inputs: [port("state", "Initial state", "input", { schema: { type: "any" } })],
   outputs: [

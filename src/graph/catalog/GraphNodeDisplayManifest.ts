@@ -1,4 +1,5 @@
 import type { GraphJsonValue } from "../document/GraphJsonValue";
+import type { GraphNodeShape, GraphNodeSizeRule } from "../constants";
 import type { GraphIconReference } from "./GraphIconReference";
 
 export interface GraphNodeDisplayManifest {
@@ -12,6 +13,22 @@ export interface GraphNodeDisplayManifest {
   width?: number;
   minWidth?: number;
   height?: number;
+  /**
+   * Node face silhouette (D1, DECAF-50 §4.5). Manifest-authoritative; the
+   * projected node renders this shape instead of a template CSS default.
+   */
+  shape?: GraphNodeShape;
+  /**
+   * Node corner radius in pixels (D1, DECAF-50 §4.5). Manifest-authoritative;
+   * the projected node renders this radius instead of a template CSS default.
+   */
+  cornerRadius?: number;
+  /**
+   * Manifest-declared, value-driven display rules (D1, DECAF-50 §4.5) evaluated
+   * from node-instance parameters — content growth never comes from hardcoded
+   * formulas or direct DOM style writes.
+   */
+  sizeRules?: GraphNodeSizeRule[];
   metadata?: Record<string, GraphJsonValue>;
 }
 

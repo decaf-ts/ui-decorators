@@ -14,7 +14,7 @@ import "../category-styles";
 @node("core.trigger.chat", {
   kind: "core.trigger.chat",
   category: "Trigger",
-  color: "#14b8a6",
+  color: "#3b82f6",
   icon: "ti-message-circle",
   width: 96,
   height: 96,

@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.flow.delay", {
   kind: "core.flow.delay",
   category: "Utility",
-  color: "#a3a3a3",
+  color: "#0d9488",
   icon: "ti-clock-hour-4",
   width: 96,
   height: 96,

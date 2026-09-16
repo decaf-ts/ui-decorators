@@ -18,7 +18,7 @@ import "../category-styles";
 @node('graph-while-loop-node', {
   kind: 'core.loop.while',
   category: 'Loop',
-  color: '#0891b2',
+  color: '#eab308',
   icon: 'ti-arrows-loop',
   width: 96,
   height: 96,

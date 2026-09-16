@@ -14,7 +14,7 @@ import "../category-styles";
 @node("core.flow.humanApproval", {
   kind: "core.flow.humanApproval",
   category: "Flow Control",
-  color: "#d946ef",
+  color: "#f59e0b",
   icon: "ti-user-check",
   width: 96,
   height: 96,

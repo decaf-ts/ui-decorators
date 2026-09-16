@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.trigger.event", {
   kind: "core.trigger.event",
   category: "Trigger",
-  color: "#8b5cf6",
+  color: "#3b82f6",
   icon: "ti-broadcast",
   width: 96,
   height: 96,

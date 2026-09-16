@@ -13,6 +13,30 @@ export enum PortDirection {
 
 export type GraphNodeKind = string;
 
+/**
+ * Node face silhouette (D1, DECAF-50 §4.5). Manifest-authoritative: the
+ * projected node geometry renders this shape and its corner radius instead of a
+ * hardcoded template CSS value.
+ */
+export type GraphNodeShape = "rounded" | "square" | "pill";
+
+/**
+ * Manifest-declared, value-driven display rule (D1, DECAF-50 §4.5). The manifest
+ * `display` metadata is the single authority for node geometry; content-driven
+ * growth is expressed here and evaluated from the node instance's parameters —
+ * never as a hardcoded per-node formula or a direct DOM style write.
+ */
+export type GraphNodeSizeRule = {
+  /** Rule kind. Only `parameterCount` is defined: growth tracks an array parameter's length. */
+  type: "parameterCount";
+  /** Node-instance parameter whose item count drives the growth (e.g. `cases`). */
+  parameter: string;
+  /** Dimension that grows. */
+  dimension: "height" | "width";
+  /** Increment added per parameter item. */
+  perItem: number;
+};
+
 export type GraphConnectionRule = {
   allowSelf?: boolean;
   allowMultiple?: boolean;
@@ -34,6 +58,22 @@ export type GraphNodeMetadata = {
   maxChildren?: number;
   minWidth?: number;
   width?: number;
+  /**
+   * Node face silhouette (D1, DECAF-50 §4.5). Manifest-authoritative;
+   * folded into the manifest display fields by the D1 revision.
+   */
+  shape?: GraphNodeShape;
+  /**
+   * Node corner radius in pixels (D1, DECAF-50 §4.5). Manifest-authoritative;
+   * folded into the manifest display fields by the D1 revision.
+   */
+  cornerRadius?: number;
+  /**
+   * Manifest-declared, value-driven display rules (D1, DECAF-50 §4.5). Content
+   * growth (e.g. Switch case count) is expressed here and evaluated from the
+   * node instance's parameters — never hardcoded per-node formulas.
+   */
+  sizeRules?: GraphNodeSizeRule[];
   connectionRules?: GraphConnectionRule;
   metadata?: Record<string, unknown>;
   /**
@@ -250,6 +290,21 @@ export type GraphNodeDefinition = {
   graph?: GraphNodeMetadata;
   ports: GraphPortDefinition[];
   /**
+   * Node face silhouette (D1, DECAF-50 §4.5), copied from
+   * {@link GraphNodeMetadata.shape} by `graphDefinitionOf`.
+   */
+  shape?: GraphNodeShape;
+  /**
+   * Node corner radius in pixels (D1, DECAF-50 §4.5), copied from
+   * {@link GraphNodeMetadata.cornerRadius} by `graphDefinitionOf`.
+   */
+  cornerRadius?: number;
+  /**
+   * Manifest-declared, value-driven display rules (D1, DECAF-50 §4.5), copied
+   * from {@link GraphNodeMetadata.sizeRules} by `graphDefinitionOf`.
+   */
+  sizeRules?: GraphNodeSizeRule[];
+  /**
    * Effective color resolved from the category registry (or the node's
    * explicit `color` override). Computed by `graphDefinitionOf`.
    */
@@ -307,6 +362,47 @@ export const GRAPH_DEFAULT_CATEGORY_STYLE: GraphCategoryStyle = {
 };
 
 /**
+ * Fallback node size in pixels when a manifest declares no `width`/`height`
+ * (D1, DECAF-50 §4.5). The manifest display remains the authority; this value
+ * only fills an absent manifest dimension, never overriding a declared one.
+ */
+export const GRAPH_DEFAULT_NODE_SIZE = 96;
+
+/**
+ * Default node corner radius in pixels (D1, DECAF-50 §4.5) applied only when the
+ * manifest declares no `cornerRadius`. Folded into the manifest display fields by
+ * the D1 revision; no template CSS pins the radius.
+ */
+export const GRAPH_DEFAULT_NODE_CORNER_RADIUS = 18;
+
+/**
+ * Evaluates a node definition's manifest-declared, value-driven display rules
+ * (D1, DECAF-50 §4.5) against per-parameter item counts. Content growth is
+ * driven by the manifest, never by hardcoded per-node formulas: each matching
+ * `parameterCount` rule adds `perItem * count` to its dimension. Falls back to the
+ * manifest `width`/`height` when no rule applies.
+ *
+ * @param definition - The manifest definition carrying `width`/`height`/`sizeRules`.
+ * @param parameterCounts - Item counts keyed by parameter id (e.g. `cases`).
+ * @returns The resolved `{ width, height }` in pixels.
+ */
+export function graphNodeSizeOf(
+  definition: Pick<GraphNodeDefinition, "width" | "height" | "sizeRules">,
+  parameterCounts: Record<string, number> = {}
+): { width: number; height: number } {
+  let width = definition.width ?? GRAPH_DEFAULT_NODE_SIZE;
+  let height = definition.height ?? GRAPH_DEFAULT_NODE_SIZE;
+  for (const rule of definition.sizeRules ?? []) {
+    if (rule.type !== "parameterCount") continue;
+    const count = parameterCounts[rule.parameter] ?? 0;
+    if (count <= 0) continue;
+    if (rule.dimension === "width") width += count * rule.perItem;
+    else height += count * rule.perItem;
+  }
+  return { width, height };
+}
+
+/**
  * Registers a category style (color + optional icon) in the global registry.
  * Call this at module init time (e.g. in the engine's node declarations) to
  * define the visual style for a category of nodes or connections.
@@ -329,27 +425,50 @@ export function graphCategoryStyleOf(category?: string): GraphCategoryStyle {
 }
 
 /**
- * Resolves the effective color for a node: explicit `color` overrides the
- * category color, which overrides the default.
+ * Resolves the effective color for a node (D7/G3-22, DECAF-50 §4.5).
+ *
+ * The **category base colour is authoritative**: every node of a registered
+ * category renders that one base colour, so same-category nodes never diverge.
+ * An explicit per-node `color` is an override applied at this single precedence
+ * point — it only wins when the category has no registered base style.
+ *
+ * @param explicitColor - The node's explicit per-node colour override, when any.
+ * @param category - The node's display category.
+ * @param override - A user-applied per-node colour override; wins over everything.
+ * @returns The resolved colour.
  */
 export function resolveEffectiveColor(
   explicitColor?: string,
-  category?: string
+  category?: string,
+  override?: string
 ): string {
+  if (override) return override;
+  const base = category ? GRAPH_CATEGORY_STYLE_REGISTRY[category] : undefined;
+  if (base?.color) return base.color;
   if (explicitColor) return explicitColor;
-  return graphCategoryStyleOf(category).color;
+  return GRAPH_DEFAULT_CATEGORY_STYLE.color;
 }
 
 /**
- * Resolves the effective icon for a node: explicit `icon` overrides the
- * category icon, which overrides the default.
+ * Resolves the effective icon for a node (D7/G3-22, DECAF-50 §4.5). The
+ * **category base icon is authoritative**; an explicit per-node `icon` is an
+ * override applied at this single precedence point.
+ *
+ * @param explicitIcon - The node's explicit per-node icon override, when any.
+ * @param category - The node's display category.
+ * @param override - A user-applied per-node icon override; wins over everything.
+ * @returns The resolved icon name.
  */
 export function resolveEffectiveIcon(
   explicitIcon?: string,
-  category?: string
+  category?: string,
+  override?: string
 ): string {
+  if (override) return override;
+  const base = category ? GRAPH_CATEGORY_STYLE_REGISTRY[category] : undefined;
+  if (base?.icon) return base.icon;
   if (explicitIcon) return explicitIcon;
-  return graphCategoryStyleOf(category).icon ?? GRAPH_DEFAULT_CATEGORY_STYLE.icon!;
+  return GRAPH_DEFAULT_CATEGORY_STYLE.icon!;
 }
 
 // ---------------------------------------------------------------------------

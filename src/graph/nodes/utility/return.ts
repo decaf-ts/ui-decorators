@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.flow.return", {
   kind: "core.flow.return",
   category: "Utility",
-  color: "#22c55e",
+  color: "#0d9488",
   icon: "ti-arrow-back-up",
   width: 96,
   height: 96,

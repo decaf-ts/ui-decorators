@@ -14,7 +14,7 @@ import "../category-styles";
 @node("core.trigger.webhook", {
   kind: "core.trigger.webhook",
   category: "Trigger",
-  color: "#0ea5e9",
+  color: "#3b82f6",
   icon: "ti-webhook",
   width: 96,
   height: 96,

@@ -43,7 +43,7 @@ export class CodeInputSchema extends Model {
 @node("core.flow.code", {
   kind: "core.flow.code",
   category: "Utility",
-  color: "#7c3aed",
+  color: "#0d9488",
   icon: "ti-code",
   width: 96,
   height: 96,

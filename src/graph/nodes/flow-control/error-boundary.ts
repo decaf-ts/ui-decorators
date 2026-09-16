@@ -13,7 +13,7 @@ import "../category-styles";
 @node("core.flow.errorBoundary", {
   kind: "core.flow.errorBoundary",
   category: "Flow Control",
-  color: "#ef4444",
+  color: "#f59e0b",
   icon: "ti-shield-check",
   width: 96,
   height: 96,

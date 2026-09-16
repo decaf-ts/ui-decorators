@@ -14,7 +14,7 @@ import "../category-styles";
 @node("core.trigger.form", {
   kind: "core.trigger.form",
   category: "Trigger",
-  color: "#ec4899",
+  color: "#3b82f6",
   icon: "ti-forms",
   width: 96,
   height: 96,

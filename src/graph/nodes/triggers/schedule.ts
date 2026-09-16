@@ -14,7 +14,7 @@ import "../category-styles";
 @node("core.trigger.schedule", {
   kind: "core.trigger.schedule",
   category: "Trigger",
-  color: "#6366f1",
+  color: "#3b82f6",
   icon: "ti-calendar-time",
   width: 96,
   height: 96,
