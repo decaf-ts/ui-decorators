@@ -348,9 +348,37 @@ function resolvePortGroups(
   return groups.length ? groups : undefined;
 }
 
+/**
+ * Detects an already-resolved {@link GraphWorkflowDefinition} — the plain-object
+ * shape returned by {@link graphWorkflowDefinitionOf}, as opposed to a decorated
+ * workflow class or model instance.
+ *
+ * Resolved definitions are values, not models: `resolveModel` maps them to
+ * `Object`, so without this guard `graphWorkflowDefinitionOf` would rebuild an
+ * empty definition and silently drop `nodes`/`relations`. Loop bodies already
+ * resolved by the caller (e.g. `for-angular`'s `metadata.loop.body`) rely on
+ * this round-trip.
+ */
+export function isGraphWorkflowDefinition(
+  value: unknown
+): value is GraphWorkflowDefinition {
+  if (!value || typeof value !== "object") return false;
+  const candidate = value as Partial<GraphWorkflowDefinition>;
+  return (
+    typeof candidate.kind === "string" &&
+    Array.isArray(candidate.nodes) &&
+    Array.isArray(candidate.relations) &&
+    Array.isArray(candidate.inputs) &&
+    Array.isArray(candidate.outputs) &&
+    !!candidate.workflow &&
+    typeof candidate.workflow === "object"
+  );
+}
+
 export function graphWorkflowDefinitionOf<M extends Model>(
   model: GraphModelLike<M>
 ): GraphWorkflowDefinition {
+  if (isGraphWorkflowDefinition(model)) return model;
   const resolved = resolveModel(model);
   const workflow = graphWorkflowMetadataOf(resolved) || {};
   const node = graphDefinitionOf(resolved);

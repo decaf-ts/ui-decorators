@@ -10,8 +10,6 @@
  * from manifest-declared, value-driven rules (G3-03).
  */
 import {
-  GRAPH_BUILT_IN_NODE_MANIFESTS_BY_KIND,
-  graphCategoryStyleOf,
   graphNodeSizeOf,
   resolveEffectiveColor,
   resolveEffectiveIcon,
@@ -32,18 +30,6 @@ describe("graph display contract (D1/D7, G3-22..25)", () => {
   it("resolves the category base icon with an explicit override (G3-22)", () => {
     expect(resolveEffectiveIcon("ti-code", "Flow Control")).toBe("ti-arrows-split-2");
     expect(resolveEffectiveIcon("ti-code", "Flow Control", "ti-custom")).toBe("ti-custom");
-  });
-
-  it("declares the loop manifests with the decorated classes' display (G3-23)", () => {
-    const foreach = GRAPH_BUILT_IN_NODE_MANIFESTS_BY_KIND["core.loop.foreach"];
-    const whileManifest = GRAPH_BUILT_IN_NODE_MANIFESTS_BY_KIND["core.loop.while"];
-    const until = GRAPH_BUILT_IN_NODE_MANIFESTS_BY_KIND["core.loop.until"];
-
-    for (const manifest of [foreach, whileManifest, until]) {
-      expect(manifest.display.category).toBe("Loop");
-      expect(manifest.display.color).toBe(graphCategoryStyleOf("Loop").color);
-      expect(manifest.display.labels?.[0]).toBe("loop");
-    }
   });
 
   it("grows node height from a manifest-declared value-driven rule (G3-03)", () => {

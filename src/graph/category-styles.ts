@@ -1,12 +1,12 @@
 /**
- * @module ui-decorators/graph/nodes/category-styles
+ * @module ui-decorators/graph/category-styles
  * @summary Built-in node/connection category style registrations.
  * @description Registers default colors and icons for the built-in node and
  * connection categories (DECAF-32 §21.2). The `color` / `icon` on a node's
  * `@node()` metadata are optional overrides — when omitted, the effective
  * style is resolved from the category registry.
  */
-import { registerGraphCategoryStyle } from "../constants";
+import { registerGraphCategoryStyle } from "./constants";
 
 /**
  * Registers all built-in category styles. Called once at module init.

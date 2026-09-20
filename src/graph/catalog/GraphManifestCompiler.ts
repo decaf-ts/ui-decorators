@@ -4,10 +4,11 @@ import type { Model } from "@decaf-ts/decorator-validation";
 import type { GraphNodeDefinition, GraphPortDefinition } from "../constants";
 import { graphDefinitionOf, graphLeafPortsOf, graphNodeMetadataOf, graphPortsOf } from "../reader";
 import type { GraphJsonValue } from "../document/GraphJsonValue";
-import { isGraphJsonSafeValue } from "../document/GraphJsonValue";
+import { cloneGraphJsonValue, isGraphJsonSafeValue } from "../document/GraphJsonValue";
 import type { GraphIconReference } from "./GraphIconReference";
 import type { GraphNodeDisplayManifest } from "./GraphNodeDisplayManifest";
 import type { GraphPortManifest } from "./GraphPortManifest";
+import type { GraphPortManifestElement } from "./GraphPortManifestElement";
 import type {
   GraphBooleanParameter,
   GraphCodeParameter,
@@ -77,6 +78,22 @@ function portMetadataOf(port: GraphPortDefinition): Record<string, GraphJsonValu
   return Object.keys(metadata).length ? metadata : undefined;
 }
 
+function portElementOf(port: GraphPortDefinition): GraphPortManifestElement | undefined {
+  const element = port.element;
+  if (!element || !isGraphJsonSafeValue(element)) return undefined;
+  const tag = element["tag"];
+  if (typeof tag !== "string") return undefined;
+  const props = element["props"];
+  return {
+    tag,
+    serialize: element["serialize"] === true,
+    props:
+      props && typeof props === "object" && !Array.isArray(props)
+        ? (cloneGraphJsonValue(props as GraphJsonValue) as Record<string, GraphJsonValue>)
+        : {},
+  };
+}
+
 function graphPortDirectionOf(
   direction: GraphPortDefinition["direction"]
 ): "input" | "output" | "connection" {
@@ -108,6 +125,8 @@ function graphPortManifestOf(
   if (typeof handle === "string") manifest.handle = handle;
   const policy = graphPortsPolicyOf(port.graph?.["connectionRules"]) ?? connectionsPolicy;
   if (policy) manifest.connectionPolicy = policy;
+  const element = portElementOf(port);
+  if (element) manifest.element = element;
   const metadata = portMetadataOf(port);
   if (metadata) manifest.metadata = metadata;
   return manifest;

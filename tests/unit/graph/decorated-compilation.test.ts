@@ -8,11 +8,14 @@ import { Model, model } from "@decaf-ts/decorator-validation";
 import {
   graph,
   graphDecoratedWorkflowCompiler,
+  graphWorkflowDefinitionOf,
   GraphWorkflowDocumentBuilder,
 } from "../../../src/graph";
 import {
+  ForeachBodyWorkflow,
   InnerLoopBodyWorkflow,
   LoopBodyWorkflow,
+  LoopNode,
   ReviewPipelineWorkflow,
   TransformNode,
 } from "./fixtures";
@@ -52,6 +55,31 @@ class BadGhostWorkflow extends Model {}
 })
 @model()
 class NodeClassRelationWorkflow extends Model {}
+
+/**
+ * The `for-angular` call site resolves the body workflow first and stores the
+ * resulting `GraphWorkflowDefinition` as the loop node's `metadata.loop.body`.
+ * Re-using that already-resolved value must round-trip unchanged.
+ */
+const resolvedForeachBody = graphWorkflowDefinitionOf(ForeachBodyWorkflow as never);
+
+@graph("resolved-body-loop-wf", {
+  kind: "core.workflow.loop",
+  nodes: [
+    {
+      id: "loop",
+      kind: "core.flow.loop",
+      label: "Loop",
+      node: LoopNode,
+      metadata: {
+        loop: { body: resolvedForeachBody, maxIterations: 10 },
+      },
+    },
+  ],
+  relations: [],
+})
+@model()
+class ResolvedBodyLoopWorkflow extends Model {}
 
 function compileReview() {
   return graphDecoratedWorkflowCompiler(ReviewPipelineWorkflow, {
@@ -206,5 +234,35 @@ describe("decorated workflow compilation", () => {
     expect(() => graphDecoratedWorkflowCompiler(BadGhostWorkflow)).toThrow(
       /neither a node in the workflow nor a workflow boundary/
     );
+  });
+});
+
+describe("resolved workflow definition round-trip", () => {
+  it("returns an already-resolved GraphWorkflowDefinition unchanged", () => {
+    const definition = graphWorkflowDefinitionOf(ForeachBodyWorkflow as never);
+
+    expect(graphWorkflowDefinitionOf(definition as never)).toBe(definition);
+  });
+
+  it("preserves every node and relation when a resolved definition is a loop body", () => {
+    expect(resolvedForeachBody.nodes.map((node) => node.id)).toEqual([
+      "LoopItemLogNode",
+      "EvenOddSwitchNode",
+      "LogEvenCodeNode",
+      "OddLogNode",
+    ]);
+    expect(resolvedForeachBody.relations).toHaveLength(6);
+
+    const compiled = graphDecoratedWorkflowCompiler(ResolvedBodyLoopWorkflow);
+    const loop = compiled.nodes.find((node) => node.id === "loop");
+    const body = loop?.loop?.body;
+
+    expect(body?.nodes.map((node) => node.id)).toEqual([
+      "LoopItemLogNode",
+      "EvenOddSwitchNode",
+      "LogEvenCodeNode",
+      "OddLogNode",
+    ]);
+    expect(body?.edges).toHaveLength(6);
   });
 });

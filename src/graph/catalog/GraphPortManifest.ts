@@ -1,5 +1,6 @@
 import type { GraphJsonValue } from "../document/GraphJsonValue";
 import type { GraphConnectionPolicy } from "./GraphConnectionPolicy";
+import type { GraphPortManifestElement } from "./GraphPortManifestElement";
 import type { GraphValueSchema } from "./GraphValueSchema";
 
 export interface GraphPortManifest {
@@ -14,6 +15,7 @@ export interface GraphPortManifest {
   connectionPolicy?: GraphConnectionPolicy;
   configurable?: boolean;
   defaultMode?: "edge" | "literal" | "expression";
+  element?: GraphPortManifestElement;
   metadata?: Record<string, GraphJsonValue>;
 }
 

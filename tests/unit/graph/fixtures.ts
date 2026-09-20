@@ -164,6 +164,82 @@ export class LoopBodyWorkflow extends Model {
 }
 
 /**
+ * Foreach loop body fixture mirroring the `for-angular` demo body: four
+ * class-less nodes (Log → Switch → Code / Log) and six relations, including
+ * both branches returning to the `workflow` boundary. The app resolves this
+ * workflow with `graphWorkflowDefinitionOf` and stores the resulting
+ * {@link GraphWorkflowDefinition} as the loop node's `metadata.loop.body`, so the
+ * compiler must round-trip that already-resolved definition unchanged.
+ */
+@graph("foreach-body-workflow", {
+  kind: "workflow",
+  category: "Loop Body",
+  metadata: { title: "Foreach body" },
+  nodes: [
+    { id: "LoopItemLogNode", kind: "core.flow.log", label: "Log Item" },
+    { id: "EvenOddSwitchNode", kind: "core.flow.switch", label: "Switch" },
+    { id: "LogEvenCodeNode", kind: "core.flow.code", label: "Log Even" },
+    { id: "OddLogNode", kind: "core.flow.log", label: "Log Odd" },
+  ],
+  relations: [
+    {
+      source: "workflow",
+      sourcePort: "item",
+      target: "LoopItemLogNode",
+      targetPort: "value",
+      label: "item",
+    },
+    {
+      source: "LoopItemLogNode",
+      sourcePort: "logged",
+      target: "EvenOddSwitchNode",
+      targetPort: "value",
+      label: "item",
+    },
+    {
+      source: "EvenOddSwitchNode",
+      sourcePort: "even",
+      target: "LogEvenCodeNode",
+      targetPort: "data",
+      label: "even",
+    },
+    {
+      source: "EvenOddSwitchNode",
+      sourcePort: "default",
+      target: "OddLogNode",
+      targetPort: "value",
+      label: "odd",
+    },
+    {
+      source: "LogEvenCodeNode",
+      sourcePort: "result",
+      target: "workflow",
+      targetPort: "result",
+      label: "result",
+    },
+    {
+      source: "OddLogNode",
+      sourcePort: "logged",
+      target: "workflow",
+      targetPort: "result",
+      label: "result",
+    },
+  ],
+})
+@model()
+export class ForeachBodyWorkflow extends Model {
+  @required()
+  @uielement("input", { label: "Item" })
+  @port(PortDirection.INPUT)
+  item!: unknown;
+
+  @required()
+  @uielement("input", { label: "Processed item" })
+  @port(PortDirection.OUTPUT)
+  result!: unknown;
+}
+
+/**
  * Top-level decorated workflow fixture: covers transform, Switch, loop (with
  * nested loop body), a connection-port edge, all three legacy boundary
  * sentinels in relations, and a workflow-name boundary alias.

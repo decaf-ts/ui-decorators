@@ -14,6 +14,7 @@ export * from "./GraphParameterDefinition";
 export * from "./GraphParameterOption";
 export * from "./GraphParameterValidation";
 export * from "./GraphPortManifest";
+export * from "./GraphPortManifestElement";
 export * from "./GraphResourceLocatorMode";
 export * from "./GraphValueSchema";
 export * from "./GraphValueSchemaDerivation";
