@@ -1,104 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="62" failures="0" errors="0" time="1.329">
-  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:35" time="0.302" tests="13">
-    <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.007">
-    </testcase>
-    <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.011">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.002">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.004">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" time="0.004">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" name="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" time="0.002">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" name="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" time="0.007">
-    </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.004">
-    </testcase>
-    <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0.003">
-    </testcase>
-    <testcase classname="Rendering Engine toAttributeValue regular keys" name="Rendering Engine toAttributeValue regular keys" time="0.004">
-    </testcase>
-    <testcase classname="Rendering Engine toAttributeValue comparison keys" name="Rendering Engine toAttributeValue comparison keys" time="0.004">
-    </testcase>
-    <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.021">
-    </testcase>
-    <testcase classname="Rendering Engine hides and shows fields by namespace metadata" name="Rendering Engine hides and shows fields by namespace metadata" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="user-requests" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:35" time="0.476" tests="14">
-    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" time="0.001">
+<testsuites name="jest tests" tests="62" failures="0" errors="0" time="1.915">
+  <testsuite name="user-requests" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:52" time="0.853" tests="14">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" time="0.002">
     </testcase>
     <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" time="0.001">
     </testcase>
-    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" time="0">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" time="0.001">
     </testcase>
-    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" time="0.005">
+    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" time="0.007">
     </testcase>
-    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" time="0.007">
+    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" time="0.002">
     </testcase>
     <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" time="0.002">
     </testcase>
-    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" time="0.063">
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" time="0.071">
     </testcase>
-    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" time="0.003">
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" time="0.007">
     </testcase>
-    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" time="0.003">
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" time="0.017">
     </testcase>
-    <testcase classname="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" name="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" time="0.006">
+    <testcase classname="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" name="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" time="0.02">
     </testcase>
-    <testcase classname="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" name="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" time="0.001">
+    <testcase classname="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" name="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" time="0.004">
     </testcase>
-    <testcase classname="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" name="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" time="0.002">
+    <testcase classname="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" name="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" time="0.005">
     </testcase>
-    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" time="0">
+    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" time="0.002">
     </testcase>
-    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:35" time="0.044" tests="4">
-    <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.001">
-    </testcase>
-    <testcase classname="UI decorators Test Decorates the properties properly" name="UI decorators Test Decorates the properties properly" time="0.001">
-    </testcase>
-    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0">
-    </testcase>
-    <testcase classname="UI decorators Test Adds the render method properly" name="UI decorators Test Adds the render method properly" time="0.01">
+    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" time="0.01">
     </testcase>
   </testsuite>
-  <testsuite name="ui-decorators dashboard" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:35" time="0.033" tests="14">
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" name="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" time="0.002">
+  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:52" time="0.521" tests="13">
+    <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.004">
+    </testcase>
+    <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.002">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.003">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" time="0.002">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" name="Rendering Engine toFieldDefinition should throw if @uimodel decorator is missing" time="0.002">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" name="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.003">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue regular keys" name="Rendering Engine toAttributeValue regular keys" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue comparison keys" name="Rendering Engine toAttributeValue comparison keys" time="0.001">
+    </testcase>
+    <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.004">
+    </testcase>
+    <testcase classname="Rendering Engine hides and shows fields by namespace metadata" name="Rendering Engine hides and shows fields by namespace metadata" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:53" time="0.07" tests="4">
+    <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.003">
+    </testcase>
+    <testcase classname="UI decorators Test Decorates the properties properly" name="UI decorators Test Decorates the properties properly" time="0.002">
+    </testcase>
+    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0.002">
+    </testcase>
+    <testcase classname="UI decorators Test Adds the render method properly" name="UI decorators Test Adds the render method properly" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="ui-decorators dashboard" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:53" time="0.063" tests="14">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" name="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" time="0.001">
     </testcase>
     <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" name="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" time="0">
     </testcase>
     <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" name="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" name="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" name="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" name="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" time="0.001">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" name="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" name="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" name="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" time="0.001">
     </testcase>
     <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" name="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" time="0">
+    <testcase classname="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" name="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" time="0.005">
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" time="0">
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" time="0.001">
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" name="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" time="0">
+    <testcase classname="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" name="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" time="0.001">
     </testcase>
     <testcase classname="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" name="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:36" time="0.03" tests="16">
+  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:53" time="0.037" tests="16">
     <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0.001">
     </testcase>
     <testcase classname="UI Utils formatByType should return the value directly if type is not DATE" name="UI Utils formatByType should return the value directly if type is not DATE" time="0">
@@ -109,9 +109,9 @@
     </testcase>
     <testcase classname="UI Utils parseValueByType should parse a string date with format" name="UI Utils parseValueByType should parse a string date with format" time="0">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0">
+    <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.004">
+    <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.001">
     </testcase>
     <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0">
     </testcase>
@@ -119,21 +119,21 @@
     </testcase>
     <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0">
+    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0.001">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0.001">
+    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0">
     </testcase>
-    <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0">
+    <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0.001">
     </testcase>
     <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and ID" name="UI Utils generateUIModelID should generate an ID using the model class name and ID" time="0.001">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0">
+    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0.001">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0.001">
+    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-10-14T09:13:36" time="0.019" tests="1">
-    <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.002">
+  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-10-14T12:51:53" time="0.074" tests="1">
+    <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.005">
     </testcase>
   </testsuite>
 </testsuites>
