@@ -1,3 +1,4 @@
+import { it } from "@decaf-ts/for-testing";
 import "../../src";
 import * as uiDecorators from "../../src";
 import type { DashComponentMetadata } from "../../src";

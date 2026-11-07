@@ -1,3 +1,4 @@
+import { it } from "@decaf-ts/for-testing";
 /**
  * @module ui-decorators/tests/unit/user-requests/user-requests.test
  * @summary Backend unit tests for the Service-based User Request Resolution

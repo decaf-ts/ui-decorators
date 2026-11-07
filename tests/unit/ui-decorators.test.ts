@@ -1,3 +1,4 @@
+import { it } from "@decaf-ts/for-testing";
 import { FieldProperties, UIElementMetadata, UIKeys } from "../../src";
 import { TestClass } from "./models";
 import { Metadata } from "@decaf-ts/decoration";
