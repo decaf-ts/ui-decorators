@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="62" failures="0" errors="0" time="2.105">
-  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:27" time="1.169" tests="13">
-    <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.007">
+<testsuites name="jest tests" tests="265" failures="0" errors="0" time="3.534">
+  <testsuite name="Rendering Engine" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:51" time="1.117" tests="13">
+    <testcase classname="Rendering Engine Generates FieldDefinitions" name="Rendering Engine Generates FieldDefinitions" time="0.006">
     </testcase>
     <testcase classname="Rendering Engine Should throw when an invalid key is provided" name="Rendering Engine Should throw when an invalid key is provided" time="0.002">
     </testcase>
     <testcase classname="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" name="Rendering Engine toFieldDefinition should assign props when uiprop is a common type" time="0.002">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.003">
+    <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is constructable" time="0.002">
     </testcase>
     <testcase classname="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" name="Rendering Engine toFieldDefinition should call toFieldDefinition for submodel if it is undefined" time="0.002">
     </testcase>
@@ -15,125 +15,535 @@
     </testcase>
     <testcase classname="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" name="Rendering Engine toFieldDefinition should throw if decorated with both @uielement and @uiprop" time="0.002">
     </testcase>
-    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.001">
+    <testcase classname="Rendering Engine toFieldDefinition should throw if @uichild is not a model" name="Rendering Engine toFieldDefinition should throw if @uichild is not a model" time="0.005">
     </testcase>
-    <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0.003">
+    <testcase classname="Rendering Engine toAttributeValue required key" name="Rendering Engine toAttributeValue required key" time="0.001">
     </testcase>
     <testcase classname="Rendering Engine toAttributeValue regular keys" name="Rendering Engine toAttributeValue regular keys" time="0.001">
     </testcase>
     <testcase classname="Rendering Engine toAttributeValue comparison keys" name="Rendering Engine toAttributeValue comparison keys" time="0.001">
     </testcase>
-    <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.005">
+    <testcase classname="Rendering Engine toAttributeValue invalid keys" name="Rendering Engine toAttributeValue invalid keys" time="0.006">
     </testcase>
     <testcase classname="Rendering Engine hides and shows fields by namespace metadata" name="Rendering Engine hides and shows fields by namespace metadata" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="user-requests" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:29" time="0.456" tests="14">
-    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" time="0.002">
+  <testsuite name="user-requests" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:52" time="0.469" tests="14">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id resolves the decorated class by id via the static methods" time="0.001">
     </testcase>
     <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id records the handler metadata (reference) readable via metadata and statics" time="0.001">
     </testcase>
-    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" time="0">
+    <testcase classname="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" name="user-requests FR-1: @userRequest(&apos;id&apos;) records a handler class resolved by id returns undefined for an unregistered reference" time="0.001">
     </testcase>
     <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler returns the handler result for a registered constructor" time="0.002">
     </testcase>
-    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" time="0.001">
+    <testcase classname="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" name="user-requests FR-2: UserRequestHandler.handle(request, renderingEngine) dispatches to the handler throws a decaf error when no handler is registered" time="0.002">
     </testcase>
     <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response records calls to getToast, getModal, getSpinner and router" time="0.002">
     </testcase>
     <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response returns the mocked user response for the request type via the presented modal" time="0.007">
     </testcase>
-    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" time="0.062">
+    <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response supports function mocks invoked with the request" time="0.073">
     </testcase>
     <testcase classname="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" name="user-requests FR-3: backend mock rendering-engine facade logs actions and delivers the driven response propagates a decaf error when the modal is driven to error" time="0.004">
     </testcase>
-    <testcase classname="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" name="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" time="0.008">
+    <testcase classname="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" name="user-requests cancellation: cancel() mid-request rejects handle with CancelledError rejects the pending handle call" time="0.007">
     </testcase>
     <testcase classname="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" name="user-requests erroring: a handler that throws a decaf error propagates it propagates the decaf error (not swallowed)" time="0.001">
     </testcase>
     <testcase classname="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" name="user-requests logCtx exposes log, ctx, ctxArgs plus the exact rendering-engine methods wraps the rendering engine methods for a plain call" time="0.002">
     </testcase>
-    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" time="0.001">
+    <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade records the fixture handler metadata resolved by the static methods" time="0">
     </testcase>
     <testcase classname="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" name="user-requests FR-5 (backend): the user-data fixture handler runs through the mock facade normalizes mocked user data through the static dispatch" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="ui-decorators dashboard" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:29" time="0.07" tests="14">
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" name="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" time="0.001">
+  <testsuite name="ui-decorators dashboard" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:52" time="0.067" tests="14">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" name="ui-decorators dashboard @dashcomponent() decorator + registry marks a class as dashboard-selectable; metadata via dashComponentMetadataOf" time="0.002">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" name="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" name="ui-decorators dashboard @dashcomponent() decorator + registry registers the constructor in dashComponents() registry" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" name="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" time="0.001">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" name="ui-decorators dashboard @dashcomponent() decorator + registry undecorated classes are absent from dashComponents()" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentMetadataOf returns undefined for undecorated classes" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" name="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" time="0">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" name="ui-decorators dashboard @dashcomponent() decorator + registry derives tag from class name in the definition when no tag is provided" time="0.005">
     </testcase>
     <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" name="ui-decorators dashboard @dashcomponent() decorator + registry applies a default defaultSize when none is specified" time="0.001">
     </testcase>
     <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" name="ui-decorators dashboard @dashcomponent() decorator + registry resolves an instance to its constructor metadata" time="0.001">
     </testcase>
-    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" time="0.005">
+    <testcase classname="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" name="ui-decorators dashboard @dashcomponent() decorator + registry dashComponentDefinitionOf normalizes defaults" time="0">
     </testcase>
     <testcase classname="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" name="ui-decorators dashboard pure decaf — no ad-hoc imperative registration decorator + registry provide the wiring without manual registration" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" time="0.002">
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name build() with no name throws" time="0.001">
     </testcase>
     <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name with a name sets the class name deterministically" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" time="0.001">
+    <testcase classname="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" name="ui-decorators dashboard AC-11: ModelBuilder.setName deterministic class name setName produces the same generated class name across builds" time="0">
     </testcase>
     <testcase classname="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" name="ui-decorators dashboard package entry exports re-exports the dashboard value symbols from the package entry" time="0">
     </testcase>
-    <testcase classname="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" name="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" time="0">
+    <testcase classname="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" name="ui-decorators dashboard package entry exports carries the DashComponentMetadata type from the package entry" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:29" time="0.072" tests="16">
-    <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0.002">
+  <testsuite name="UI Utils" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:52" time="0.07" tests="16">
+    <testcase classname="UI Utils formatByType should format a date if type is UIKeys.DATE" name="UI Utils formatByType should format a date if type is UIKeys.DATE" time="0.001">
     </testcase>
     <testcase classname="UI Utils formatByType should return the value directly if type is not DATE" name="UI Utils formatByType should return the value directly if type is not DATE" time="0">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should convert a numeric string to a number" name="UI Utils parseValueByType should convert a numeric string to a number" time="0">
+    <testcase classname="UI Utils parseValueByType should convert a numeric string to a number" name="UI Utils parseValueByType should convert a numeric string to a number" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should convert a numeric timestamp to Date" name="UI Utils parseValueByType should convert a numeric timestamp to Date" time="0.001">
+    <testcase classname="UI Utils parseValueByType should convert a numeric timestamp to Date" name="UI Utils parseValueByType should convert a numeric timestamp to Date" time="0">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should parse a string date with format" name="UI Utils parseValueByType should parse a string date with format" time="0">
+    <testcase classname="UI Utils parseValueByType should parse a string date with format" name="UI Utils parseValueByType should parse a string date with format" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0.001">
+    <testcase classname="UI Utils parseValueByType should escape HTML if type is string" name="UI Utils parseValueByType should escape HTML if type is string" time="0">
     </testcase>
     <testcase classname="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" name="UI Utils parseValueByType should throw an error if value can&apos;t be parsed" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0.001">
+    <testcase classname="UI Utils parseToNumber should return the value if it&apos;s already a number" name="UI Utils parseToNumber should return the value if it&apos;s already a number" time="0">
     </testcase>
-    <testcase classname="UI Utils parseToNumber should parse a numeric string to number" name="UI Utils parseToNumber should parse a numeric string to number" time="0">
+    <testcase classname="UI Utils parseToNumber should parse a numeric string to number" name="UI Utils parseToNumber should parse a numeric string to number" time="0.001">
     </testcase>
-    <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0.001">
+    <testcase classname="UI Utils parseToNumber should return undefined for non-numeric string" name="UI Utils parseToNumber should return undefined for non-numeric string" time="0">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0">
+    <testcase classname="UI Utils escapeHtml should escape HTML special characters" name="UI Utils escapeHtml should escape HTML special characters" time="0.001">
     </testcase>
-    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0.001">
+    <testcase classname="UI Utils escapeHtml should return empty value if input is empty" name="UI Utils escapeHtml should return empty value if input is empty" time="0">
     </testcase>
     <testcase classname="UI Utils revertHtml should revert escaped HTML characters" name="UI Utils revertHtml should revert escaped HTML characters" time="0">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and ID" name="UI Utils generateUIModelID should generate an ID using the model class name and ID" time="0.001">
+    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and ID" name="UI Utils generateUIModelID should generate an ID using the model class name and ID" time="0">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0">
+    <testcase classname="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" name="UI Utils generateUIModelID should generate an ID using the model class name and timestamp" time="0.001">
     </testcase>
-    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0.009">
+    <testcase classname="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" name="UI Utils generateUIModelID should fallback to timestamp if ID extraction fails" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:29" time="0.058" tests="4">
-    <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.001">
+  <testsuite name="HTML encoding at rendering boundaries" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:52" time="1.127" tests="142">
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes report R2-1 image through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes report R2-1 image through three DOM reparses" time="0.009">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes report R2-1 script through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes report R2-1 script through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes double quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes double quote breakout through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes single quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes single quote breakout through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes double quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes double quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes single quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes single quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes mixed quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes mixed quote breakout through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes unquoted handler through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes unquoted handler through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes mixed case tags through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes mixed case tags through three DOM reparses" time="0.009">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes unterminated tag through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes unterminated tag through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes malformed nested tag through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes malformed nested tag through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes duplicate attributes through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes duplicate attributes through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes SVG event through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes SVG event through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes SVG foreignObject through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes SVG foreignObject through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes SVG CDATA through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes SVG CDATA through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes SVG namespace mutation through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes SVG namespace mutation through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes MathML mutation through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes MathML mutation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes SVG animation through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes SVG animation through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes script URL through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes script URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes entity-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes entity-obfuscated URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes control-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes control-obfuscated URL through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes data URL through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes data URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes srcdoc through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes srcdoc through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes CSS through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes CSS through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes refresh through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes refresh through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes base URL through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes base URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes object through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes object through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes DOM clobbering through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes DOM clobbering through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes template through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes template through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes comment breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes comment breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes raw text breakout through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes raw text breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes HTML declaration through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes HTML declaration through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes encoded tags through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes encoded tags through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes numeric entities through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes numeric entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes hex entities through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes hex entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes encoded quotes through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes encoded quotes through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes entities without semicolon through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes entities without semicolon through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes nested entities through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes nested entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes percent encoding through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes percent encoding through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes template expressions through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes template expressions through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes plain script scheme through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes plain script scheme through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes plain data scheme through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes plain data scheme through three DOM reparses" time="0.007">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes benign international text through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes benign international text through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes benign whitespace through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes benign whitespace through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context neutralizes empty through three DOM reparses" name="HTML encoding at rendering boundaries text context neutralizes empty through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries text context prevents markup and attribute injection in 1,000 seeded combinations" name="HTML encoding at rendering boundaries text context prevents markup and attribute injection in 1,000 seeded combinations" time="0.295">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes report R2-1 image through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes report R2-1 image through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes report R2-1 script through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes report R2-1 script through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes double quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes double quote breakout through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes single quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes single quote breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes double quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes double quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes single quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes single quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes mixed quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes mixed quote breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes unquoted handler through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes unquoted handler through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes mixed case tags through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes mixed case tags through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes unterminated tag through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes unterminated tag through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes malformed nested tag through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes malformed nested tag through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes duplicate attributes through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes duplicate attributes through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes SVG event through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes SVG event through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes SVG foreignObject through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes SVG foreignObject through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes SVG CDATA through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes SVG CDATA through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes SVG namespace mutation through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes SVG namespace mutation through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes MathML mutation through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes MathML mutation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes SVG animation through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes SVG animation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes script URL through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes script URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes entity-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes entity-obfuscated URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes control-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes control-obfuscated URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes data URL through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes data URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes srcdoc through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes srcdoc through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes CSS through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes CSS through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes refresh through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes refresh through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes base URL through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes base URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes object through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes object through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes DOM clobbering through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes DOM clobbering through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes template through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes template through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes comment breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes comment breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes raw text breakout through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes raw text breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes HTML declaration through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes HTML declaration through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes encoded tags through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes encoded tags through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes numeric entities through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes numeric entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes hex entities through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes hex entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes encoded quotes through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes encoded quotes through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes entities without semicolon through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes entities without semicolon through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes nested entities through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes nested entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes percent encoding through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes percent encoding through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes template expressions through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes template expressions through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes plain script scheme through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes plain script scheme through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes plain data scheme through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes plain data scheme through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes benign international text through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes benign international text through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes benign whitespace through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes benign whitespace through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context neutralizes empty through three DOM reparses" name="HTML encoding at rendering boundaries &quot; context neutralizes empty through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &quot; context prevents markup and attribute injection in 1,000 seeded combinations" name="HTML encoding at rendering boundaries &quot; context prevents markup and attribute injection in 1,000 seeded combinations" time="0.3">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes report R2-1 image through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes report R2-1 image through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes report R2-1 script through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes report R2-1 script through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes double quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes double quote breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes single quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes single quote breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes double quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes double quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes single quote element breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes single quote element breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes mixed quote breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes mixed quote breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes unquoted handler through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes unquoted handler through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes mixed case tags through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes mixed case tags through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes unterminated tag through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes unterminated tag through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes malformed nested tag through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes malformed nested tag through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes duplicate attributes through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes duplicate attributes through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes SVG event through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes SVG event through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes SVG foreignObject through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes SVG foreignObject through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes SVG CDATA through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes SVG CDATA through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes SVG namespace mutation through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes SVG namespace mutation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes MathML mutation through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes MathML mutation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes SVG animation through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes SVG animation through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes script URL through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes script URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes entity-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes entity-obfuscated URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes control-obfuscated URL through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes control-obfuscated URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes data URL through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes data URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes srcdoc through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes srcdoc through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes CSS through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes CSS through three DOM reparses" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes refresh through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes refresh through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes base URL through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes base URL through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes object through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes object through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes DOM clobbering through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes DOM clobbering through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes template through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes template through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes comment breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes comment breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes raw text breakout through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes raw text breakout through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes HTML declaration through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes HTML declaration through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes encoded tags through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes encoded tags through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes numeric entities through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes numeric entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes hex entities through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes hex entities through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes encoded quotes through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes encoded quotes through three DOM reparses" time="0">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes entities without semicolon through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes entities without semicolon through three DOM reparses" time="0">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes nested entities through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes nested entities through three DOM reparses" time="0">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes percent encoding through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes percent encoding through three DOM reparses" time="0">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes template expressions through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes template expressions through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes plain script scheme through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes plain script scheme through three DOM reparses" time="0">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes plain data scheme through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes plain data scheme through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes benign international text through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes benign international text through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes benign whitespace through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes benign whitespace through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context neutralizes empty through three DOM reparses" name="HTML encoding at rendering boundaries &apos; context neutralizes empty through three DOM reparses" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries &apos; context prevents markup and attribute injection in 1,000 seeded combinations" name="HTML encoding at rendering boundaries &apos; context prevents markup and attribute injection in 1,000 seeded combinations" time="0.295">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries keeps trusted translation markup and inserts the R2-1 search value as text" name="HTML encoding at rendering boundaries keeps trusted translation markup and inserts the R2-1 search value as text" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries demonstrates that discarding escaped data leaves the R2-1 caller unsafe" name="HTML encoding at rendering boundaries demonstrates that discarding escaped data leaves the R2-1 caller unsafe" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries demonstrates that escaping does not validate URL attributes" name="HTML encoding at rendering boundaries demonstrates that escaping does not validate URL attributes" time="0.002">
+    </testcase>
+    <testcase classname="HTML encoding at rendering boundaries demonstrates that decoding before a trusted sink undoes the protection" name="HTML encoding at rendering boundaries demonstrates that decoding before a trusted sink undoes the protection" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="HTML encoding (Node runtime)" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:54" time="0.172" tests="61">
+    <testcase classname="HTML encoding (Node runtime) encodes &amp; and decodes its entity" name="HTML encoding (Node runtime) encodes &amp; and decodes its entity" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) encodes &lt; and decodes its entity" name="HTML encoding (Node runtime) encodes &lt; and decodes its entity" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) encodes &gt; and decodes its entity" name="HTML encoding (Node runtime) encodes &gt; and decodes its entity" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) encodes &quot; and decodes its entity" name="HTML encoding (Node runtime) encodes &quot; and decodes its entity" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) encodes &apos; and decodes its entity" name="HTML encoding (Node runtime) encodes &apos; and decodes its entity" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) encodes all occurrences once, without escaping generated entities" name="HTML encoding (Node runtime) encodes all occurrences once, without escaping generated entities" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) preserves existing entities as literal text instead of trusting them" name="HTML encoding (Node runtime) preserves existing entities as literal text instead of trusting them" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) decodes exactly one layer, leaving nested entities inert" name="HTML encoding (Node runtime) decodes exactly one layer, leaving nested entities inert" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) leaves entities outside its five-character encoding contract alone" name="HTML encoding (Node runtime) leaves entities outside its five-character encoding contract alone" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips report R2-1 image without losing data" name="HTML encoding (Node runtime) round-trips report R2-1 image without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips report R2-1 script without losing data" name="HTML encoding (Node runtime) round-trips report R2-1 script without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips double quote breakout without losing data" name="HTML encoding (Node runtime) round-trips double quote breakout without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips single quote breakout without losing data" name="HTML encoding (Node runtime) round-trips single quote breakout without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips double quote element breakout without losing data" name="HTML encoding (Node runtime) round-trips double quote element breakout without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips single quote element breakout without losing data" name="HTML encoding (Node runtime) round-trips single quote element breakout without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips mixed quote breakout without losing data" name="HTML encoding (Node runtime) round-trips mixed quote breakout without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips unquoted handler without losing data" name="HTML encoding (Node runtime) round-trips unquoted handler without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips mixed case tags without losing data" name="HTML encoding (Node runtime) round-trips mixed case tags without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips unterminated tag without losing data" name="HTML encoding (Node runtime) round-trips unterminated tag without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips malformed nested tag without losing data" name="HTML encoding (Node runtime) round-trips malformed nested tag without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips duplicate attributes without losing data" name="HTML encoding (Node runtime) round-trips duplicate attributes without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips SVG event without losing data" name="HTML encoding (Node runtime) round-trips SVG event without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips SVG foreignObject without losing data" name="HTML encoding (Node runtime) round-trips SVG foreignObject without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips SVG CDATA without losing data" name="HTML encoding (Node runtime) round-trips SVG CDATA without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips SVG namespace mutation without losing data" name="HTML encoding (Node runtime) round-trips SVG namespace mutation without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips MathML mutation without losing data" name="HTML encoding (Node runtime) round-trips MathML mutation without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips SVG animation without losing data" name="HTML encoding (Node runtime) round-trips SVG animation without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips script URL without losing data" name="HTML encoding (Node runtime) round-trips script URL without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips entity-obfuscated URL without losing data" name="HTML encoding (Node runtime) round-trips entity-obfuscated URL without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips control-obfuscated URL without losing data" name="HTML encoding (Node runtime) round-trips control-obfuscated URL without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips data URL without losing data" name="HTML encoding (Node runtime) round-trips data URL without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips srcdoc without losing data" name="HTML encoding (Node runtime) round-trips srcdoc without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips CSS without losing data" name="HTML encoding (Node runtime) round-trips CSS without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips refresh without losing data" name="HTML encoding (Node runtime) round-trips refresh without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips base URL without losing data" name="HTML encoding (Node runtime) round-trips base URL without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips object without losing data" name="HTML encoding (Node runtime) round-trips object without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips DOM clobbering without losing data" name="HTML encoding (Node runtime) round-trips DOM clobbering without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips template without losing data" name="HTML encoding (Node runtime) round-trips template without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips comment breakout without losing data" name="HTML encoding (Node runtime) round-trips comment breakout without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips raw text breakout without losing data" name="HTML encoding (Node runtime) round-trips raw text breakout without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips HTML declaration without losing data" name="HTML encoding (Node runtime) round-trips HTML declaration without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips encoded tags without losing data" name="HTML encoding (Node runtime) round-trips encoded tags without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips numeric entities without losing data" name="HTML encoding (Node runtime) round-trips numeric entities without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips hex entities without losing data" name="HTML encoding (Node runtime) round-trips hex entities without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips encoded quotes without losing data" name="HTML encoding (Node runtime) round-trips encoded quotes without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips entities without semicolon without losing data" name="HTML encoding (Node runtime) round-trips entities without semicolon without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips nested entities without losing data" name="HTML encoding (Node runtime) round-trips nested entities without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips percent encoding without losing data" name="HTML encoding (Node runtime) round-trips percent encoding without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips template expressions without losing data" name="HTML encoding (Node runtime) round-trips template expressions without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips plain script scheme without losing data" name="HTML encoding (Node runtime) round-trips plain script scheme without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips plain data scheme without losing data" name="HTML encoding (Node runtime) round-trips plain data scheme without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips benign international text without losing data" name="HTML encoding (Node runtime) round-trips benign international text without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips benign whitespace without losing data" name="HTML encoding (Node runtime) round-trips benign whitespace without losing data" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) round-trips empty without losing data" name="HTML encoding (Node runtime) round-trips empty without losing data" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) preserves UTF-16 data and neutralizes every delimiter in 1,000 seeded inputs" name="HTML encoding (Node runtime) preserves UTF-16 data and neutralizes every delimiter in 1,000 seeded inputs" time="0.065">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) handles a large hostile string without recursion or truncation" name="HTML encoding (Node runtime) handles a large hostile string without recursion or truncation" time="0.053">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) escapes coerced runtime values: 42" name="HTML encoding (Node runtime) escapes coerced runtime values: 42" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) escapes coerced runtime values: {&quot;query&quot;: [Array]}" name="HTML encoding (Node runtime) escapes coerced runtime values: {&quot;query&quot;: [Array]}" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) escapes coerced runtime values: {&quot;toString&quot;: [Function toString]}" name="HTML encoding (Node runtime) escapes coerced runtime values: {&quot;toString&quot;: [Function toString]}" time="0.001">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) keeps the parseValueByType string path on the five-character contract" name="HTML encoding (Node runtime) keeps the parseValueByType string path on the five-character contract" time="0">
+    </testcase>
+    <testcase classname="HTML encoding (Node runtime) runs without a browser or DOM globals" name="HTML encoding (Node runtime) runs without a browser or DOM globals" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="UI decorators Test" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:54" time="0.059" tests="4">
+    <testcase classname="UI decorators Test Decorates The class properly" name="UI decorators Test Decorates The class properly" time="0.002">
     </testcase>
     <testcase classname="UI decorators Test Decorates the properties properly" name="UI decorators Test Decorates the properties properly" time="0">
     </testcase>
-    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0">
+    <testcase classname="UI decorators Test Must be hidden property on create" name="UI decorators Test Must be hidden property on create" time="0.001">
     </testcase>
     <testcase classname="UI decorators Test Adds the render method properly" name="UI decorators Test Adds the render method properly" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-11-16T19:00:29" time="0.046" tests="1">
-    <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.002">
+  <testsuite name="ui-decorators ModelBuilder extensions" errors="0" failures="0" skipped="0" timestamp="2026-11-18T12:12:54" time="0.048" tests="1">
+    <testcase classname="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" name="ui-decorators ModelBuilder extensions records UI metadata when builder helpers run" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

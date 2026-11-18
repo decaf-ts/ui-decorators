@@ -86,6 +86,34 @@ This integration ensures that UI components not only display data correctly but 
 - [Initial Setup](../../workdocs/tutorials/For%20Developers.md#_initial-setup_)
 - [Installation](../../workdocs/tutorials/For%20Developers.md#installation)
 
+### HTML output encoding
+
+`escapeHtml` encodes `&`, `<`, `>`, `"` and `'` as `&amp;`, `&lt;`, `&gt;`,
+`&quot;` and `&#39;`. It is browser-independent and works in Node. Use it when
+inserting untrusted data into HTML text or a quoted plain-text attribute:
+
+```typescript
+import { escapeHtml } from '@decaf-ts/ui-decorators';
+
+const html = `<span title="${escapeHtml(label)}">${escapeHtml(searchTerm)}</span>`;
+const subtitle = trustedTranslationTemplate.replace('{0}', () => escapeHtml(searchTerm));
+```
+
+Escape data **before** interpolation and use the escaped result. This is text
+encoding: all markup becomes literal text, including otherwise safe HTML. For
+rich HTML, use the renderer's HTML sanitizer. URL, script, style, event-handler,
+unquoted-attribute and template-source contexts need their own protections.
+
+Existing entities are escaped again to preserve literal input. Encode once at
+the rendering boundary; repeated encoding changes the displayed text.
+`revertHtml` decodes one layer of only these five entities, restoring raw text;
+its result must be encoded again before insertion into HTML.
+
+Run the Node and DOM regression suites with
+`npm run test:unit -- --runInBand --testPathPatterns=html-escaping`.
+DOM emulation is a development dependency only; the published runtime uses no
+browser APIs or DOM dependencies.
+
 ## Basic Usage
 
 ### Creating a UI Model

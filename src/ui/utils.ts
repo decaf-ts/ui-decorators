@@ -114,6 +114,15 @@ export function parseToNumber(value: string | number) {
   return undefined;
 }
 
+/**
+ * Encodes &, <, >, double quotes and single quotes as HTML entities.
+ * Use at the render boundary, before inserting data into HTML text or a quoted
+ * plain-text attribute. Existing entities are escaped too, so they stay literal.
+ *
+ * This is output encoding, not an HTML sanitizer: markup becomes visible text.
+ * It does not validate URLs or make values safe in scripts, styles, event
+ * handlers, unquoted attributes or template source. It needs no browser APIs.
+ */
 export function escapeHtml(value: string) {
   if (!value) return value;
 
@@ -121,20 +130,29 @@ export function escapeHtml(value: string) {
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
   };
-  return `${value}`.replace(/[&<>]/g, (tag) => {
+  return `${value}`.replace(/[&<>"']/g, (tag) => {
     return tagsToReplace[tag] || tag;
   });
 }
 
+/**
+ * Decodes exactly one layer of the five entities emitted by {@link escapeHtml}.
+ * This restores raw, potentially unsafe text. Do not pass the result to an HTML
+ * sink without encoding it again; nested entities are intentionally not decoded.
+ */
 export function revertHtml(value: string) {
   const tagsToReplace: Record<string, string> = {
     "&amp;": "&",
     "&lt;": "<",
     "&gt;": ">",
+    "&quot;": '"',
+    "&#39;": "'",
   };
 
-  return `${value}`.replace(/&lt;|&gt;|&amp;/g, (tag) => {
+  return `${value}`.replace(/&lt;|&gt;|&amp;|&quot;|&#39;/g, (tag) => {
     return tagsToReplace[tag] || tag;
   });
 }
